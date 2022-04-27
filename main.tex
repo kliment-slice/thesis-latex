@@ -1,0 +1,158 @@
+%============================================================================%
+%
+%
+%	DOCUMENMT DEFINITION
+%
+%
+%============================================================================%
+
+% we use report class for thesis design
+% 11pt font is way bettern to read than 12pt
+% we want to make a title page
+% two side allows us to make the page layout align by even and odd
+% openright tells the compiler that the first page is a right page
+\documentclass[pdftex,11pt,titlepage,twoside,openright]{report}	
+
+
+%----------------------------------------------------------------------------------------
+%	ENCODING
+%----------------------------------------------------------------------------------------
+
+% for suporting multi platform
+\usepackage[utf8x]{inputenc} 	
+
+% natbib is what you want for bibliography
+\usepackage[square,authoryear]{natbib}
+
+
+%----------------------------------------------------------------------------------------
+%	ALL DECLARATIONS
+%----------------------------------------------------------------------------------------
+
+% here are all our declarations 
+\input{./includes/declarations.tex}
+
+
+%----------------------------------------------------------------------------------------
+%	MAKE INDEX AND GLOSSARY
+%----------------------------------------------------------------------------------------
+
+
+\usepackage[style=long,nonumberlist,toc,xindy,acronym,nomain]{glossaries} % nomain, if you define glossaries in a file, and you use \include{INP-00-glossary}
+%\loadglsentries[main]{glossary}
+% or using \input:
+\include{glossary}
+\makeglossaries
+\usepackage{makeidx}
+\makeindex
+
+
+
+%============================================================================%
+%
+%	BEGIN DOCUMENT
+%
+%============================================================================%
+
+
+\begin{document}
+
+% before the chapters start, we use roman numbering on the pages
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+% print title
+\input{./includes/title.tex}
+
+%pagestyle after title
+\pagestyle{fancy}
+
+% let's print the table of content, 
+% the list of figures and the list of tables
+\setcounter{tocdepth}{1}
+% \tableofcontents
+% \listoffigures
+% \listoftables
+{\tableofcontents \let\cleardoublepage\clearpage \listoffigures 
+\let\cleardoublepage\clearpage \listoftables \let\cleardoublepage\clearpage}
+
+%\cleardoublepage
+
+% EXECUTIVE SUMMARY
+% here we describe roughly what this work is about
+
+\begin{abstract}
+
+    Vision Transformers (ViT) \citep{Bai2022AAAI} and TransGANs[2] are state-of-the-art implementations of the 
+    transformer attention mechanism used in generative image tasks. The transformer architecture 
+    has outperformed convolutional neural networks (CNNs) in image recognition and object detection 
+    due to its ability to generalize well. The attention mechanism is capable of focusing on objects 
+    anywhere on the image within a single network layer (versus the variable size convolution kernels 
+    across layers). The standard two CNNs combined in a generative adversarial network (GAN), can be 
+    replaced with vision transformers to create a TransGAN[2]. Such a model is shown to generalize well 
+    and may be capable of handling image and video compression tasks. This thesis project investigates 
+    the capacity to which a transformer and potentially a TransGAN is capable of achieving high fidelity 
+    video compression in order to mimic the performance of common video codecs. 
+\end{abstract}
+
+% Back to arabic numbering
+
+\pagestyle{fancy}
+
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+
+%============================================================================%
+%
+%	CHAPTER 1
+%
+%============================================================================%
+
+\chapter{General Tools and Techniques for Your Master Thesis}
+
+% before the chapter starts, we can write some overview 
+% this is good to summarize quickly what this chapter covers
+At this point it may be good for the reader to get an overview about this chapter. What does it cover? What is it's purpose in the bigger picture of your thesis? It is like a micro-abstract and it helps your audience to keep on track. This is especially useful, when your thesis is an interdisciplinary work.
+
+
+
+\newpage
+\input{./includes/chapter1.tex}
+
+
+
+%============================================================================%
+%
+%	CHAPTER 2
+%
+%============================================================================%
+\cleardoublepage
+\chapter{Specific Tools for a Thesis in Computer Science}
+
+This chapter covers more specific examples, which are useful in the field of computer sciences.
+
+\newpage
+\input{./includes/chapter2.tex}
+
+%============================================================================%
+%
+%	BIBLIOGRAPHY
+%
+%============================================================================%
+
+\cleardoublepage
+\phantomsection %hyperref package support
+\addcontentsline{toc}{chapter}{Bibliography} % add entry to table of contents
+\pagestyle{plain}
+
+
+%{\textbf{\LARGE{Bibliography}}}\\	%headline
+%\nocitep{*} % Show all Bib-entries (DEBUG)
+
+\bibliographystyle{abbrvnat}
+% \bibliography{bib/algorithm.bib,bib/resDes.bib} % for a better structure you can split your bib items into seperate files
+\bibliography{bib/resDes.bib}
+
+
+\end{document}
