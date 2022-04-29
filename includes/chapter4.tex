@@ -1,39 +1,13 @@
-\section{Image is worth 16x16}
+\section{Future of Vision Transformers, Compression, and Generation}
 
 
 The package \NOTE{algorithm2e} allows you write nearly all imaginable code structures as pseudo code in LaTex. A referece of commands can be found here: \url{http://www.cs.toronto.edu/~frank/Useful/algorithm2e.pdf}. Do not forget to wrap the pseudo code into a figure, thus it will be included into list of figures.\\
 
 The following example demonstrates the package with a bubble sort algorithm. Note, that the directive \NOTE{repeat - until} is the same as the \NOTE{do-while} directive.
 
-\begin{figure}[H]
-\begin{algorithm}[H]
-\KwData{A as Array to sort,}
-\KwResult{A as sorted Array} 
-
-int n $\leftarrow$ A.size \tcp*[l]{cache the initial size of A}
-
-
-\Repeat{n>1}{
-	int newn $\leftarrow$ 1
-	\For{int i=0; i<n-1; i++}
-	{
-		\If{A[i] > A[i+1]}
-		{
-			A.swap(i, +1);
-		}
-	}
-	n  $\leftarrow$ newn
-}
-
-return A
-\caption{bubbleSort(Array A)}
-\end{algorithm}
-\caption[BubbleSort Algorithm Pseudocoe]{PseudoCode f the BubbleSort Algorithm, derived from \url{https://de.wikipedia.org/wiki/Bubblesort}.}
-\end{figure}
-
 
 \newpage
-\section{Transformer-based Image Compression (Ming Lu)}
+\section{Deep learning based Image compression }
 
 Writing mathematical equations can be a very important part of your work. This applies especially, if you want to analyze and evaluate your gathered data. The following example shows a calculation of Kohen's Cappa, a measurement which represents the inter coder reliability in coding qualitative data.\\
 
@@ -88,7 +62,7 @@ The values for Pr(a) and Pr(e) are calculated and can be included into the kappa
 \end{center}
 
 
-\section{Towards End-to-End Image Compression and Analysis with Transformers (Yuanchao Bai)}
+\section{Training (like GPT-3 trained on all internet text, Vision T trained on all google images)}
 
 Sometimes you want to include text which include characters that could trigger commands. At this point it useful to wrap them into the \NOTE{verbatim} environment. The text is uninterpreted and listet as is.
 
@@ -115,4 +89,6 @@ You can also include existing code and highlight it's syntax, using the \NOTE{ls
 \end{lstlisting}
 \normalsize	
 
-\section{TransGANs}
+\section{Cost (\$100M+), GPT-3 cost \$10M-\$20M}
+
+Sometimes you want to include text which include characters that could trigger commands. At this point it useful to wrap them into the \NOTE{verbatim} environment. The text is uninterpreted and listet as is.

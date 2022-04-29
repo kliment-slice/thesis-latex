@@ -1,15 +1,7 @@
-%================================================================
-%
-%	Basic Writing and Citing
-%
-%================================================================
-\section{Basic Commands and Writing Topics}
-
-
 %-------------------------------------------------------------------------------------------
 %	Introduction to Writing
 %-------------------------------------------------------------------------------------------
-\subsection{Introduction to Writing in LaTex}
+\section{Motivation (generalization, overparameterization)}
 
 The text appearance and the thesis layout is sometimes determined by formal requirements. This text, for example is \NOTE{Times} using 11pt size and a slight increase in space between the text lines. There are also requirements for indenting a new paragraph sometimes.\\
 As you can see, this template does not indent the new paragraph. However, you can always change this setting in the \NOTE{declarations.tex} file.\\
@@ -30,8 +22,9 @@ You can enumerate or list some points and sketches of a topic using \NOTE{list o
 %-------------------------------------------------------------------------------------------
 %	Structure of the thesis
 %-------------------------------------------------------------------------------------------
-\subsection{Structure of the Thesis}
+\section{Brief History (language models)}
 
+\subsection{Language Models: BERT}
 Since the current template is structured into chapters, sections and subsections. This is mainly because a master thesis may easily grow up to 100 pages and in some cases even bigger. Structuring your big parts into \NOTE{chapters} makes it perfect for separating in logical units, such as:
 
 \begin{itemize}
@@ -54,12 +47,13 @@ Now there are also \NOTE{subsubsections} available in LaTex. It would become ver
 
 The advantage is, that your work becomes more structured along the complexity of your topic. It may occur, that topics can become very granular, which is why this is the perfect counterpart for this issue.
 
+\subsection{Language Models: GPT-3}
 
 
 %-------------------------------------------------------------------------------------------
 %	Using a shorthand command
 %-------------------------------------------------------------------------------------------
-\subsection{Using a Shorthand Command in Writing}
+\section{Principles of Operation (diagrams) }
 
 In the \NOTE{declaration.tex file}, there is a shorthand command called \NOTE{NOTE}. It is created to quickly emphasize important words and let them point out. It is declared by using the \NOTE{newcommand} tag. You may read on the web about this command, since it is very handy once you understand how to use it. You can of course create your own commands but you can also stick to this, if you want to get things done fast.
 
@@ -67,7 +61,7 @@ In the \NOTE{declaration.tex file}, there is a shorthand command called \NOTE{NO
 %-------------------------------------------------------------------------------------------
 %	Including citations
 %-------------------------------------------------------------------------------------------
-\subsection{Including a citation}
+\section{Formulation (math)}
 
 Since we use the natbib environment, we need to use citep or citet as commans for our citations. This may look like the following:\\
 
@@ -83,13 +77,13 @@ When the authors, e.g. \citet{mayring2014} said something and you want to embed 
 %
 %================================================================
 \newpage
-\section{Including Figures and Tables}
+\section{Implementations (pre-trained models)}
 
 
 %-------------------------------------------------------------------------------------------
 %	Including a graphic
 %-------------------------------------------------------------------------------------------
-\subsection{Including a Graphic}
+\section{Computational constraints}
 
 Including a graphics is not that hard. Important is to wrap it as a figure, so that it will be included into the \NOTE{ list of figures}. You can also \NOTE{label} it, which allows to refer directly to this figure without the need of keeping track of it's id or name. Another handy parameter is the \NOTE{width} parameter, which allows to set the dimensions according to the current text width.
 
@@ -105,7 +99,7 @@ Including a graphics is not that hard. Important is to wrap it as a figure, so t
 %	Including a Table
 %-------------------------------------------------------------------------------------------
 \newpage
-\subsection{Including a Table}
+\section{Technologies used (GPU training, TACC)}
 
 When declaring a table, you have multiple options to project complex structures. The following example uses \NOTE{multirows and multicolums} to create a multi-faceted overview of complex data. If you want the table to be listed in the \NOTE{list of tables}, you need to wrap the tabular within a table declaration.
 

@@ -22,7 +22,7 @@ Vision Transformer models with regards to image processing.
 ##### 1.6 Computational constraints
 ##### 1.7 Technologies used (GPU training, TACC)
 
-#### 2. Literature Review: Vision Transformers and Neural Image Compression 
+#### 2. Literature Review: Vision Transformers and Neural Image Compression (related work)
 ##### 2.1. Image is worth 16x16
 ##### 2.2. Transformer-based Image Compression (Ming Lu)
 ##### 2.3. Towards End-to-End Image Compression and Analysis with Transformers (Yuanchao Bai)
@@ -38,13 +38,16 @@ Vision Transformer models with regards to image processing.
 ##### 3.5. Difference vs original, SSIM, MSE, PSNR, BRISQUE (and definitions of each)
 ##### 3.6. Optimization Techniques (reducing learning_rate as the model trains)
 
-#### 4. Future of Vision Transformers, Compression, and Generation
-##### 4.1. Deep learning based Image compression 
-##### 4.2. Training (like GPT-3 trained on all internet text, Vision T trained on all google images)
-##### 4.3. Cost ($100M+), GPT-3 cost $10M-$20M
+#### 4. Discussion
+##### 4.1. Future of Vision Transformers, Compression, and Generation
+##### 4.2. Deep learning based Image compression 
+##### 4.3. Training (like GPT-3 trained on all internet text, Vision T trained on all google images)
+##### 4.4. Cost ($100M+), GPT-3 cost $10M-$20M
 
-#### 5. Closing remarks
+#### 5. Summary
 ##### 5.1. Key contributions (experimentation with Vision Transformers, nascent field)
-##### 5.2. Acknowledgments (LIVE lab, TACC)
+##### 5.2. Takeaways
+##### 5.3. Acknowledgments (LIVE lab, TACC)
+##### 5.4. Closing Remarks
 
-#### 6. Bibliography
+#### Bibliography

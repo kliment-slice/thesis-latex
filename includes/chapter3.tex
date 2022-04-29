@@ -1,9 +1,11 @@
-\section{Image is worth 16x16}
+\section{Generative image compression and generation overview (vineeth)}
 
 
 The package \NOTE{algorithm2e} allows you write nearly all imaginable code structures as pseudo code in LaTex. A referece of commands can be found here: \url{http://www.cs.toronto.edu/~frank/Useful/algorithm2e.pdf}. Do not forget to wrap the pseudo code into a figure, thus it will be included into list of figures.\\
 
 The following example demonstrates the package with a bubble sort algorithm. Note, that the directive \NOTE{repeat - until} is the same as the \NOTE{do-while} directive.
+
+\subsection{Architecture}
 
 \begin{figure}[H]
 \begin{algorithm}[H]
@@ -31,9 +33,10 @@ return A
 \caption[BubbleSort Algorithm Pseudocoe]{PseudoCode f the BubbleSort Algorithm, derived from \url{https://de.wikipedia.org/wiki/Bubblesort}.}
 \end{figure}
 
+\subsection{Latent space vector representation after compression}
 
 \newpage
-\section{Transformer-based Image Compression (Ming Lu)}
+\section{Outputs from implementation, graphs, tables}
 
 Writing mathematical equations can be a very important part of your work. This applies especially, if you want to analyze and evaluate your gathered data. The following example shows a calculation of Kohen's Cappa, a measurement which represents the inter coder reliability in coding qualitative data.\\
 
@@ -88,7 +91,7 @@ The values for Pr(a) and Pr(e) are calculated and can be included into the kappa
 \end{center}
 
 
-\section{Towards End-to-End Image Compression and Analysis with Transformers (Yuanchao Bai)}
+\section{Visual Inspection (natural performance asymptote)}
 
 Sometimes you want to include text which include characters that could trigger commands. At this point it useful to wrap them into the \NOTE{verbatim} environment. The text is uninterpreted and listet as is.
 
@@ -115,4 +118,14 @@ You can also include existing code and highlight it's syntax, using the \NOTE{ls
 \end{lstlisting}
 \normalsize	
 
-\section{TransGANs}
+\section{GAN Quantitative (FID score, inception score)}
+
+Sometimes you want to include text which include characters that could trigger commands. At this point it useful to wrap them into the \NOTE{verbatim} environment. The text is uninterpreted and listet as is.
+
+\section{Difference vs original, SSIM, MSE, PSNR, BRISQUE (and definitions of each)}
+
+Sometimes you want to include text which include characters that could trigger commands. At this point it useful to wrap them into the \NOTE{verbatim} environment. The text is uninterpreted and listet as is.
+
+\section{Optimization Techniques (reducing learning\_rate as the model trains)}
+
+Sometimes you want to include text which include characters that could trigger commands. At this point it useful to wrap them into the \NOTE{verbatim} environment. The text is uninterpreted and listet as is.

@@ -109,11 +109,17 @@
 %
 %============================================================================%
 
-\chapter{General Tools and Techniques for Your Master Thesis}
+\chapter{Introduction to Vision Transformers}
 
 % before the chapter starts, we can write some overview 
 % this is good to summarize quickly what this chapter covers
-At this point it may be good for the reader to get an overview about this chapter. What does it cover? What is it's purpose in the bigger picture of your thesis? It is like a micro-abstract and it helps your audience to keep on track. This is especially useful, when your thesis is an interdisciplinary work.
+Introduced in 2017 by google. Mostly used for NLP (e.g. openAI\`s GPTs, which you've all 
+heard of or google\`s BERT, which as of recently processes and autofills every single 
+English-based google search query). They are often benchmarked against RNNs (specifically LSTMs), 
+when used in language models. LSTMs traditionally rely on hidden states to pass information along 
+sequentially during encoding and then decoding each word token. BUT RNNs typically fall short 
+learning long range dependencies.
+Transformers however use the attention mechanism to weigh the influence of different parts of the input.
 
 
 
@@ -128,12 +134,67 @@ At this point it may be good for the reader to get an overview about this chapte
 %
 %============================================================================%
 \cleardoublepage
-\chapter{Specific Tools for a Thesis in Computer Science}
+\chapter{Literature Review: Vision Transformers and Neural Image Compression (related work)}
 
-This chapter covers more specific examples, which are useful in the field of computer sciences.
+Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
+The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
+Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of
+To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
+The total number of parameters is on the order of 100M.
 
 \newpage
 \input{./includes/chapter2.tex}
+
+%============================================================================%
+%
+%	CHAPTER 3
+%
+%============================================================================%
+\cleardoublepage
+\chapter{Image Compression with Transformers}
+
+Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
+The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
+Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of. 
+To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
+The total number of parameters is on the order of 100M.
+
+\newpage
+\input{./includes/chapter3.tex}
+
+%============================================================================%
+%
+%	CHAPTER 4
+%
+%============================================================================%
+\cleardoublepage
+\chapter{Discussion}
+
+Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
+The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
+Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of. 
+To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
+The total number of parameters is on the order of 100M.
+
+\newpage
+\input{./includes/chapter4.tex}
+
+%============================================================================%
+%
+%	CHAPTER 5
+%
+%============================================================================%
+\cleardoublepage
+\chapter{Summary}
+
+Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
+The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
+Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of. 
+To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
+The total number of parameters is on the order of 100M.
+
+\newpage
+\input{./includes/chapter5.tex}
 
 %============================================================================%
 %
