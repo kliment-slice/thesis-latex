@@ -21,17 +21,15 @@ The original contribution of this project lies in exploring a novel approach for
 ##### 1.5. Implementations (pre-trained models, ViT)
 ##### 1.6 Computational constraints (training)
 
-#### 2. Literature Review: Vision Transformers, Neural Image Compression, JPEG(related work)
+#### 2. Literature Review: Transformers and Neural Image Compression, JPEG(related work)
 ##### 2.1. Image is worth 16x16 and the ViT
-##### 2.2. Transformer-based Image Compression (Ming Lu) and Towards End-to-End Image Compression and Analysis with Transformers (Yuanchao Bai)(hasn't been achieved yet)
-##### 2.4. TransGANs (low quality, CIFAR-10 32x32)
-##### 2.5. Principles of JPEG compression (de facto benchmark)
-###### 2.5.1 Deterministic
-##### 2.6. Neural compression (novelty and coveted future)
-###### 2.6.1 Probabilistic
-##### 2.7. Metrics: SSIM, MSE, PSNR, BRISQUE
+##### 2.2. Towards End-to-End Image Compression and Analysis with Transformers (Yuanchao Bai)
+##### 2.3. TransGANs (low quality, CIFAR-10 32x32)
+##### 2.5. First Principles of compression
+###### 2.5.1 Deterministic, Probabilistic
+##### 2.6. Metrics: SSIM, MSE, PSNR, BRISQUE
 
-#### 3. Neural Image Compression and Generation (Theory and Practice)
+#### 3. ViT-based Assessment of Neural Image Compression (Theory and Practice)
 ##### 3.1. Generative image compression overview (vineeth)
 ###### 3.1.1 Architecture
 ###### 3.1.2 Latent space vector representation after compression

@@ -70,13 +70,15 @@
     (typically used in language models) to object detection in digital images. 
     Since the ViT architecture is designed to output classification probability distribution, 
     it can be a suitable candidate for quality assessment of generated images based on 
-    object-level deviations from the original pre-compression image, rather than measuring 
-    per-pixel discrepancies or structural aberrations. Neural image compression and generation is achieved 
+    object-level deviations from the original pre-compression image, complementing the measurement 
+    of per-pixel discrepancies or structural comparisons. Neural image compression and generation is achieved 
     using a Generative Adversarial Network (GAN). This study demonstrates the coveted end-to-end 
     deep learning pipeline for image compression, latent vector representation, regeneration, 
     and quality analysis using state-of-the-art model architectures. Results from this work show 
-    that a Vision Transformer is capable of evaluating the quality of a compressed image and compares 
+    that a Vision Transformer is capable of assessing the quality of a compressed image and compares 
     to established perceived quality metrics such as Structural Similarity (SSIM) and Mean Squared Error (MSE). 
+    
+    \ThinHRule
 \end{abstract}
 
 \pagestyle{fancy}
@@ -90,6 +92,7 @@
 %==
 
 \chapter{Introduction to Vision Transformers}
+
 
 % Chapter overview 
 This chapter will present an introduction to Vision Transformers (ViT).
@@ -105,10 +108,12 @@ The chapter will then review a brief history or Transformer usage in deep learni
 These generalized architectures are dominating state-of-the-art language models,
 as they are extremely efficient in packing information within a one dimensional vector.
 
-This introduction will further describe the principles of operation of a ViT. Then, proceed with
+This introduction will then proceed to describe the principles of operation of a ViT. Then, proceed with
 a mathematical formulation. Finally, it will cover currently available implementations
 in the form of pre-trained models and conclude with an explanation on the computational and
-financial constraints of training such architectures.
+financial constraints of training such demanding architectures.
+
+\ThinHRule
 
 \newpage
 \input{./includes/chapter1.tex}
@@ -118,13 +123,27 @@ financial constraints of training such architectures.
 %	CHAPTER 2
 %==
 \cleardoublepage
-\chapter{Literature Review: ViT and Neural Image Compression}
+\chapter{Literature Review: Transformers and Neural Image Compression}
 
-Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
-The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
-Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of
-To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
-The total number of parameters is on the order of 100M.
+
+This chapter serves to present the audience with a literature review of seminal academic
+publications relating Transformers to image compression and generation.
+
+Among many, the reader would find interest in the takeaways offered from:
+
+\begin{itemize}
+	\item "An Image is Worth 16x16 Words" \citep{dosovitskiy2020vit}
+	\item "Towards End-to-End Image Compression and Analysis with Transformers" 
+    
+    \citep{Bai2022AAAI}
+	\item "TransGAN: Two Pure Transformers Can Make One Strong GAN" \citep{jiang2021transgan}
+	\item "First Principles of Deep Learning and Compression" \citep{Principles}
+	\item Review of commonly used Image Quality Assessment (IQA) metrics \citep{BRISQUE}
+    
+    \citep{Metrics}
+\end{itemize}
+
+\ThinHRule
 
 \newpage
 \input{./includes/chapter2.tex}
@@ -132,14 +151,16 @@ The total number of parameters is on the order of 100M.
 %==
 %	CHAPTER 3
 %==
-\cleardoublepage
-\chapter{ViT Assessment of Neural Image Compression (Theory and Practice)}
+% \cleardoublepage
+\chapter{ViT-based Assessment of Neural Image Compression (Theory and Practice)}
 
 Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
 The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
 Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of. 
 To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
 The total number of parameters is on the order of 100M.
+
+\ThinHRule
 
 \newpage
 \input{./includes/chapter3.tex}
@@ -147,14 +168,12 @@ The total number of parameters is on the order of 100M.
 %==
 %	CHAPTER 4
 %==
-\cleardoublepage
+% \cleardoublepage
 \chapter{Discussion}
 
-Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
-The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
-Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of. 
-To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
-The total number of parameters is on the order of 100M.
+Increase in recent publications (13 in 2022 alone) supports the vision of tying vision transformers to image compression.
+
+\ThinHRule
 
 \newpage
 \input{./includes/chapter4.tex}
@@ -170,6 +189,8 @@ The Vision Transformer or ViT, was very recently published for ICLR 2021 by a go
 Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of. 
 To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
 The total number of parameters is on the order of 100M.
+
+\ThinHRule
 
 \newpage
 \input{./includes/chapter5.tex}
