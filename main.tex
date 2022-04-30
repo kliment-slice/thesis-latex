@@ -1,22 +1,9 @@
-%============================================================================%
-%
-%
+%==
 %	DOCUMENT DEFINITION
-%
-%
-%============================================================================%
+%==
 
-% we use report class for thesis design
-% 11pt font is way bettern to read than 12pt
-% we want to make a title page
-% two side allows us to make the page layout align by even and odd
-% openright tells the compiler that the first page is a right page
 \documentclass[pdftex,11pt,titlepage,twoside,openright]{report}	
 
-
-%----------------------------------------------------------------------------------------
-%	ENCODING
-%----------------------------------------------------------------------------------------
 
 % for suporting multi platform
 \usepackage[utf8x]{inputenc} 	
@@ -25,17 +12,16 @@
 \usepackage[square,authoryear]{natbib}
 
 
-%----------------------------------------------------------------------------------------
-%	ALL DECLARATIONS
-%----------------------------------------------------------------------------------------
+%--
+%	DECLARATIONS
+%--
 
-% here are all our declarations 
 \input{./includes/declarations.tex}
 
 
-%----------------------------------------------------------------------------------------
-%	MAKE INDEX AND GLOSSARY
-%----------------------------------------------------------------------------------------
+%--
+%	INDEX AND GLOSSARY
+%--
 
 
 \usepackage[style=long,nonumberlist,toc,xindy,acronym,nomain]{glossaries} % nomain, if you define glossaries in a file, and you use \include{INP-00-glossary}
@@ -48,16 +34,14 @@
 
 
 
-%============================================================================%
-%
+%==
 %	BEGIN DOCUMENT
-%
-%============================================================================%
+%==
 
 
 \begin{document}
 
-% before the chapters start, we use roman numbering on the pages
+% roman numbering 
 \setcounter{page}{1}
 \pagenumbering{roman}
 
@@ -67,8 +51,7 @@
 %pagestyle after title
 \pagestyle{fancy}
 
-% let's print the table of content, 
-% the list of figures and the list of tables
+% table of contents,list of figures and list of tables
 \setcounter{tocdepth}{1}
 % \tableofcontents
 % \listoffigures
@@ -78,24 +61,23 @@
 
 %\cleardoublepage
 
-% EXECUTIVE SUMMARY
-% here we describe roughly what this work is about
+% ABSTRACT EXECUTIVE SUMMARY
 
 \begin{abstract}
-
-    Vision Transformers (ViT) \citep{Bai2022AAAI} and TransGANs[2] are state-of-the-art implementations of the 
-    transformer attention mechanism used in generative image tasks. The transformer architecture 
-    has outperformed convolutional neural networks (CNNs) in image recognition and object detection 
-    due to its ability to generalize well. The attention mechanism is capable of focusing on objects 
-    anywhere on the image within a single network layer (versus the variable size convolution kernels 
-    across layers). The standard two CNNs combined in a generative adversarial network (GAN), can be 
-    replaced with vision transformers to create a TransGAN[2]. Such a model is shown to generalize well 
-    and may be capable of handling image and video compression tasks. This thesis project investigates 
-    the capacity to which a transformer and potentially a TransGAN is capable of achieving high fidelity 
-    video compression in order to mimic the performance of common video codecs. 
+    This work investigates a novel application of a Vision Transformer to quality 
+    analysis of generated images from neural image compression. The Vision Transformer (ViT) 
+    is a revolutionary implementation of the Transformer attention mechanism 
+    (typically used in language models) to object detection in digital images. 
+    Since the ViT architecture is designed to output classification probability distribution, 
+    it can be a suitable candidate for quality assessment of generated images based on 
+    object-level deviations from the original pre-compression image, rather than measuring 
+    per-pixel discrepancies or structural aberrations. Neural image compression and generation is achieved 
+    using a Generative Adversarial Network (GAN). This study demonstrates the coveted end-to-end 
+    deep learning pipeline for image compression, latent vector representation, regeneration, 
+    and quality analysis using state-of-the-art model architectures. Results from this work show 
+    that a Vision Transformer is capable of evaluating the quality of a compressed image and compares 
+    to established perceived quality metrics such as Structural Similarity (SSIM) and Mean Squared Error (MSE). 
 \end{abstract}
-
-% Back to arabic numbering
 
 \pagestyle{fancy}
 
@@ -103,38 +85,40 @@
 \pagenumbering{arabic}
 
 
-%============================================================================%
-%
+%==
 %	CHAPTER 1
-%
-%============================================================================%
+%==
 
 \chapter{Introduction to Vision Transformers}
 
-% before the chapter starts, we can write some overview 
-% this is good to summarize quickly what this chapter covers
-Introduced in 2017 by google. Mostly used for NLP (e.g. openAI\`s GPTs, which you've all 
-heard of or google\`s BERT, which as of recently processes and autofills every single 
-English-based google search query). They are often benchmarked against RNNs (specifically LSTMs), 
-when used in language models. LSTMs traditionally rely on hidden states to pass information along 
-sequentially during encoding and then decoding each word token. BUT RNNs typically fall short 
-learning long range dependencies.
-Transformers however use the attention mechanism to weigh the influence of different parts of the input.
+% Chapter overview 
+This chapter will present an introduction to Vision Transformers (ViT).
 
+It will cover the motivation as to why ViT, or a future development inspired by it,
+will have a profound impact on image compression, analysis, and generation overall.
+Evidence will be shown that Vision Transformers, or perhaps an evolved deep learning model with a
+similar architecture, i.e. generalizable and highly overparameterized, can be superior in
+compressing and evaluating the latent feature space of a digital image compared to known
+technologies.
 
+The chapter will then review a brief history or Transformer usage in deep learning.
+These generalized architectures are dominating state-of-the-art language models,
+as they are extremely efficient in packing information within a one dimensional vector.
+
+This introduction will further describe the principles of operation of a ViT. Then, proceed with
+a mathematical formulation. Finally, it will cover currently available implementations
+in the form of pre-trained models and conclude with an explanation on the computational and
+financial constraints of training such architectures.
 
 \newpage
 \input{./includes/chapter1.tex}
 
 
-
-%============================================================================%
-%
+%==
 %	CHAPTER 2
-%
-%============================================================================%
+%==
 \cleardoublepage
-\chapter{Literature Review: Vision Transformers and Neural Image Compression (related work)}
+\chapter{Literature Review: ViT and Neural Image Compression}
 
 Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
 The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
@@ -145,13 +129,11 @@ The total number of parameters is on the order of 100M.
 \newpage
 \input{./includes/chapter2.tex}
 
-%============================================================================%
-%
+%==
 %	CHAPTER 3
-%
-%============================================================================%
+%==
 \cleardoublepage
-\chapter{Image Compression with Transformers}
+\chapter{ViT Assessment of Neural Image Compression (Theory and Practice)}
 
 Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
 The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
@@ -162,11 +144,9 @@ The total number of parameters is on the order of 100M.
 \newpage
 \input{./includes/chapter3.tex}
 
-%============================================================================%
-%
+%==
 %	CHAPTER 4
-%
-%============================================================================%
+%==
 \cleardoublepage
 \chapter{Discussion}
 
@@ -179,11 +159,9 @@ The total number of parameters is on the order of 100M.
 \newpage
 \input{./includes/chapter4.tex}
 
-%============================================================================%
-%
+%==
 %	CHAPTER 5
-%
-%============================================================================%
+%==
 \cleardoublepage
 \chapter{Summary}
 
@@ -196,11 +174,9 @@ The total number of parameters is on the order of 100M.
 \newpage
 \input{./includes/chapter5.tex}
 
-%============================================================================%
-%
+%==
 %	BIBLIOGRAPHY
-%
-%============================================================================%
+%==
 
 \cleardoublepage
 \phantomsection %hyperref package support
@@ -215,5 +191,10 @@ The total number of parameters is on the order of 100M.
 % \bibliography{bib/algorithm.bib,bib/resDes.bib} % for a better structure you can split your bib items into seperate files
 \bibliography{bib/resDes.bib}
 
+\cleardoublepage
+\phantomsection %hyperref package support
+\addcontentsline{toc}{chapter}{Appendix} % add entry to table of contents
+\pagestyle{plain}
+\input{./includes/appendix.tex}
 
 \end{document}
