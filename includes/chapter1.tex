@@ -18,8 +18,9 @@ The Vision Transformer (ViT) TODO
 	\begin{center}
 	\includegraphics[width=1\textwidth]{media/papersWcode_tfUsage.png}
 	\end{center}
-	\caption[Usage of ViT in Image Tasks]{As of 2022, the usage of a Vision Transformer (ViT) in image 
-	tasks matches the usage of ResNets and has outnumbered any other popular CNN architecture.}
+	\caption[Historical Usage of ViT in Image Tasks]{As of 2022, the usage of a Vision Transformer (ViT) in image 
+	tasks matches the usage of ResNets and has outnumbered any other popular CNN architecture.
+	\citep{PapersOverTime}}
 	\end{figure}
 
 
@@ -115,8 +116,13 @@ Hugging Face in PyTorch.
 For the purpose of this thesis, we will use a PyTorch implementation trained on ImageNet-21k
 and fine tuned on ImageNet-1k.
 
+\subsection{Closed Source}
+
+OpenAI (DALL*E)
 
 \section{Computational Constraints}
+
+Time, memory, cost
 
 A 512-core TPU v3 pod costs \$384/hr to use commercially on GCP. 
 2.5k core-days means training the ViT cost 24hrs * \$384 * 5 of them = \$46k. 

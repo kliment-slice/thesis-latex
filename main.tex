@@ -64,19 +64,20 @@
 % ABSTRACT EXECUTIVE SUMMARY
 
 \begin{abstract}
-    This work investigates a novel application of a Vision Transformer to quality 
-    analysis of generated images from neural image compression. The Vision Transformer (ViT) 
+    This work investigates a novel application of a Vision Transformer (ViT) to quality 
+    analysis of generated images from neural image compression. The Vision Transformer 
     is a revolutionary implementation of the Transformer attention mechanism 
     (typically used in language models) to object detection in digital images. 
-    Since the ViT architecture is designed to output classification probability distribution, 
-    it can be a suitable candidate for quality assessment of generated images based on 
+    The ViT architecture is designed to output a classification probability distribution. 
+    Thus, it can be a suitable candidate for quality assessment of generated images based on 
     object-level deviations from the original pre-compression image, complementing the measurement 
-    of per-pixel discrepancies or structural comparisons. Neural image compression and generation is achieved 
-    using a Generative Adversarial Network (GAN). This study proposes an original end-to-end 
+    of per-pixel discrepancies or structural comparisons. This study proposes an original end-to-end 
     deep learning framework for image compression, latent vector representation, regeneration, 
-    and quality analysis using state-of-the-art model architectures. Results from this work demonstrate 
-    that a Vision Transformer is capable of assessing the quality of a compressed image and compares 
-    to established perceived quality metrics such as Structural Similarity (SSIM) and Mean Squared Error (MSE). 
+    and quality analysis using state-of-the-art model architectures. Neural image compression and generation 
+    is achieved using a Generative Adversarial Network (GAN). Results from this work demonstrate 
+    that a Vision Transformer is capable of assessing the quality of a neurally compressed image. 
+    Moreover, this methodology compares in providing valuable insight alongside established 
+    perceived quality metrics for generated images such as Structural Similarity (SSIM) or Inception Score (IS). 
     
     \ThinHRule
 \end{abstract}
@@ -91,20 +92,20 @@
 %	CHAPTER 1
 %==
 
-\chapter{Introduction to Vision Transformers}
+\chapter{Introduction to Vision Transformers (ViT)}
 
 
 % Chapter overview 
-This chapter will present an introduction to Vision Transformers (ViT).
+This chapter presents the reader with an introduction to Vision Transformers (ViT).
 
-It will cover the motivation as to why ViT, or a future development inspired by it,
+It covers the motivation as to why ViT, or a future development inspired by it,
 will have a profound impact on image compression, analysis, and generation overall.
-Evidence will be shown that Vision Transformers, or perhaps an evolved deep learning model with a
+This chapter presents evidence that a Transformer, or perhaps an evolved deep learning model with a
 similar architecture, i.e. generalizable and highly overparameterized, can be superior in
-compressing and evaluating the latent feature space of a digital image compared to known
+compressing and evaluating the latent feature space of a digital image compared to present-day
 technologies.
 
-The chapter will then review a brief history or Transformer usage in deep learning.
+This section then reviews a brief history or Transformer usage in deep learning.
 These generalized architectures are dominating state-of-the-art language models,
 as they are extremely efficient in packing information within a one dimensional vector.
 

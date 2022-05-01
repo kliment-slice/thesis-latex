@@ -58,4 +58,4 @@ The original contribution of this project lies in exploring a novel approach for
 ##### A. Technologies used:
 ###### A.1 GPU, Local machine
 ###### A.2 TACC, Stampede2, job submission process
-###### A.3 PyTorch implementations
+###### A.3 PyTorch/TF implementations
