@@ -38,15 +38,13 @@ The original contribution of this project lies in exploring a novel approach for
 ##### 3.4. GAN Quantitative (FID score, inception score)
 ##### 3.5. Difference vs original, SSIM, MSE, PSNR, BRISQUE (and definitions of each)
 ##### 3.6. Optimization Techniques (reducing learning_rate as the model trains)
-##### 3.7. ViT before, ViT after (Transformer Score)
 
 #### 4. Discussion
-##### 4.1. Results
-##### 4.2. Approaches to improve
-##### 4.3. Future of Vision Transformers, Compression, and Generation
-##### 4.4. Coveted Deep learning based Image compression 
-##### 4.5. Training (like GPT-3 trained on all internet text, Vision T trained on all google images)
-##### 4.6. Cost ($100M+), GPT-3 cost $10M-$20M
+##### 4.1. Results and Shortcomings
+###### 4.1.1 Results
+###### 4.1.1 Potential Improvements to Approach
+##### 4.2. Status Quo and Future  
+##### 4.3. Training and Cost Estimates
 
 #### 5. Summary
 ##### 5.1. Key contributions (experimentation with Vision Transformers, nascent field)

@@ -2,16 +2,32 @@
 
 \subsection{Transformers for Image Recognition at Scale}
 
-Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
-The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
-Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of $(250^2)^2$. 
-To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
-The total number of parameters is on the order of 100M.
+Now that we explained relevant transformer components, we can see how it applies 
+to 2D signals, i.e. image matrices for classification purposes in image recognition.
+The Vision Transformer or ViT, was very recently published for ICLR 2021 by a 
+google team for a ImageNet trained transformer.
 
-"image is worth 16x16 words" completely discards the notion of convolutions. Compared to a convolutional counterpart (the ResNet), the ViT cost 75% less to train and beats accuracy on ImageNet by 1%. ViT uses approximately 2 − 4× less compute to attain the same performance (averaged over 5 datasets). Unlike variable size convolution kernels accross layers, the block size in the image transformer is able to pay attention within a single layer to anywhere on the image. 
-CNNs have good inductive priors and can learn any function. However, this promotes locality (i.e. nearing pixels are probably most important).
-One way to think of a ViT is a generalization of an MLP which itself is a generalization of a CNN. The ViT also learns very similarly to a CNN (e.g. filters with principal components).
-Transformer, in a way, is a generalization of a feed forward network, but instead of fixed connections weights in an MLP, each connection weight (i.e. attention) is computed on the fly. That makes the Transformer, unlike the MLP, permutation invariant. In that it wouldn't know where information is coming from unless there are additional learnable sequential positional embeddings, i.e. number down the image patches.
+The attention mechanism is capable of focusing on objects anywhere on the image 
+within a single network layer versus the variable size convolution kernels 
+across the different layers.
+
+"image is worth 16x16 words" completely discards the notion of convolutions. 
+Compared to a convolutional counterpart (the ResNet), the ViT cost 75\% 
+less to train and beats accuracy on ImageNet by 1\%. 
+ViT uses approximately 2-4x less compute to attain the same performance 
+(averaged over 5 datasets). Unlike variable size convolution kernels accross 
+layers, the block size in the image transformer is able to pay attention within 
+a single layer to anywhere on the image. 
+CNNs have good inductive priors and can learn any function. 
+However, this promotes locality (i.e. nearing pixels are probably most important).
+One way to think of a ViT is a generalization of an MLP which itself is a 
+generalization of a CNN. The ViT also learns very similarly to a CNN 
+(e.g. filters with principal components).
+Transformer, in a way, is a generalization of a feed forward network, but 
+instead of fixed connections weights in an MLP, each connection weight (i.e. attention) 
+is computed on the fly. That makes the Transformer, unlike the MLP, permutation invariant. 
+In that it wouldn't know where information is coming from unless there are additional 
+learnable sequential positional embeddings, i.e. number down the image patches.
 
 % \begin{figure}[H]
 % \begin{algorithm}[H]
@@ -65,14 +81,30 @@ Transformer, in a way, is a generalization of a feed forward network, but instea
 $Pr(e) = \displaystyle\sum_{i=1}^{m} c(r)_i \times c(a)_i $
 \end{center}
 
+\section{Image Generation}
+
+Generative models.
+GANs used to be the coolest thing until Transformers came along, but nonetheless 
+still great. Typically, GANs pit 2 CNNs against each other, one called Generator to 
+generate an image and one called Discriminator to determine how fake the image is 
+compared to the input, relaying feedback to improve the Generator after each epoch. 
+A GAN pits two Neural Networks (e.g. Convolutional) one against the other to generate 
+new content (e.g. an image). The structure of a GAN is foundational to its design. 
+As Fig.1 shows, the Generator CNN is shown on the left of the generated output. 
+The Generator iteratively learns to create new synthetic data resembling real source data 
+(e.g. regular or 360° images).  On the right of the generated output is the Discriminator CNN.
+The Discriminator is trained to differentiate between real and synthetic data. 
+In essence, the Discriminator gives the Generator feedback on its performance while 
+simultaneously achieving incremental improvement in discernibility. 
+Thus, each epoch the Generator produces more and more realistic data and the Discriminator iteratively improves its own ability to differentiate between real and synthetic data.
+
 
 \section{"TransGAN"}
 \subsection{"Two Pure Transformers Can Make One Strong GAN"}
+NeurIPS 2021
 
-Sometimes you want to include text which include characters that could trigger commands. At this point it useful to wrap them into the \NOTE{verbatim} environment. The text is uninterpreted and listet as is.
-
-You can also include existing code and highlight it's syntax, using the \NOTE{lstlisting} package. Look at the declarations.tex file for listings settings. The following example highlights xml syntax by given keywords.
-
+Goal is to replace Generator and Discriminator in a GAN with Transformers free of 
+convolutions. 
 
 \section{"First Principles of Deep Learning and Compression"}
 
@@ -81,5 +113,6 @@ GANs
 JPEG/MPEG
 
 \section{Commonly Used Metrics for Image Quality}
-
-SSIM, MSE, PSNR, BRISQUE
+Metrics for the generated output image are: a BRISQUE score (reference-less) [5], 
+Mean Squared Error (MSE) and Structural Similarity Index (SSIM). PSNR.
+GANs use FID and Inception score. 

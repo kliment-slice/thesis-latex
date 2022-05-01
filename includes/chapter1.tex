@@ -1,76 +1,130 @@
-%-------------------------------------------------------------------------------------------
-%	Introduction to Writing
-%-------------------------------------------------------------------------------------------
+%--
+%	CHAPTER 1
+%--
+
 \section{Motivation}
 
-% The text appearance and the thesis layout is sometimes determined by formal requirements. This text, for example is \NOTE{Times} using 11pt size and a slight increase in space between the text lines. There are also requirements for indenting a new paragraph sometimes.\\
-% As you can see, this template does not indent the new paragraph. However, you can always change this setting in the \NOTE{declarations.tex} file.\\
-% \ThinHRule
+Transformers are presently considered to hold a great promise for the future of deep learning
+as a step towards Artificial General Intelligence.
+Due to their architecture, they are more generalizable, less prone to overfitting, and able 
+to learn highly complex representations. The Transformer architecture has already been proven 
+to make obsolete Recurrent Neural Networks (RNNs) in natural language models and outperform
+Convolutional Neural Networks (CNNs) in image classification tasks.
 
-% Some faculties require to include all references to external sources in \NOTE{footnotes}.\footnote{ This is a footnote. You can also include citations and many text formatting LaTex commands.}\footnote{ You may also explain background information on a topic, which may be interesting for further reading.}\footnote{ Footnotes also often include weblinks, for example \url{http://www.jankuester.com}}\\
-% \ThinHRule
-
-% You can enumerate or list some points and sketches of a topic using \NOTE{list or enumerattions}:
-
-% \begin{enumerate}
-% 	\item Start
-% 	\item Work
-% 	\item Finish
-% \end{enumerate}
+The Vision Transformer (ViT) TODO
 
 
-%-------------------------------------------------------------------------------------------
-%	Structure of the thesis
-%-------------------------------------------------------------------------------------------
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{media/papersWcode_tfUsage.png}
+	\end{center}
+	\caption[Usage of ViT in Image Tasks]{As of 2022, the usage of a Vision Transformer (ViT) in image 
+	tasks matches the usage of ResNets and has outnumbered any other popular CNN architecture.}
+	\end{figure}
+
+
 \section{Brief History}
 
-\subsection{Language Models: BERT}
-Since the current template is structured into chapters, sections and subsections. This is mainly because a master thesis may easily grow up to 100 pages and in some cases even bigger. Structuring your big parts into \NOTE{chapters} makes it perfect for separating in logical units, such as:
+\subsection{Language Models: BERT, GPT-3}
 
-\begin{itemize}
-	\item Introduction
-	\item Related Work
-	\item Research Design
-	\item Proceedings and Data Collection
-	\item Data Analysis and Evaluation
-	\item Discussion and Conclusion
-\end{itemize}
-\ThinHRule
+Introduced in 2017 by google. Mostly used for NLP (e.g. openAI GPTs, 
+which all heard of or google BERT, which as of recently processes 
+and autofills every single English-based google search query). 
+They are often benchmarked against RNNs (specifically LSTMs), when used in 
+language models. LSTMs traditionally rely on hidden states to pass information 
+along sequentially during encoding and then decoding each word token. BUT RNNs 
+typically fall short learning long range dependencies.
+Transformers however use the attention mechanism to weigh the influence of 
+different parts of the input.
 
-The next smaller units are \NOTE{sections} which structure a chapter into it's subtopics. Using \NOTE{subsections} allows to cover these topics step by step and keep the reader on track with a mental model of all the parts of the current topic.\\
-\ThinHRule
-
-Now there are also \NOTE{subsubsections} available in LaTex. It would become very confusing when even \NOTE{including subsubsections in the table of contents (toc)}. For this reason, the toc is set to remove these subsubsections. You may alter this by taking a look into the main.tex and the declaration.tex. 
-\ThinHRule
-
-\subsubsection{\textcolor{SECTION_COL}{This Subsubsection is not listed in the Table of Contents}}
-
-The advantage is, that your work becomes more structured along the complexity of your topic. It may occur, that topics can become very granular, which is why this is the perfect counterpart for this issue.
-
-\subsection{Language Models: GPT-3}
+\subsection{Vision Tasks}
+In the seminal ICLR 2021 publication "An Image is Worth 16x16 Words" by a Google team,
+a transformer architecture trained on ImageNet outperformed or compared to state-of-the art CNNs
+with greater efficiency on image classification tasks.
+Tokenization happens at pixel level, 
+so each pixel would have to attend to  each other pixel in the grid, which becomes 
+too heavy to compute, on the order of $(250^2)^2$. To resolve that, the image is 
+broken down into blocks of equal size, a 16x16 subset of the image called image patches. 
+Then, unroll each image patch into a sequence (256x1), and index it with a positional 
+embedding in a table. All of that is then fed into a standard Transformer, 
+like from Attention is all you need. Finally, a feed forward classifier (MLP) 
+makes the classification prediction, voila image recognition.
+The total number of parameters is on the order of 100M.
 
 
 \section{Principles of Operation}
 
-In the \NOTE{declaration.tex file}, there is a shorthand command called \NOTE{NOTE}.
-Diagrams
+Attention mechanism \citep{Attention}
+Attention is a mechanism where the decoder can go back and look at particular 
+parts of input (unlike RNNs). So, close attention is paid to certain steps of 
+the encoding process (like certain key words in sentence or objects in image blocks). 
+In effect, the Decoder outputs Keys at each step which index the hidden states 
+(and will explain more intuition about the Keys when upon formulating attention). 
+It uses a Softmax architecture to normalize and map the potential output classes 
+to a probability distribution. Positional encoding is achieved with trig functions, 
+e.g. a full sentence or perhaps an image dimension could be represented by the various
+periods of a sin wave, so the exact location of each token would be unique.
+
+Sets of parallel attention layers at each token are called multi-head attention 
+(to vary what to pay attention to: e.g. at verbs in the sentence or different objects 
+in an image). The multi-head attention is composed of Key-Value pairs coming from 
+the encoding part of the source sentence or image (i.e. the input embedding) and 
+Queries from the output embedding (i.e. encoding part of target sentence or image).
+Now that we explained relevant transformer components, we can see how it applies to 
+2D signals, i.e. image matrices for classification purposes in image recognition.
+
 
 \section{Mathematical Formulation}
 
+So in its full formulation, Attention is a function of queries, keys and values 
+vectors labeled capital $(Q,K,V)$. 
+It equals the dot product $(QK^T)$ of keys and queries respectively, softmaxed over 
+the square root of dimensions and multiplied by Values.
+So:
+Values - are what is most interesting in the source (sentence or image), 
+e.g. attributes or features (like keyword adjectives or perhaps structural 
+features in an image).
+Keys - index (or address) those values (name, type, weight). Each key has an 
+associated value. Queries - are built by the encoder of the target sentece or 
+image and prompt the network to find information. 
+The overall dynamic: a Query is pegged against a Key to locate a certain Value.	
+
+The dot product of Keys and Queries yields an angle between both vectors to measure 
+how similarly aligned they are. In high dimension, most vectors would be orthonormal 
+and $cos(90)=0$. But if Key and Query align, they'd have a large dot product. 
+Each key in space has an associated value (the pair). The Query vector is computed with 
+each key and softmaxed to select one Key with the highest dot product. With softmax, 
+a certain Key will stand out (in magnitude) vs the rest.
+The softmax is basically a normalized exponential function: sequence of Variables is 
+mapped into exponentials and divided by the sum of all the exponentials. Thus, the 
+large numbers become almost ones and small numbers near zeros, like the maximum 
+function, but this one is differentiable. 
+So a softmax of an inner product of each key with query vector normalizes to a 
+probability distribution over all Values (very similar to using a softmax in the last 
+layer of a NN over all the labels to yield the top classification pick). 
+
+
 \newpage
+
 \section{Implementations}
 \subsection{Pre-trained Models}
 
+On GitHub.
+Original one by Google in tensorflow.
+Hugging Face in PyTorch.
+For the purpose of this thesis, we will use a PyTorch implementation trained on ImageNet-21k
+and fine tuned on ImageNet-1k.
+
+
 \section{Computational Constraints}
 
-Including a graphics is not that hard. Important is to wrap it as a figure, so that it will be included into the \NOTE{ list of figures}. You can also \NOTE{label} it, which allows to refer directly to this figure without the need of keeping track of it's id or name. Another handy parameter is the \NOTE{width} parameter, which allows to set the dimensions according to the current text width.
+A 512-core TPU v3 pod costs \$384/hr to use commercially on GCP. 
+2.5k core-days means training the ViT cost 24hrs * \$384 * 5 of them = \$46k. 
+That's for one of many ViT flavors.
+To train a ViT on the whole TACC Frontera at 20k teraflops (top10) or 
+Stampede at 10k tflops (top25), it would take respectively about a minute and 2 minutes.
+tpu v3 is 420 teraflops * 2500 = 1M Tflops
 
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=0.8\textwidth]{media/amp.jpg}
-\end{center}
-\caption[TBC]{description of the figure. }
-\end{figure}
 
 
 

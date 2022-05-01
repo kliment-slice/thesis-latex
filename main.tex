@@ -72,9 +72,9 @@
     it can be a suitable candidate for quality assessment of generated images based on 
     object-level deviations from the original pre-compression image, complementing the measurement 
     of per-pixel discrepancies or structural comparisons. Neural image compression and generation is achieved 
-    using a Generative Adversarial Network (GAN). This study demonstrates the coveted end-to-end 
-    deep learning pipeline for image compression, latent vector representation, regeneration, 
-    and quality analysis using state-of-the-art model architectures. Results from this work show 
+    using a Generative Adversarial Network (GAN). This study proposes an original end-to-end 
+    deep learning framework for image compression, latent vector representation, regeneration, 
+    and quality analysis using state-of-the-art model architectures. Results from this work demonstrate 
     that a Vision Transformer is capable of assessing the quality of a compressed image and compares 
     to established perceived quality metrics such as Structural Similarity (SSIM) and Mean Squared Error (MSE). 
     
@@ -122,7 +122,7 @@ financial constraints of training such demanding architectures.
 %==
 %	CHAPTER 2
 %==
-\cleardoublepage
+% \cleardoublepage
 \chapter{Literature Review: Transformers and Neural Image Compression}
 
 
@@ -136,6 +136,7 @@ Among many, the reader would find interest in the takeaways offered from:
 	\item "Towards End-to-End Image Compression and Analysis with Transformers" 
     
     \citep{Bai2022AAAI}
+    \item Image Generation
 	\item "TransGAN: Two Pure Transformers Can Make One Strong GAN" \citep{jiang2021transgan}
 	\item "First Principles of Deep Learning and Compression" \citep{Principles}
 	\item Review of commonly used Image Quality Assessment (IQA) metrics \citep{BRISQUE}
@@ -149,15 +150,22 @@ Among many, the reader would find interest in the takeaways offered from:
 \input{./includes/chapter2.tex}
 
 %==
-%	CHAPTER 3
+%	CHAPTER 3: Core of Thesis
 %==
 % \cleardoublepage
-\chapter{ViT-based Assessment of Neural Image Compression (Theory and Practice)}
+\chapter{ViT-based Assessment of Neural Image Compression}
 
-Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
-The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
-Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of. 
-To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
+Now that we explained relevant transformer components, we can see how it applies to 
+2D signals, i.e. image matrices for classification purposes in image recognition.
+The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google 
+team for a ImageNet trained transformer.
+Tokenization happens at pixel level, so each pixel would have to attend to each other 
+pixel in the grid, which becomes too heavy to compute, on the order of. 
+To resolve that, the image is broken down into blocks of equal size, a 16x16 subset 
+of the image called image patches. Then, unroll each image patch into a sequence (256x1), 
+and index it with a positional embedding in a table. All of that is then fed into a 
+standard Transformer, like from Attention is all you need. Finally, a feed forward 
+classifier (MLP) makes the classification prediction, voila image recognition.
 The total number of parameters is on the order of 100M.
 
 \ThinHRule
@@ -171,7 +179,8 @@ The total number of parameters is on the order of 100M.
 % \cleardoublepage
 \chapter{Discussion}
 
-Increase in recent publications (13 in 2022 alone) supports the vision of tying vision transformers to image compression.
+Increase in relevant recent publications (13 alone in 2022 thus far) supports the vision of tying 
+vision transformers to image compression.
 
 \ThinHRule
 
@@ -181,14 +190,10 @@ Increase in recent publications (13 in 2022 alone) supports the vision of tying 
 %==
 %	CHAPTER 5
 %==
-\cleardoublepage
+% \cleardoublepage
 \chapter{Summary}
 
-Now that we explained relevant transformer components, we can see how it applies to 2D signals, i.e. image matrices for classification purposes in image recognition.
-The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google team for a ImageNet trained transformer.
-Tokenization happens at pixel level, so each pixel would have to attend to  each other pixel in the grid, which becomes too heavy to compute, on the order of. 
-To resolve that, the image is broken down into blocks of equal size, a 16x16 subset of the image called image patches. Then, unroll each image patch into a sequence (256x1), and index it with a positional embedding in a table. All of that is then fed into a standard Transformer, like from Attention is all you need. Finally, a feed forward classifier (MLP) makes the classification prediction, voila image recognition.
-The total number of parameters is on the order of 100M.
+This chapter covers the takeaways from this thesis.
 
 \ThinHRule
 
@@ -199,7 +204,7 @@ The total number of parameters is on the order of 100M.
 %	BIBLIOGRAPHY
 %==
 
-\cleardoublepage
+% \cleardoublepage
 \phantomsection %hyperref package support
 \addcontentsline{toc}{chapter}{Bibliography} % add entry to table of contents
 \pagestyle{plain}
@@ -212,10 +217,12 @@ The total number of parameters is on the order of 100M.
 % \bibliography{bib/algorithm.bib,bib/resDes.bib} % for a better structure you can split your bib items into seperate files
 \bibliography{bib/resDes.bib}
 
-\cleardoublepage
+% \cleardoublepage
+\newpage
 \phantomsection %hyperref package support
 \addcontentsline{toc}{chapter}{Appendix} % add entry to table of contents
 \pagestyle{plain}
+{\textbf{\LARGE{APPENDIX}}}\\	%headline
 \input{./includes/appendix.tex}
 
 \end{document}
