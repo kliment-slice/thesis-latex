@@ -10,32 +10,15 @@ SGD optimizer for GAN
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.3\textwidth]{media/bevo.png}
+	\includegraphics[width=0.7\textwidth]{media/input_images_labeled.png}
 	\end{center}
-	\caption[Input Image 1: Bevo]{"Bevo": The University of Texas mascot, a famous longhorn bull (512x512).}
+	\caption[Input Images]{Input Images used in this project (512x512):
+    \newline
+    \hspace{10pt} "Bevo": The University of Texas mascot, a famous longhorn bull.\newline
+    \hspace{10pt} "Kliment": A face portrait of the author. \newline
+    \hspace{10pt} "Logo": The Texas Longhorns logo.\newline
+    \hspace{10pt} "Tower": The University of Texas Tower, the Main Building on campus.}
 	\end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \includegraphics[width=0.3\textwidth]{media/kimbo.png}
-    \end{center}
-    \caption[Input Image 2: Kliment]{"Kliment": A face portrait of the author (512x512).}
-    \end{figure}
-
-\begin{figure}[H]
-    \begin{center}
-    \includegraphics[width=0.3\textwidth]{media/logo.png}
-    \end{center}
-    \caption[Input Image 3: UT Logo]{"Logo": The Texas Longhorns logo (512x512).}
-    \end{figure}
-
-\begin{figure}[H]
-        \begin{center}
-        \includegraphics[width=0.3\textwidth]{media/tower.png}
-        \end{center}
-        \caption[Input Image 4: UT Tower]{"Tower": The University of Texas Tower, the Main Building on campus (512x512).}
-        \end{figure}
-
 
         % \begin{figure}[H]
 % \begin{algorithm}[H]
@@ -100,7 +83,9 @@ After a certain iteration, as usual, the GAN was unable to further learn how to 
 represent, and regenerate some input images. Typically, once a GAN reaches this stage,
 it learns from random noise and generation performance decreases.
 
-\subsection{Results}
+\subsection{Generated Results}
+
+Figure 3.4 below shows the resulting images from the neural compression GAN.
 
 \begin{figure}[H]
 	\begin{center}
@@ -136,22 +121,28 @@ The following is a mathematical representation explained in further detail.
     $ViT_{score} = \displaystyle\dfrac{argmax_{A'\subset A,\lvert A' \rvert = k } \sum_{a \in A'} {a} }{k} $
 \end{center}
 
+
 where $\sum_{a \in A'} {a}  = \lbrace{m \in I_{input}}\rbrace \cap \lbrace{n \in I_{generated}}\rbrace$
 
-and $m$ are the $top-k$ labels in the input image $I_{input}$
-and $n$ are the $top-k$ labels in the generated image $I_{generated}$.
+
+and $m$ are the top-$K$ labels in the input image $I_{input}$
+
+and $n$ are the top-$K$ labels in the generated image $I_{generated}$.
+
+\vspace{12pt}
+
+This overly elaborate mathematical notation is an attempt at describing:
 
 
-This overly elaborate mathematical notation is an attempt at depicting:
+\NOTE{
+"From the full set of trained ViT labels, we find the top-$K$ number of intersecting labels between the original and generated images. Then, we divide that by $K$"
+}
 
-"Of the full set of trained ViT labels, we find the $top-K$ number of intersecting labels
-between the original and generated images. Then, we divide that by $K$"
 
-
-For example, of the $top-100$ labels found in the original image, 
-identify the set Of labels also found in the generated image. 
+For example, of the top-100 labels found in the original image, 
+identify the set of labels also found in the generated image. 
 Then, divide that number of intersecting
-labels by the total number of $top-100$ labels.
+labels by the total number of 100 labels.
 
 
 \subsection{ViT-Scores from Resulting Images}
@@ -236,7 +227,38 @@ Overall, the ViT-score does a good job of measuring image quality.
         version of the original image from a latent space vector representation.}
         \end{figure}
 
-SSIM, MSE, PSNR, BRISQUE calculated
+\subsection{"BRISQUE"}
+
+Blind/Referenceless Image Spatial Quality Evaluator (BRISQUE)
+where approaching 0 is a good score and approaching 100 is a bad score, the BRISQUE referenceless 
+image quality methodology
+
+This score could be interpreted as the image being more photorealistic than not. 
+In terms of quality, this compares to a camera captured image with quality corruption 
+caused by blurs or graininess. An image with no distortions often has a score below 5.
+
+\begin{table}[H]
+    \begin{center}
+    \begin{tabular}{|c|c|c|}
+    \hline
+      & Original & Generated \\ [0.5ex] 
+    \hline\hline
+    \textbf{Bevo}	& 32.9214 & 39.5535\\
+    \textbf{Kliment}	& -8.3593 & 44.3570\\
+    \textbf{Logo}	& 102.9010 & 97.1844\\
+    \textbf{Tower} & 14.5973 & 52.8363\\\hline
+    
+    \end{tabular}
+    \caption[BRISQUE]{BRISQUE Scores of original and generated images.}
+    \end{center}
+    \end{table}
+
+Expectedly, the BRISQUE values for the generated images are always higher than
+their original counterparts. "Logo" is not a photorealistic image to begin with, 
+so it is understandable that the BRISQUE value is high at $102.9$.
+None of the generated images would pass BRISQUE as photorealistic and free of 
+distortions.  
+
 Loss functions as well (MSE loss was used in GAN)
 
 
@@ -245,7 +267,7 @@ Loss functions as well (MSE loss was used in GAN)
 
 (FID score, inception score (IS) )
 Can be loss functions as well (MSE was used)
-FID is Frechet Inception Distance. 0 if there is no difference.
+FID is Frechet Inception Distance. 0 if there is no difference between the images.
 81105.162 for logo and logo\_GAN.
 331171.556 for tower and towerGAN
 549089.491 for kimbo and kimboGAN
@@ -260,14 +282,14 @@ FID is Frechet Inception Distance. 0 if there is no difference.
 
 \begin{table}[H]
     \begin{center}
-    \begin{tabular}{|c|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
     \hline
-    \textbf{Image}	& \textbf{ViT-Score} & \textbf{SSIM} & \textbf{MSE} & \textbf{PSNR} & \textbf{FID} \\
+    \textbf{Image}	& \textbf{ViT-Score} & \textbf{SSIM} & \textbf{MSE} & \textbf{PSNR} & \textbf{FID} & \textbf{BRISQUE} \\
     \hline
-    \textbf{Bevo}	 & 0.14 & 0.26 & 3,479.34 & 12.68 &  1,241,999.901\\
-    \textbf{Kliment} & 0.54 & 0.56 & 1,759.28 & 15.64  &  549,089.491\\
-    \textbf{Logo}	 & 0.29 & 0.91 & 393.69 & 22.15 &  81,105.162\\
-    \textbf{Tower}   & 0.03 & 0.53 & 1,315.75 & 16.90 &  331,171.556\\\hline
+    \textbf{Bevo}	 & 0.14 & 0.26 & 3,479.34  &  12.68  &  1,241,999.901  &  39.5535\\
+    \textbf{Kliment} & 0.54 & 0.56 & 1,759.28 & 15.64  &  549,089.491 & 44.3570\\
+    \textbf{Logo}	 & 0.29 & 0.91 & 393.69 & 22.15 &  81,105.162 & 97.1844\\
+    \textbf{Tower}   & 0.03 & 0.53 & 1,315.75 & 16.90 &  331,171.556 & 52.8363\\\hline
     
     \end{tabular}
     \caption[Summary of Results]{ViT-Scores demonstrate a somewhat expected quality assessment.}
