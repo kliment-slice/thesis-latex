@@ -7,7 +7,7 @@
 
 % for suporting multi platform
 \usepackage[utf8x]{inputenc} 	
-
+\usepackage{amsfonts}
 % natbib is what you want for bibliography
 \usepackage[square,authoryear]{natbib}
 
@@ -64,20 +64,25 @@
 % ABSTRACT EXECUTIVE SUMMARY
 
 \begin{abstract}
-    This work investigates a novel application of a Vision Transformer (ViT) to quality 
-    analysis of generated images from neural image compression. The Vision Transformer 
-    is a revolutionary implementation of the Transformer attention mechanism 
-    (typically used in language models) to object detection in digital images. 
-    The ViT architecture is designed to output a classification probability distribution. 
-    Thus, it can be a suitable candidate for quality assessment of generated images based on 
-    object-level deviations from the original pre-compression image, complementing the measurement 
-    of per-pixel discrepancies or structural comparisons. This study proposes an original end-to-end 
-    deep learning framework for image compression, latent vector representation, regeneration, 
-    and quality analysis using state-of-the-art model architectures. Neural image compression and generation 
-    is achieved using a Generative Adversarial Network (GAN). Results from this work demonstrate 
-    that a Vision Transformer is capable of assessing the quality of a neurally compressed image. 
-    Moreover, this methodology compares in providing valuable insight alongside established 
-    perceived quality metrics for generated images such as Structural Similarity (SSIM) or Inception Score (IS). 
+    This work investigates a novel application of a Vision Transformer (ViT) as a 
+    quality assessment reference metric for generated images after neural image compression. 
+    The Vision Transformer is a revolutionary implementation of the Transformer attention 
+    mechanism (typically used in language models) to object detection in digital images. 
+    The ViT architecture is designed to output a classification probability distribution against
+    a set of training labels. 
+    Thus, it can be a suitable candidate for a new method for quantitative assessment of generated 
+    images based on object-level deviations from the original pre-compression image. 
+    This approach complements other comparative measurement techniques based on per-pixel 
+    discrepancies (Mean Squared Error, MSE) or structural comparison (Structural Similarity Index, SSIM). 
+    This study proposes an original end-to-end deep learning framework for neural image compression, 
+    latent vector representation, regeneration, and image quality analysis using 
+    state-of-the-art model architectures. Neural image compression and generation 
+    is achieved using a Generative Adversarial Network (GAN). 
+    Results from this work demonstrate that a Vision Transformer is capable of assessing 
+    the quality of a neurally compressed image. 
+    Moreover, this methodology provides valuable insights when measuring image quality.
+    It can be used in addition to established perceived quality metrics for compressed and generated 
+    images such as SSIM and Frechet Inception Distance (FID). 
     
     \ThinHRule
 \end{abstract}
@@ -130,7 +135,11 @@ financial constraints of training such demanding architectures.
 This chapter serves to present the audience with a literature review of seminal academic
 publications relating Transformers to image compression and generation.
 
-Among many, the reader would find interest in the takeaways offered from:
+Other relevant background information is also provided to the audience
+to aid the reader's understanding of this thesis project.
+
+Among much of the domain knowledge available, the reader would find interest in the 
+takeaways offered from:
 
 \begin{itemize}
 	\item "An Image is Worth 16x16 Words" \citep{dosovitskiy2020vit}
@@ -140,7 +149,7 @@ Among many, the reader would find interest in the takeaways offered from:
     \item Image Generation
 	\item "TransGAN: Two Pure Transformers Can Make One Strong GAN" \citep{jiang2021transgan}
 	\item "First Principles of Deep Learning and Compression" \citep{Principles}
-	\item Review of commonly used Image Quality Assessment (IQA) metrics \citep{BRISQUE}
+	\item Review of commonly used Image Quality Assessment (IQA) metrics
     
     \citep{Metrics}
 \end{itemize}
@@ -194,7 +203,18 @@ vision transformers to image compression.
 % \cleardoublepage
 \chapter{Summary}
 
-This chapter covers the takeaways from this thesis.
+This chapter serves to conclude this thesis. 
+
+It provides a summary 
+of original contributions made by the author while studying and experimenting 
+with Vision Transformers (ViT) and Neural Image Compression, as well as the broader 
+scientific domains of Machine and Deep Learning and Digital Image Processing. 
+
+A summary of key takeaways is provided for the audience.
+
+The author concludes by acknowledging key contributors to the project and serves closing
+remarks.
+
 
 \ThinHRule
 

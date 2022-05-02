@@ -1,10 +1,43 @@
-\section{Generative Image Compression and Generation Overview}
+\section{Generative Image Compression and Generation}
 
 (vineeth)
 
 \subsection{Architecture}
 
-% \begin{figure}[H]
+SGD optimizer for GAN
+
+\subsection{Sample Images Used}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.3\textwidth]{media/bevo.png}
+	\end{center}
+	\caption[Input Image 1: Bevo]{The University of Texas mascot, a famous longhorn bull (512x512).}
+	\end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=0.3\textwidth]{media/kimbo.png}
+    \end{center}
+    \caption[Input Image 2: Kliment]{A face portrait of the author (512x512).}
+    \end{figure}
+
+\begin{figure}[H]
+    \begin{center}
+    \includegraphics[width=0.3\textwidth]{media/logo.png}
+    \end{center}
+    \caption[Input Image 3: UT Logo]{The Texas Longhorns logo (512x512).}
+    \end{figure}
+
+\begin{figure}[H]
+        \begin{center}
+        \includegraphics[width=0.3\textwidth]{media/tower.png}
+        \end{center}
+        \caption[Input Image 4: UT Tower]{The University of Texas Tower, the Main Building on campus (512x512).}
+        \end{figure}
+
+
+        % \begin{figure}[H]
 % \begin{algorithm}[H]
 % \KwData{A as Array to sort,}
 % \KwResult{A as sorted Array} 
@@ -30,15 +63,65 @@
 % \caption[TBC]{Figure caption caption}
 % \end{figure}
 
-\subsection{Latent space vector representation after compression}
+\subsection{Latent space vector representation during compression}
+
+$nx1$ vector, where $n$ corresponds to the height or width (in pixels)
+of a square input image. In the case of all input images used, the latent vector
+is of size $512x1$, since the input images are of size $512x512$.
+
+hard to decipher but here is a zoomed in visual of the first
+This is what the GAN architecture compresses the full image to (1.54kb vs original size 409kb).
+The GAN then rebuils to 242kb.
+
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.5\textwidth]{media/latent.png}
+	\end{center}
+	\caption[Latent Space Representation]{Visual representation of the first 10 pixels in the most compressed version of the original image.}
+	\end{figure}
 
 % \newpage
-\section{Outputs and Results}
+\section{Output and Visual Inspection}
+Images and comments
 
-Before and after, pandas table
-score out of 100
+(natural performance asymptote after certain iteration)
+
+\section{ViT Score}
+
+The ViT Score, as an original development from this thesis. 
+
+It is an attempt to measure the quality of a generated image after neural compression.
+
+The following is a mathematical representation explained in further detail.
+
+\begin{center}
+    $ViT_{score} = \displaystyle\dfrac{argmax_{A'\subset A,\lvert A' \rvert = k } \sum_{a \in A'} {a} }{k} $
+\end{center}
+
+where $\sum_{a \in A'} {a}  = \lbrace{m \in I_{input}}\rbrace \cap \lbrace{n \in I_{generated}}\rbrace$
+
+and $m$ are the $top-k$ labels in the input image $I_{input}$
+and $n$ are the $top-k$ labels in the generated image $I_{generated}$.
+
+
+This overly elaborate mathematical notation is an attempt at depicting:
+
+"Of the full set of trained ViT labels, we find the $top-K$ number of intersecting labels
+between the original and generated images. Then, we divide that by $K$"
+
+
+For example, of the $top-100$ labels found in the original image, 
+identify the set Of labels also found in the generated image. 
+Then, divide that number of intersecting
+labels by the total number of $top-100$ labels.
 
 graphs, tables
+ViT scores
+Logo: 0.29
+Bevo: 0.14
+Myself: 0.54
+Tower: 0.03
 
 % \begin{table}[H]
 % \begin{center}
@@ -63,22 +146,28 @@ $Pr(e) = \displaystyle\sum_{i=1}^{m} c(r)_i \times c(a)_i $
 \end{center}
 
 
-\section{Visual Inspection}
-
-(natural performance asymptote after certain iteration)
-
 \section{Established IQA Metrics}
 
 SSIM, MSE, PSNR, BRISQUE calculated
+Loss functions as well (MSE loss was used in GAN)
 
 
 \section{GAN-Related Quantitative Metrics}
 
 
-(FID score, inception score)
-pytorch-ignite
+(FID score, inception score (IS) )
+Can be loss functions as well (MSE was used)
+FID is Frechet Inception Distance. 0 if there is no difference.
+81105.162 for logo and logo\_GAN.
+331171.556 for tower and towerGAN
+549089.491 for kimbo and kimboGAN
+1241999.901 for bevo and bevoGAN
 
 \section{Optimization Techniques}
 
+Most valuable technique:
 (reducing learning\_rate as the model trains)
 changing input images to cater to what the generative model is trained on.
+SGD optimizer for GAN
+A lot of options still not figured out.
+regularization during training: residual dropout, label smoothing

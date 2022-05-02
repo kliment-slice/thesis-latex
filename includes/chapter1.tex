@@ -11,12 +11,15 @@ to learn highly complex representations. The Transformer architecture has alread
 to make obsolete Recurrent Neural Networks (RNNs) in natural language models and outperform
 Convolutional Neural Networks (CNNs) in image classification tasks.
 
-The Vision Transformer (ViT) TODO
+A Vision Transformer (ViT)-Assisted metric related to image compression can provide 
+additional insights to the latent space (contextual) preservation.
+Thus, this work can be viewed as a stepping stone towards an end-to-end Transformer-based
+image compression and regeneration.
 
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{media/papersWcode_tfUsage.png}
+	\includegraphics[width=1\textwidth]{media/papersWcode_tfUsage2.png}
 	\end{center}
 	\caption[Historical Usage of ViT in Image Tasks]{As of 2022, the usage of a Vision Transformer (ViT) in image 
 	tasks matches the usage of ResNets and has outnumbered any other popular CNN architecture.
@@ -88,28 +91,64 @@ features in an image).
 Keys - index (or address) those values (name, type, weight). Each key has an 
 associated value. Queries - are built by the encoder of the target sentece or 
 image and prompt the network to find information. 
+
+\begin{center}
+	$ Attention(Q, K, V) = softmax(\dfrac{QK^T}{\sqrt{d_k}} V ) $
+	\end{center}
+
 The overall dynamic: a Query is pegged against a Key to locate a certain Value.	
 
-The dot product of Keys and Queries yields an angle between both vectors to measure 
-how similarly aligned they are. In high dimension, most vectors would be orthonormal 
-and $cos(90)=0$. But if Key and Query align, they'd have a large dot product. 
-Each key in space has an associated value (the pair). The Query vector is computed with 
-each key and softmaxed to select one Key with the highest dot product. With softmax, 
-a certain Key will stand out (in magnitude) vs the rest.
 The softmax is basically a normalized exponential function: sequence of Variables is 
 mapped into exponentials and divided by the sum of all the exponentials. Thus, the 
 large numbers become almost ones and small numbers near zeros, like the maximum 
 function, but this one is differentiable. 
+
+\begin{center}
+	$ \displaystyle\sigma(Z_i) = \dfrac{e^{z_j}}{\sum_{j=1}^K e^{z_j}}$ for $i=1,...,K$ $and z=(z_1,...,z_K) \in \mathbb{R}^K $
+	\end{center}
+
 So a softmax of an inner product of each key with query vector normalizes to a 
 probability distribution over all Values (very similar to using a softmax in the last 
 layer of a NN over all the labels to yield the top classification pick). 
 
 
+To understand vector proximity between embeddings, e.g. similarity in objects for images, or words in sentences.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.5\textwidth]{media/dot_real.png}
+	\end{center}
+	\caption[Vector Representation]{Vector representation on a unit circle.}
+	\end{figure}
+
+The dot product of Keys and Queries yields an angle between both vectors (e.g. $u_i$ and $u_j$ in Figure 1.2 above) to measure 
+how similarly aligned they are. In high dimension, most vectors would be orthonormal 
+and $cos(90)=0$. But if Key and Query align, they'd have a large dot product. 
+Each key in space has an associated value (the pair). The Query vector is computed with 
+each key and softmaxed to select one Key with the highest dot product. With softmax, 
+a certain Key will stand out (in magnitude) vs the rest.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.3\textwidth]{media/dot2_real.png}
+	\end{center}
+	\caption[Key/Query Vector Proximity]{Vector proximity shows the closest Key vector to a given Query vector.}
+	\end{figure}
+
+So the formulation of each proximity is the dot product of vectors K with Q:
+\begin{center}
+	$ \displaystyle sum(\langle K_z \vert Q \rangle) $
+	\end{center}
+
+
+
+
 \newpage
 
 \section{Implementations}
-\subsection{Pre-trained Models}
+\subsection{Open Source Pre-trained Models}
 
+Open Source
 On GitHub.
 Original one by Google in tensorflow.
 Hugging Face in PyTorch.
@@ -118,15 +157,21 @@ and fine tuned on ImageNet-1k.
 
 \subsection{Closed Source}
 
-OpenAI (DALL*E)
+OpenAI (DALL.E 2) released in April 2022, trained on 250M image-text pairs 
+to be able to generate images from textual description. \citep{Dalle2}
+Not much information, not open source like google's ViT or BERT.
 
 \section{Computational Constraints}
 
 Time, memory, cost
 
-A 512-core TPU v3 pod costs \$384/hr to use commercially on GCP. 
-2.5k core-days means training the ViT cost 24hrs * \$384 * 5 of them = \$46k. 
-That's for one of many ViT flavors.
+Text transformers perform extremely well on orders of magnitude smaller size training examples.
+GPT-3 trained on 45TB of text data (Wikipedia included), has 175B parameters and 96 attention layers. \citep{GPT3}
+\$4.6M using a Nvidia advanced datacenter GPU grade cloud cluster.
+
+Several orders of magnitude more for image data.
+
+Need a ViT on all internet, to cost \$100M in training alone. 
 To train a ViT on the whole TACC Frontera at 20k teraflops (top10) or 
 Stampede at 10k tflops (top25), it would take respectively about a minute and 2 minutes.
 tpu v3 is 420 teraflops * 2500 = 1M Tflops

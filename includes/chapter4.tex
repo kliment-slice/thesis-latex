@@ -1,9 +1,25 @@
-\section{Results and Shortcomings}
+\section{Results and Improvements}
 We will review the merits from this work.
 
 \subsection{Results}
 
-\subsection{Potential Improvements to Approach}
+Features are in deep layers of the GAN network. 
+Latent space is hard to decipher
+ViT score definition: how many of the top100 labels match
+Can take into account probability of label (included in ViT).
+While label probability is stable when working with corrupted images (demo), 
+unstable when working with generated images.
+
+\subsection{Potential Improvements to Architecture}
+
+Analyze latent space vector with transformer model (not a ViT, but a transformer adaptation)
+Steer the GAN faster into training to compress
+Slow computational times
+Need a GAN trained on all images, not just ImageNet or Celeb 
+Need ViT trained on all images
+Natural limit to capacity of this model comes from training sets.
+
+
 
 \newpage
 \section{Present and Future of Image Transformers}
@@ -17,7 +33,7 @@ Need to train GAN on all images ever.
 
 \section{Training and Cost Estimates}
 
-REDO FOR ViT on all internet to cost 100M
+Need a ViT on all internet to cost 100M
 A 512-core TPU v3 pod costs \$384/hr to use commercially on GCP. 
 2.5k core-days means training the ViT cost 24hrs * \$384 * 5 of them = \$46k. 
 That's for one of many ViT flavors.
