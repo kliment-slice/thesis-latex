@@ -1,4 +1,4 @@
-\section{Results and Improvements}
+\section{Results and Optimization}
 We will review the merits from this work.
 
 \subsection{Results}
@@ -19,7 +19,15 @@ Need a GAN trained on all images, not just ImageNet or Celeb
 Need ViT trained on all images
 Natural limit to capacity of this model comes from training sets.
 
+\subsection{Optimization}
 
+Most valuable technique:
+(reducing learning\_rate as the model trains)
+changing input images to cater to what the generative model is trained on.
+SGD optimizer for GAN
+Experiment with loss functions (MSE was used, can use a GAN specific loss like FID)
+A lot of options still not figured out.
+regularization during training: residual dropout, label smoothing
 
 \newpage
 \section{Present and Future of Image Transformers}
@@ -30,6 +38,11 @@ In the deep learning/AI evolutionary process, still too early. Models have not b
 GAN model only trained on finite set (ImageNet, CIFAR-10, Celeb-HQ faces etc) and resolution.
 Need to train GAN on all images ever.
 
+"TransGAN: Two Pure Transformers Can Make One Strong GAN" \citep{jiang2021transgan}
+NeurIPS 2021
+
+Goal is to replace Generator and Discriminator in a GAN with Transformers free of 
+convolutions. 
 
 \section{Training and Cost Estimates}
 

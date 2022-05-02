@@ -1,47 +1,81 @@
 \subsection{Technologies used}
 
+Python, PyTorch
+MATLAB for BRISQUE
+LaTeX to generate this PDF
 
-The package \NOTE{algorithm2e} allows you write nearly all imaginable code structures as pseudo code in LaTex. A referece of commands can be found here: \url{http://www.cs.toronto.edu/~frank/Useful/algorithm2e.pdf}. Do not forget to wrap the pseudo code into a figure, thus it will be included into list of figures.\\
-
-The following example demonstrates the package with a bubble sort algorithm. Note, that the directive \NOTE{repeat - until} is the same as the \NOTE{do-while} directive.
-
-
-\newpage
 \subsection{GPU, Local machine}
 
-Writing mathematical equations can be a very important part of your work. This applies especially, if you want to analyze and evaluate your gathered data. The following example shows a calculation of Kohen's Cappa, a measurement which represents the inter coder reliability in coding qualitative data.\\
+NVIDIA GTX 1650Ti
+CUDA 11
 
-Let's assume the following results of coding a text by two different persons:
-
-
-Continuing from this basis, the calculation can be proceeded with Cohen's Kappa defined as
-
-
-\subsection{TACC, Stampede2, job submission process}
-
-Sometimes you want to include text which include characters that could trigger commands. At this point it useful to wrap them into the \NOTE{verbatim} environment. The text is uninterpreted and listet as is.
+Project dependencies (requirements.txt)
 
 \scriptsize
 \begin{verbatim}
-2015_5_13/23-19-33:550: ************* LOG INFO  *************
-2015_5_13/23-19-33:550: name: user1
-2015_5_13/23-19-33:550: [0]: 534
-2015_5_13/23-19-33:550: [1]: 321
-2015_5_13/23-19-33:550: [2]: 094832
-2015_5_13/23-19-33:550: [3]: 3980429804
+    kiwisolver==1.3.1
+    matplotlib==3.2.0
+    matplotlib-inline==0.1.3
+    numpy==1.22.3
+    opencv-python==4.4.0.46
+    packaging==21.3
+    pandas==1.4.2
+    pickleshare==0.7.5
+    Pillow==8.0.1
+    pytorch-pretrained-vit==0.0.7
+    pywin32==303
+    pyzmq==22.3.0
+    regex==2020.11.13
+    scikit-image==0.18.1
+    scipy==1.5.4
+    torch==1.7.1+cu110
+    torchvision==0.8.2+cu110
 \end{verbatim}
 \normalsize	
 
-code
+\subsection{TACC, Stampede2, job submission process}
+
+TACC Job submissions
+
+\scriptsize
+\begin{verbatim}
+    #!/bin/bash
+
+    #SBATCH -J run_model         # Job name
+    #SBATCH -o logs/job.%j.out   # Name of stdout output file (%j expands to jobId)
+    #SBATCH -e logs/job.%j.err   # error file
+    #SBATCH -p gtx               # Queue name
+    #SBATCH -N 1                 # Total number of nodes requested (16 cores/node)
+    #SBATCH -n 1                 # Total number of tasks requested
+    #SBATCH -t 24:00:00          # Run time (hh:mm:ss) - 24 hours
+    #SBATCH -A Automatic-Assessment
+    
+    module load python3
+    module load cuda/10.0
+    module load cudnn/7.6.2
+    
+    cd /work/29369/kliment/
+    date
+    
+    model_path="/model/model.1.pkl"
+    
+    python3 main.py --data_path ./data/ 
+    
+    date
+    
+\end{verbatim}
+\normalsize	
+
+TACC srun/idev
 
 
 \small
 \begin{lstlisting}[keywordstyle=\color{blue},language=Python]
-<!-- an XML comment -->
-<entry type="normal" pattern="a" />
-<entry type="normal" pattern="b" />
-<entry type="formula" pattern="t=a+b+c" required="1"/>
+    cd $WORK2
+    idev -m 30
+    module load python3
+    
+    squeue
+    python3 transformer.py --data_path 
 \end{lstlisting}
 \normalsize	
-
-\subsection{PyTorch and TensorFlow implementation projects}

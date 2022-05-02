@@ -77,11 +77,8 @@ learnable sequential positional embeddings, i.e. number down the image patches.
 % \end{center}
 % \end{table}
 
-\begin{center}
-$Pr(e) = \displaystyle\sum_{i=1}^{m} c(r)_i \times c(a)_i $
-\end{center}
 
-\section{Image Generation}
+\section{Image Generation with GANs}
 
 Generative models.
 GANs used to be the coolest thing until Transformers came along, but nonetheless 
@@ -98,13 +95,6 @@ In essence, the Discriminator gives the Generator feedback on its performance wh
 simultaneously achieving incremental improvement in discernibility. 
 Thus, each epoch the Generator produces more and more realistic data and the Discriminator iteratively improves its own ability to differentiate between real and synthetic data.
 
-
-\section{"TransGAN"}
-\subsection{"Two Pure Transformers Can Make One Strong GAN"}
-NeurIPS 2021
-
-Goal is to replace Generator and Discriminator in a GAN with Transformers free of 
-convolutions. 
 
 \section{First Principles of Neural Image Compression}
 

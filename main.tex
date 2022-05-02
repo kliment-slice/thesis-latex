@@ -70,15 +70,16 @@
     mechanism (typically used in language models) to object detection in digital images. 
     The ViT architecture is designed to output a classification probability distribution against
     a set of training labels. 
-    Thus, it can be a suitable candidate for a new method for quantitative assessment of generated 
-    images based on object-level deviations from the original pre-compression image. 
+    Thus, it is a suitable candidate for a new method for quantitative assessment of generated 
+    images based on object-level deviations from the original pre-compression image.
+    The metric will be referred to as a ViT-Score.
     This approach complements other comparative measurement techniques based on per-pixel 
     discrepancies (Mean Squared Error, MSE) or structural comparison (Structural Similarity Index, SSIM). 
     This study proposes an original end-to-end deep learning framework for neural image compression, 
     latent vector representation, regeneration, and image quality analysis using 
     state-of-the-art model architectures. Neural image compression and generation 
     is achieved using a Generative Adversarial Network (GAN). 
-    Results from this work demonstrate that a Vision Transformer is capable of assessing 
+    Results from this work demonstrate that a ViT-Score from a Vision Transformer is capable of assessing 
     the quality of a neurally compressed image. 
     Moreover, this methodology provides valuable insights when measuring image quality.
     It can be used in addition to established perceived quality metrics for compressed and generated 
@@ -129,7 +130,7 @@ financial constraints of training such demanding architectures.
 %	CHAPTER 2
 %==
 % \cleardoublepage
-\chapter{Literature Review: Transformers and Neural Image Compression}
+\chapter{Background Review: Transformers and Neural Image Compression}
 
 
 This chapter serves to present the audience with a literature review of seminal academic
@@ -146,8 +147,7 @@ takeaways offered from:
 	\item "Towards End-to-End Image Compression and Analysis with Transformers" 
     
     \citep{Bai2022AAAI}
-    \item Image Generation
-	\item "TransGAN: Two Pure Transformers Can Make One Strong GAN" \citep{jiang2021transgan}
+    \item Image Generation with GANs
 	\item "First Principles of Deep Learning and Compression" \citep{Principles}
 	\item Review of commonly used Image Quality Assessment (IQA) metrics
     

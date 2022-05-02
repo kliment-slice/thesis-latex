@@ -12,28 +12,28 @@ SGD optimizer for GAN
 	\begin{center}
 	\includegraphics[width=0.3\textwidth]{media/bevo.png}
 	\end{center}
-	\caption[Input Image 1: Bevo]{The University of Texas mascot, a famous longhorn bull (512x512).}
+	\caption[Input Image 1: Bevo]{"Bevo": The University of Texas mascot, a famous longhorn bull (512x512).}
 	\end{figure}
 
 \begin{figure}[H]
     \begin{center}
     \includegraphics[width=0.3\textwidth]{media/kimbo.png}
     \end{center}
-    \caption[Input Image 2: Kliment]{A face portrait of the author (512x512).}
+    \caption[Input Image 2: Kliment]{"Kliment": A face portrait of the author (512x512).}
     \end{figure}
 
 \begin{figure}[H]
     \begin{center}
     \includegraphics[width=0.3\textwidth]{media/logo.png}
     \end{center}
-    \caption[Input Image 3: UT Logo]{The Texas Longhorns logo (512x512).}
+    \caption[Input Image 3: UT Logo]{"Logo": The Texas Longhorns logo (512x512).}
     \end{figure}
 
 \begin{figure}[H]
         \begin{center}
         \includegraphics[width=0.3\textwidth]{media/tower.png}
         \end{center}
-        \caption[Input Image 4: UT Tower]{The University of Texas Tower, the Main Building on campus (512x512).}
+        \caption[Input Image 4: UT Tower]{"Tower": The University of Texas Tower, the Main Building on campus (512x512).}
         \end{figure}
 
 
@@ -83,15 +83,52 @@ The GAN then rebuils to 242kb.
 
 % \newpage
 \section{Output and Visual Inspection}
-Images and comments
+The generative process from the GAN was designed to output an image at a specified epoch.
 
-(natural performance asymptote after certain iteration)
+\subsection{Training Process}
+Below is a demonstration of the GAN learning process at every 250 epochs:
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{media/ganLearn.png}
+	\end{center}
+	\caption[GAN Training Process]{The GAN learns to compress and generate the Texas Longhorns logo.}
+	\end{figure}
 
-\section{ViT Score}
+Due to the cutting edge nature of the technologies used, a natural performance asymptote
+was observed. The GAN was able to reconstruct certain input images better than others.
+After a certain iteration, as usual, the GAN was unable to further learn how to compress,
+represent, and regenerate some input images. Typically, once a GAN reaches this stage,
+it learns from random noise and generation performance decreases.
 
-The ViT Score, as an original development from this thesis. 
+\subsection{Results}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{media/gan_compress2.png}
+	\end{center}
+	\caption[Neural Compression and Generation]{After sufficient training, the GAN outputs a regenerated
+    version of the original image from a latent space vector representation.}
+	\end{figure}
+
+The GAN was able to respectably regenerate "Kliment" and "Logo", especially if the resolution
+were to be lowered (e.g. 32x32, such as the CIFAR-10 dataset).
+
+However, the GAN was unable to perform as well for "Bevo" and "Tower".
+It learned random noise and generation performance decreased.
+
+\section{ViT-Scores}
+
+The Vision Transformer-Assisted ViT Score is an original development from this thesis. 
 
 It is an attempt to measure the quality of a generated image after neural compression.
+
+The ViT-score is in the open interval $(0,1)$ with $0$ being poor and extremely dissimilar from
+the original and $1$ being excellent and fully similar to original.
+
+Mathematically, the endpoint values of the interval are unattainable by probabilistic models
+such as the GAN.
+
+\subsection{Mathematical Formulation}
 
 The following is a mathematical representation explained in further detail.
 
@@ -116,37 +153,88 @@ identify the set Of labels also found in the generated image.
 Then, divide that number of intersecting
 labels by the total number of $top-100$ labels.
 
-graphs, tables
-ViT scores
-Logo: 0.29
-Bevo: 0.14
-Myself: 0.54
-Tower: 0.03
 
-% \begin{table}[H]
-% \begin{center}
-% \begin{tabular}{|c|c|c|c|c|c|c|}
-% \hline
-% result XY & \multicolumn{6}{c|}{Rater A}\\\hline
-%  \multirow{6}{*}{Rater B}& & \textbf{9} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{c(a) }\\\cline{2-7}
-%  & \textbf{9}& 27	&0&	0	&0 & 0.5510204082\\\cline{2-7}
-% &\textbf{0}	&0	&6	&0	&0&0.1224489796\\\cline{2-7}
-% &\textbf{1}	&0	&1	&7	&0&0.1632653061\\\cline{2-7}
-% &\textbf{2}	&0	&1	&7	&0&0.1632653061\\\cline{2-7}
-% &\textbf{c(r)} & 0.5510204082 & 0.1632653061 & 0.2857142857 & 0& n=49\\\hline
+\subsection{ViT-Scores from Resulting Images}
 
-% \end{tabular}
-% \caption[Example data for mathematical equations]{A set of example data for further use in a mathematical equation.  }
-% \end{center}
-% \end{table}
 
+Following Figure 3.7, the ViT-scores for the GAN generated images after neural compression
+are as follows:
 
 \begin{center}
-$Pr(e) = \displaystyle\sum_{i=1}^{m} c(r)_i \times c(a)_i $
+	\includegraphics[width=0.6\textwidth]{media/gan_compress2.png}
 \end{center}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Bevo}	& 0.14\\
+\textbf{Kliment}	& 0.54\\
+\textbf{Logo}	& 0.29\\
+\textbf{Tower} & 0.03\\\hline
+
+\end{tabular}
+\caption[ViT-Scores of Generated Images]{ViT-Scores demonstrate a somewhat expected quality assessment.}
+\end{center}
+\end{table}
+
+
+
+\textbf{"Kliment"} leads with a ViT-score of $0.54$, which is understandable as the GAN 
+generated a face (although smudgy) and was rather able to recreate the scenery structurally.
+
+\textbf{"Logo"} generation seems structurally excellent and the ViT-score is $0.29$, which
+is considered a good score for this particular GAN architecture and training.
+
+\textbf{"Bevo"} barely preserves the original shape at ViT-score of $0.14$, while
+\textbf{"Tower"} is incomprehensible and barely resembles the original at ViT-score of $0.03$.
+
+
+Overall, the ViT-score does a good job of measuring image quality.
 
 
 \section{Established IQA Metrics}
+
+\subsection{"Kliment"}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{media/kimbo_metrics.png}
+	\end{center}
+	\caption["Kliment" Established Metrics]{After sufficient training, the GAN outputs a regenerated
+    version of the original image from a latent space vector representation.}
+	\end{figure}
+
+\subsection{"Logo"}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{media/logo_metrics.png}
+	\end{center}
+	\caption["Logo" Established Metrics]{After sufficient training, the GAN outputs a regenerated
+    version of the original image from a latent space vector representation.}
+	\end{figure}
+
+
+\subsection{"Bevo"}
+
+\begin{figure}[H]
+        \begin{center}
+        \includegraphics[width=1\textwidth]{media/bevo_metrics.png}
+        \end{center}
+        \caption["Bevo" Established Metrics]{After sufficient training, the GAN outputs a regenerated
+        version of the original image from a latent space vector representation.}
+        \end{figure}
+
+\subsection{"Tower"}
+
+\begin{figure}[H]
+        \begin{center}
+        \includegraphics[width=1\textwidth]{media/tower_metrics.png}
+        \end{center}
+        \caption["Tower" Established Metrics]{After sufficient training, the GAN outputs a regenerated
+        version of the original image from a latent space vector representation.}
+        \end{figure}
 
 SSIM, MSE, PSNR, BRISQUE calculated
 Loss functions as well (MSE loss was used in GAN)
@@ -163,11 +251,25 @@ FID is Frechet Inception Distance. 0 if there is no difference.
 549089.491 for kimbo and kimboGAN
 1241999.901 for bevo and bevoGAN
 
-\section{Optimization Techniques}
 
-Most valuable technique:
-(reducing learning\_rate as the model trains)
-changing input images to cater to what the generative model is trained on.
-SGD optimizer for GAN
-A lot of options still not figured out.
-regularization during training: residual dropout, label smoothing
+\section{Summary of Results}
+
+\begin{center}
+	\includegraphics[width=1\textwidth]{media/gan_compress2.png}
+\end{center}
+
+\begin{table}[H]
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    \textbf{Image}	& \textbf{ViT-Score} & \textbf{SSIM} & \textbf{MSE} & \textbf{PSNR} & \textbf{FID} \\
+    \hline
+    \textbf{Bevo}	 & 0.14 & 0.26 & 3,479.34 & 12.68 &  1,241,999.901\\
+    \textbf{Kliment} & 0.54 & 0.56 & 1,759.28 & 15.64  &  549,089.491\\
+    \textbf{Logo}	 & 0.29 & 0.91 & 393.69 & 22.15 &  81,105.162\\
+    \textbf{Tower}   & 0.03 & 0.53 & 1,315.75 & 16.90 &  331,171.556\\\hline
+    
+    \end{tabular}
+    \caption[Summary of Results]{ViT-Scores demonstrate a somewhat expected quality assessment.}
+    \end{center}
+    \end{table}
