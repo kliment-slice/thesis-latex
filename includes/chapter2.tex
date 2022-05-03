@@ -1,33 +1,29 @@
 \section{"An Image is Worth 16x16 Words"}
 
-\large{Transformers for Image Recognition at Scale}
+\LARGE{\emph{Transformers for Image Recognition at Scale}}
 
-Now that we explained relevant transformer components, we can see how it applies 
-to 2D signals, i.e. image matrices for classification purposes in image recognition.
-The Vision Transformer or ViT, was very recently published for ICLR 2021 by a 
-google team for a ImageNet trained transformer.
+This seminal academic work was published for the International Conference on 
+Learning Representations (ICLR) 2020 by a team from Google.
+It presents the first Vision Transformer (ViT) for object detection
+trained on the ImageNet dataset, a rather large natural images dataset common to research on 
+image classification.
 
-The attention mechanism is capable of focusing on objects anywhere on the image 
-within a single network layer versus the variable size convolution kernels 
-across the different layers.
 
-"image is worth 16x16 words" completely discards the notion of convolutions. 
-Compared to a convolutional counterpart (the ResNet), the ViT cost 75\% 
-less to train and beats accuracy on ImageNet by 1\%. 
+Since Chapter 1 already explained and formulated the ViT, this section will focus
+on outlining the outcomes from this publication.
+
+"An Image is Worth 16x16 Words" completely discards the notion of convolutions. 
+The team used an image patch-based approach as embeddings to a Transformer to classify ImageNet images, 
+as opposed to using Convolutional Neural Networks (CNNs), which dominate this field of research.
+The ViT model achieves a top-1 accuracy of 77.3\% on ImageNet, which 
+compares to the accuracy of state-of-the-art CNNs.
+
+Compared to its convolutional counterpart (the ResNet), the ViT cost 75\% 
+less resources to train and outperformed on ImageNet accuracy by 1\%. 
 ViT uses approximately 2-4x less compute to attain the same performance 
-(averaged over 5 datasets). Unlike variable size convolution kernels accross 
-layers, the block size in the image transformer is able to pay attention within 
-a single layer to anywhere on the image. 
-CNNs have good inductive priors and can learn any function. 
-However, this promotes locality (i.e. nearing pixels are probably most important).
-One way to think of a ViT is a generalization of an MLP which itself is a 
-generalization of a CNN. The ViT also learns very similarly to a CNN 
-(e.g. filters with principal components).
-Transformer, in a way, is a generalization of a feed forward network, but 
-instead of fixed connections weights in an MLP, each connection weight (i.e. attention) 
-is computed on the fly. That makes the Transformer, unlike the MLP, permutation invariant. 
-In that it wouldn't know where information is coming from unless there are additional 
-learnable sequential positional embeddings, i.e. number down the image patches.
+(averaged over 5 test datasets). 
+
+The total number of parameters is on the order of 100M.
 
 % \begin{figure}[H]
 % \begin{algorithm}[H]

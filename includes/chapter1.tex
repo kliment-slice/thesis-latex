@@ -4,17 +4,12 @@
 
 \section{Motivation}
 
-Transformers are presently considered to hold a great promise for the future of deep learning
+Transformers are presently considered to hold a great promise for the future of Deep Learning
 as a step towards Artificial General Intelligence.
 Due to their architecture, they are more generalizable, less prone to overfitting, and able 
 to learn highly complex representations. The Transformer architecture has already been proven 
 to make obsolete Recurrent Neural Networks (RNNs) in natural language models and outperform
-Convolutional Neural Networks (CNNs) in image classification tasks.
-
-A Vision Transformer (ViT)-Assisted metric related to image compression can provide 
-additional insights to the latent space (contextual) preservation.
-Thus, this work can be viewed as a stepping stone towards an end-to-end Transformer-based
-image compression and regeneration.
+certain Convolutional Neural Networks (CNNs) in image classification tasks. \citep{dosovitskiy2020vit}
 
 
 \begin{figure}[H]
@@ -26,41 +21,84 @@ image compression and regeneration.
 	\citep{PapersOverTime}}
 	\end{figure}
 
+Furthermore, evaluating output quality from Generative Adversarial Networks (GANs) is 
+still a developing field using non-Deep Learning-adapted assessment methods. 
+For the purpose of this thesis, a GAN was used as a placeholder 
+for a future, coveted, and highly desirable Deep Learning-based image compression mechanism. 
+
+
+This thesis explores a Vision Transformer (ViT)-Assisted metric related to 
+image compression, which can provide 
+additional insights to GAN output quality and the input latent space (contextual) preservation.
+
+
+\NOTE{Thus, this work can be viewed as a stepping stone towards an end-to-end Transformer-based
+image compression and regeneration.}
+
 
 \section{Brief History}
 
-\subsection{Language Models: BERT, GPT-3}
+\subsection{Attention and Language Models}
 
-Introduced in 2017 by google. Mostly used for NLP (e.g. openAI GPTs, 
-which all heard of or google BERT, which as of recently processes 
-and autofills every single English-based google search query). 
-They are often benchmarked against RNNs (specifically LSTMs), when used in 
-language models. LSTMs traditionally rely on hidden states to pass information 
-along sequentially during encoding and then decoding each word token. BUT RNNs 
-typically fall short learning long range dependencies.
-Transformers however use the attention mechanism to weigh the influence of 
-different parts of the input.
+"Attention Is All You Need" is a seminal research publication
+by a team of Google researchers, which kickstarted the Transformer revolution in Deep Learning in 2017.
+It proposes a novel architecture, which models long-range dependencies in
+sequential (text) data, by arranging a set of self-attention layers. 
 
-\subsection{Vision Tasks}
-In the seminal ICLR 2021 publication "An Image is Worth 16x16 Words" by a Google team,
-a transformer architecture trained on ImageNet outperformed or compared to state-of-the art CNNs
-with greater efficiency on image classification tasks.
+A self-attention layer is what the model uses to focus on different elements of the 
+input sequence simultaneously. For example, it can be ysed to compute the 
+distance (relationship) between every word in a given sentence. \citep{Attention}
+
+
+Examples of implementations of text-based Transformers are BERT by Google and GPT-3 by OpenAI.
+BERT, among other things, as of 2021 processes and autofills every single English-based 
+Google user search query.
+GPT-3, on the other hand, revolutionized text generation in 2020, demonstrating the ability 
+to generate extremely cohesive textual output.
+
+Most Transformers are used in language modeling and Natural Language Processing (NLP).
+Thus, they are often benchmarked against Recurrent Neural Networks (RNNs, and specifically 
+Long Short-Term Memory, LSTM architecture). LSTMs rely on hidden states to pass information 
+along sequentially during the encoding and decoding process for each word token. 
+However, they typically fall short learning long-range dependencies.
+
+
+\subsection{Attention in Vision Tasks}
+
+The attention mechanism is capable of focusing on objects anywhere on the image 
+within a single network layer versus the variable size convolution kernels 
+across the different layers.
+
 Tokenization happens at pixel level, 
-so each pixel would have to attend to  each other pixel in the grid, which becomes 
+so each pixel would have to attend to each other pixel in the grid, which becomes 
 too heavy to compute, on the order of $(250^2)^2$. To resolve that, the image is 
 broken down into blocks of equal size, a 16x16 subset of the image called image patches. 
 Then, unroll each image patch into a sequence (256x1), and index it with a positional 
 embedding in a table. All of that is then fed into a standard Transformer, 
 like from Attention is all you need. Finally, a feed forward classifier (MLP) 
 makes the classification prediction, voila image recognition.
-The total number of parameters is on the order of 100M.
+
+Unlike variable size convolution kernels accross 
+layers, the block size in the image transformer is able to pay attention within 
+a single layer to anywhere on the image. 
+CNNs have good inductive priors and can learn any function. 
+However, this promotes locality (i.e. nearing pixels are probably most important).
+One way to think of a ViT is a generalization of an MLP which itself is a 
+generalization of a CNN. The ViT also learns very similarly to a CNN 
+(e.g. filters with principal components).
+
+Transformer, in a way, is a generalization of a feed forward network, but 
+instead of fixed connections weights in an MLP, each connection weight (i.e. attention) 
+is computed on the fly. That makes the Transformer, unlike the MLP, permutation invariant. 
+In that it wouldn't know where information is coming from unless there are additional 
+learnable sequential positional embeddings, i.e. number down the image patches.
 
 
 \section{Principles of Operation}
 
-Attention mechanism \citep{Attention}
-Attention is a mechanism where the decoder can go back and look at particular 
-parts of input (unlike RNNs). So, close attention is paid to certain steps of 
+This section will elaborate the key principles of operation of a ViT.
+
+Close attention is paid to certain steps of 
 the encoding process (like certain key words in sentence or objects in image blocks). 
 In effect, the Decoder outputs Keys at each step which index the hidden states 
 (and will explain more intuition about the Keys when upon formulating attention). 
