@@ -21,11 +21,13 @@ Natural limit to capacity of this model comes from training sets.
 
 \subsection{Optimization}
 
+Experiment and change loss functions (MSE was used, can use a GAN specific loss like FID)
+
 Most valuable technique:
 (reducing learning\_rate as the model trains)
 changing input images to cater to what the generative model is trained on.
 SGD optimizer for GAN
-Experiment with loss functions (MSE was used, can use a GAN specific loss like FID)
+
 A lot of options still not figured out.
 regularization during training: residual dropout, label smoothing
 
@@ -43,6 +45,7 @@ NeurIPS 2021
 
 Goal is to replace Generator and Discriminator in a GAN with Transformers free of 
 convolutions. 
+
 
 \section{Training and Cost Estimates}
 

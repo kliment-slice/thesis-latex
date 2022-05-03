@@ -8,9 +8,10 @@ Transformers are presently considered to hold a great promise for the future of 
 as a step towards Artificial General Intelligence.
 Due to their architecture, they are more generalizable, less prone to overfitting, and able 
 to learn highly complex representations. The Transformer architecture has already been proven 
-to make obsolete Recurrent Neural Networks (RNNs) in natural language models and outperform
-certain Convolutional Neural Networks (CNNs) in image classification tasks. \citep{dosovitskiy2020vit}
+to make obsolete Recurrent Neural Networks (RNNs) in natural language models. Furthermore, the 
+Vision Transformer (ViT) has outperformed certain Convolutional Neural Networks (CNNs) in image classification tasks. \citep{dosovitskiy2020vit}
 
+Figure 1.1 below shows an increase in the popularity of research related to Vision Transformers.
 
 \begin{figure}[H]
 	\begin{center}
@@ -21,19 +22,19 @@ certain Convolutional Neural Networks (CNNs) in image classification tasks. \cit
 	\citep{PapersOverTime}}
 	\end{figure}
 
-Furthermore, evaluating output quality from Generative Adversarial Networks (GANs) is 
-still a developing field using non-Deep Learning-adapted assessment methods. 
-For the purpose of this thesis, a GAN was used as a placeholder 
-for a future, coveted, and highly desirable Deep Learning-based image compression mechanism. 
+Figure 1.1 was produced by PapersWithCode, a popular academic research aggregator. For the past three years, 
+ResNets, the most popular architecture in image processing and computer vision, has dominated the proportion
+of academic research in object detection. In 2022, Vision Transformer research popularity has reached
+that of ResNets and exceeded any other major category.
 
 
-This thesis explores a Vision Transformer (ViT)-Assisted metric related to 
-image compression, which can provide 
-additional insights to GAN output quality and the input latent space (contextual) preservation.
+In the zeitgeist of Vision Transformer research, this thesis will explore a ViT-assisted metric related to 
+image compression. This metric can provide additional insights to GAN output quality 
+and the latent space (contextual) preservation of a variety of input images.
 
 
 \NOTE{Thus, this work can be viewed as a stepping stone towards an end-to-end Transformer-based
-image compression and regeneration.}
+image compression and regeneration framework.}
 
 
 \section{Brief History}
@@ -52,7 +53,7 @@ distance (relationship) between every word in a given sentence. \citep{Attention
 
 Examples of implementations of text-based Transformers are BERT by Google and GPT-3 by OpenAI.
 BERT, among other things, as of 2021 processes and autofills every single English-based 
-Google user search query.
+Google user search query. \citep{bert}
 GPT-3, on the other hand, revolutionized text generation in 2020, demonstrating the ability 
 to generate extremely cohesive textual output.
 
@@ -65,47 +66,50 @@ However, they typically fall short learning long-range dependencies.
 
 \subsection{Attention in Vision Tasks}
 
-The attention mechanism is capable of focusing on objects anywhere on the image 
-within a single network layer versus the variable size convolution kernels 
-across the different layers.
+The attention mechanism is capable of focusing on objects found anywhere on an input image.
+It operates within a single network layer compared to Convolutional Neural Networks (CNNs),
+where the variable size convolution kernels scan across the different layers of the architecture.
+\citep{dosovitskiy2020vit}
 
-Tokenization happens at pixel level, 
-so each pixel would have to attend to each other pixel in the grid, which becomes 
-too heavy to compute, on the order of $(250^2)^2$. To resolve that, the image is 
-broken down into blocks of equal size, a 16x16 subset of the image called image patches. 
-Then, unroll each image patch into a sequence (256x1), and index it with a positional 
-embedding in a table. All of that is then fed into a standard Transformer, 
-like from Attention is all you need. Finally, a feed forward classifier (MLP) 
-makes the classification prediction, voila image recognition.
+Tokenization happens at the pixel level, i.e. each pixel attends to each other pixel in the grid. 
+This becomes computationally intensive, on the order of $(n^2)^2$, where $n$ denotes width of a square image. 
+To resolve this, the input image is broken down into square blocks of equal size, referred to as image patches.
+Then, each image patch is unrolled into a one-dimensional sequence $(n x 1)$ and indexed with a positional 
+embedding in a table for future reference and retrieval purposes. The embeddings enter the Transformer and 
+finally, a feed forward classifier, in the form of a Multilayer Perceptron (MLP) 
+makes the classification prediction, yielding a probability distribution.\citep{dosovitskiy2020vit}
 
-Unlike variable size convolution kernels accross 
-layers, the block size in the image transformer is able to pay attention within 
-a single layer to anywhere on the image. 
-CNNs have good inductive priors and can learn any function. 
-However, this promotes locality (i.e. nearing pixels are probably most important).
-One way to think of a ViT is a generalization of an MLP which itself is a 
-generalization of a CNN. The ViT also learns very similarly to a CNN 
-(e.g. filters with principal components).
 
 Transformer, in a way, is a generalization of a feed forward network, but 
 instead of fixed connections weights in an MLP, each connection weight (i.e. attention) 
-is computed on the fly. That makes the Transformer, unlike the MLP, permutation invariant. 
-In that it wouldn't know where information is coming from unless there are additional 
-learnable sequential positional embeddings, i.e. number down the image patches.
+is computed ad hoc. That makes the Transformer, unlike the MLP, permutation invariant. 
+That is, it would not know where certain information is coming from, unless there are additional 
+learnable sequential positional embeddings, i.e. index the image patches.
 
 
 \section{Principles of Operation}
 
-This section will elaborate the key principles of operation of a ViT.
+Continuing from the previous section, a good way to think of a ViT is as a 
+generalization of an MLP, which itself is a generalization of a CNN. 
+The ViT happens to learn very similarly to a CNN, which represents the latent space
+as filters carrying principal components.
 
-Close attention is paid to certain steps of 
-the encoding process (like certain key words in sentence or objects in image blocks). 
-In effect, the Decoder outputs Keys at each step which index the hidden states 
-(and will explain more intuition about the Keys when upon formulating attention). 
-It uses a Softmax architecture to normalize and map the potential output classes 
-to a probability distribution. Positional encoding is achieved with trig functions, 
-e.g. a full sentence or perhaps an image dimension could be represented by the various
-periods of a sin wave, so the exact location of each token would be unique.
+In principle, CNNs have good inductive priors and can learn any function. 
+However, they promote locality, i.e. nearing pixels are probability-wise considered most important.
+This may easily not be desired, especially in the key applications of object detection and, in the 
+future, image compression.
+
+
+The encoding process indexes embeddings. For instance, certain key words in a sentence or 
+objects in image blocks are mapped in a reference lookup table. 
+The Decoder outputs Keys at each step. These vectors represent hidden states,
+which are being passed on into each next iteration of the Transformer. 
+The last layer, expectedly, uses a Softmax architecture to normalize and map the potential output classes 
+to a probability distribution. 
+
+
+\textbf{Multi-Head Attention}
+
 
 Sets of parallel attention layers at each token are called multi-head attention 
 (to vary what to pay attention to: e.g. at verbs in the sentence or different objects 
@@ -173,15 +177,9 @@ a certain Key will stand out (in magnitude) vs the rest.
 	\caption[Key/Query Vector Proximity]{Vector proximity shows the closest Key vector to a given Query vector.}
 	\end{figure}
 
-So the formulation of each proximity is the dot product of vectors K with Q:
-\begin{center}
-	$ \displaystyle sum(\langle K_z \vert Q \rangle) $
-	\end{center}
+So the formulation of each proximity is the dot product of vectors K with Q: $ \displaystyle sum(\langle K_z \vert Q \rangle) $
 
-
-
-
-\newpage
+%\newpage
 
 \section{Implementations}
 \subsection{Open Source Pre-trained Models}
