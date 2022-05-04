@@ -34,7 +34,7 @@ and the latent space (contextual) preservation of a variety of input images.
 
 
 \NOTE{Thus, contributions from this thesis can be viewed as providing a stepping stone 
-towards an end-to-end Transformer-based image compression and regeneration framework.}
+towards an end-to-end Transformer-based image compression and reconstruction framework.}
 
 
 \section{Brief History}
@@ -51,13 +51,17 @@ input sequence simultaneously. For example, it can be used to compute the
 distance (relationship) between every word in a given sentence. \citep{Attention}
 
 
-Examples of implementations of text-based Transformers are BERT by Google and GPT-3 by OpenAI.
+Examples of implementations of text-based Transformers are BERT by Google and GPT-3 
+
+by OpenAI.
 BERT, among many other applications, processes and autofills every single English-based 
 Google user search query as of 2021 . \citep{bert}
 GPT-3, on the other hand, revolutionized text generation in 2020, demonstrating the ability 
 to generate extremely cohesive textual output.
 
-Most Transformers are used for applications in language modeling and Natural Language Processing (NLP).
+Most Transformers are used for applications in language modeling and Natural Language 
+
+Processing (NLP).
 Thus, they are often benchmarked against Recurrent Neural Networks (RNNs, and specifically 
 Long Short-Term Memory, LSTM architecture). LSTMs rely on hidden states to pass information 
 along sequentially during the encoding and decoding process for each word token. 
@@ -71,7 +75,7 @@ It operates within a single network layer compared to Convolutional Neural Netwo
 where the variable size convolution kernels scan across the different layers of the architecture.
 \citep{dosovitskiy2020vit}
 
-Tokenization happens at the pixel level, i.e. each pixel attends to each other pixel in the grid. 
+As shown in Figure 1.2 below, tokenization happens at the pixel level, i.e. each pixel attends to each other pixel in the grid. 
 This becomes computationally intensive, on the order of $(n^2)^2$, where $n$ denotes width of a square image. 
 To resolve this, the input image is broken down into square blocks of equal size, referred to as image patches.
 Then, each image patch is unrolled into a one-dimensional sequence $(n x 1)$ and indexed with a positional 
@@ -79,17 +83,22 @@ embedding in a table for future reference and retrieval purposes. The embeddings
 finally, a feed forward classifier, in the form of a Multilayer Perceptron (MLP) 
 makes the classification prediction, yielding a probability distribution. \citep{dosovitskiy2020vit}
 
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{media/vit_arch.png}
+	\end{center}
+	\caption[ViT Architecture]{The Vision Transformer (ViT) architecture. \citep{GoogleViT}}
+	\end{figure}
 
-Transformer, in a way, is a generalization of a feed forward network, but 
+A Transformer, in a way, is a generalization of a feed forward network, but 
 instead of fixed connections weights in an MLP, each connection weight (i.e. attention) 
 is computed ad hoc. This makes the Transformer, unlike the MLP, permutation invariant. 
 That is, it would not know where certain information is coming from, unless there are additional 
 learnable sequential positional embeddings, i.e. index the image patches.
 
-
 \section{Principles of Operation}
 
-Continuing from the previous section, a good way to think of a ViT is as a 
+Continuing from the previous section, a ViT can be thought of as a 
 generalization of an MLP, which itself is a generalization of a CNN. 
 The ViT happens to learn very similarly to a CNN, which represents the latent space
 as filters carrying principal components.
@@ -107,17 +116,25 @@ which are being passed on into each next iteration of the Transformer.
 The last layer, expectedly, uses a Softmax architecture to normalize and map the potential output classes 
 to a probability distribution. 
 
-\vspace{10mm}
+%\vspace{10mm}
+\newpage
 
 \textbf{Multi-Head Attention}
 
 
-Sets of parallel attention layers at each token are called multi-head attention.
+As shown in Figure 1.3 below, sets of parallel attention layers at each token are called multi-head attention.
 This approach varies what to pay attention to, for example,at the different objects 
 in an image (or in natural langue, different verbs in a sentence). 
 The multi-head attention is composed of Key-Value pairs coming from 
 the encoding part of the source image (i.e. the input embedding) and 
 Queries from the output embedding (i.e. encoding part of target image).
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.5\textwidth]{media/attn_diag.png}
+	\end{center}
+	\caption[Attention Mechanism]{The Attention mechanism architecture. \citep{GoogleViT}}
+	\end{figure}
 
 
 \section{Mathematical Formulation}
@@ -206,7 +223,6 @@ A depiction of the vector space is shown in Figure 1.3 below.
 
 \section{Implementations}
 
-
 This section reviews several notable ViT implementations of interest.
 Most developments have been made open source. Howerver, some of the 
 highest quality implementations are still closed source and operated 
@@ -222,7 +238,7 @@ The original model from the team of Google researchers, written using TensorFlow
 The second highest implementation by Hugging Face, written using PyTorch, has 61,820 stars. 
 
 
-\vspace{10mm}
+\vspace{5mm}
 
 \textbf{Pre-trained Model Used}
 

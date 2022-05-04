@@ -76,7 +76,7 @@
     This approach complements other comparative measurement techniques based on per-pixel 
     discrepancies (Mean Squared Error, MSE) or structural comparison (Structural Similarity Index, SSIM). 
     This study proposes an original end-to-end deep learning framework for neural image compression, 
-    latent vector representation, regeneration, and image quality analysis using 
+    latent vector representation, reconstruction, and image quality analysis using 
     state-of-the-art model architectures. Neural image compression and generation 
     is achieved using a Generative Adversarial Network (GAN). 
     Results from this work demonstrate that a ViT-Score from a Vision Transformer is capable of assessing 
@@ -152,7 +152,7 @@ takeaways offered from:
     \citep{Bai2022AAAI}
     \item Image Generation with GANs
 	\item "First Principles of Deep Learning and Compression" \citep{Principles}
-	\item Review of commonly used Image Quality Assessment (IQA) metrics
+	\item Image Quality Assessment (IQA) metrics
     
     \citep{Metrics}
 \end{itemize}
@@ -168,23 +168,15 @@ takeaways offered from:
 % \cleardoublepage
 \chapter{ViT-based Assessment of Neural Image Compression}
 
-Now that we explained relevant transformer components, we can see how it applies to 
-2D signals, i.e. image matrices for classification purposes in image recognition.
-The Vision Transformer or ViT, was very recently published for ICLR 2021 by a google 
-team for a ImageNet trained transformer.
-Tokenization happens at pixel level, so each pixel would have to attend to each other 
-pixel in the grid, which becomes too heavy to compute, on the order of. 
-To resolve that, the image is broken down into blocks of equal size, a 16x16 subset 
-of the image called image patches. Then, unroll each image patch into a sequence (256x1), 
-and index it with a positional embedding in a table. All of that is then fed into a 
-standard Transformer, like from Attention is all you need. Finally, a feed forward 
-classifier (MLP) makes the classification prediction, voila image recognition.
-The total number of parameters is on the order of 100M.
+
+This chapter presents the core contributions in this thesis. Several input images
+are presented and run
 
 \ThinHRule
 
 \newpage
 \input{./includes/chapter3.tex}
+
 
 %==
 %	CHAPTER 4

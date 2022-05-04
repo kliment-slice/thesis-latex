@@ -14,10 +14,18 @@ Since Chapter 1 already explained and formulated the ViT, this section focuses
 on outlining the outcomes from this publication.
 
 "An Image is Worth 16x16 Words" completely discards the notion of convolutions. 
-The team used an image patch-based approach as embeddings to a Transformer to classify ImageNet images, 
-as opposed to using Convolutional Neural Networks (CNNs), which dominate this field of research.
-The ViT model achieves a top-1 accuracy of 77.3\% on ImageNet, which 
+The team used an image patch-based approach by breaking the image down to square blocks called patches.
+These patches are used as embeddings to a Transformer to classify images.
+Typically, such tasks in this field of research are dominated by Convolutional Neural Networks (CNNs).
+
+The ViT model achieves a top-1 accuracy (matching highest class probability only) of 77.3\% on ImageNet, which 
 compares to the accuracy of state-of-the-art CNNs.
+
+All results from the original publication are shown in Figure 2.1 below.
+
+
+According to the paper, the pre-trained ViT on the JFT-300M dataset beats all ResNets on all
+datasets. Furthermore, it takes significantly less computational resources to train. \citep{dosovitskiy2020vit}
 
 Compared to its convolutional counterpart (the ResNet), the ViT cost 75\% 
 less resources to train and outperformed on ImageNet accuracy by 1\%. 
@@ -25,6 +33,14 @@ ViT uses approximately 2-4x less compute to attain the same performance
 (averaged over 5 test datasets). 
 
 The total number of parameters is on the order of 100M.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.8\textwidth]{media/vit_table.png}
+	\end{center}
+	\caption[Original ViT Results]{Results summary from the original ViT by Google. It shows 
+    the ViT performance on popular classification benchmarks. \citep{dosovitskiy2020vit}}
+	\end{figure}
 
 % \begin{figure}[H]
 % \begin{algorithm}[H]
@@ -56,40 +72,218 @@ The total number of parameters is on the order of 100M.
 \newpage
 \section{"End-to-End Image Compression with Transformers"}
 
-Unique positional encoding can also be achieved using trigonometric representation.
-For example, a full sentence from text or perhaps a row of pixels from an image could be represented by the various
-periods of a sinusoid. Thus, the exact location of each token would be unique.
+A recent publication in Association for the Advancement of Artificial Intelligence (AAAI) 2022 is
+claiming to have achieved an end-to-end Transformer-based model for image compression and analysis.
 
+"Towards End-to-End Image Compression and Analysis with Transformers" redesigns the ViT
+to classify images from compressed features. \citep{Bai2022AAAI}
+
+The research team replaces the patches and embeddings with a CNN-based lightweight encoder. 
+The compressed latent space features from the encoder are fed into the Transformer.
+The Transformer proceeds to classify the image without any regeneration or reconstruction. 
+The framework includes a feature aggregation module, which blends the compressed and intermediate Transformer features. 
+These features are then passed onto a Deconvolutional Neural Network 
+and the image is regenerated. As a result, long-term dependencies from the Transformer self-attention mechanism 
+are preserved.
+
+Figure 2.2 below demonstrates the exact architecture used in the experiment.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{media/vit_compress_arch.png}
+	\end{center}
+	\caption[End-to-End Image Compression ViT]{The encoder and decoder architecture of the  
+    End-to-End Image Compression ViT. \citep{Bai2022AAAI}}
+	\end{figure}
 
 \section{Image Generation with GANs}
 
-Generative models.
-GANs used to be the coolest thing until Transformers came along, but nonetheless 
-still great. Typically, GANs pit 2 CNNs against each other, one called Generator to 
-generate an image and one called Discriminator to determine how fake the image is 
-compared to the input, relaying feedback to improve the Generator after each epoch. 
-A GAN pits two Neural Networks (e.g. Convolutional) one against the other to generate 
-new content (e.g. an image). The structure of a GAN is foundational to its design. 
-As Fig.1 shows, the Generator CNN is shown on the left of the generated output. 
-The Generator iteratively learns to create new synthetic data resembling real source data 
-(e.g. regular or 360° images).  On the right of the generated output is the Discriminator CNN.
-The Discriminator is trained to differentiate between real and synthetic data. 
-In essence, the Discriminator gives the Generator feedback on its performance while 
+Generative Adversarial Networks (GANs) have long been considered to be 
+the most exciting innovation in Deep Learning. In a typical GAN architecture, 
+2 CNNs are competing against each other. One network is called the Generator, whose purpose is to 
+generate an image. The other network is called the Discriminator, whose purpose is to determine 
+how realistic the generated image from the Generator. 
+
+The Discriminator communicates feedback back to the Generator after each epoch through a loss function.
+The Discriminator is trained to minimize the loss, whereas the Generator's goal is to maximize the loss. 
+The Generator iteratively learns to create new synthetic images resembling real source input image.
+Then, the Discriminator is trained to differentiate between the real input data and generated synthetic data. \citep{GANs} 
+
+
+In essence, the Discriminator provides feedback to the Generator on its performance, while 
 simultaneously achieving incremental improvement in discernibility. 
-Thus, each epoch the Generator produces more and more realistic data and the Discriminator iteratively improves its own ability to differentiate between real and synthetic data.
+
+As a result, after each epoch, the Generator is expected to produce increasingly more realistic data,
+according to a quantitative or qualitative (visual inspection) metric.
+
+\vspace{5mm}
+
+Figure 2.3 below illustrates the architecture of a common GAN. Starting from random noise,
+the Generator is iteratively trained to produce a quality generated image.
+That image is then evaluated by the Discriminator whether it is real or synthetic.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{media/gan_arch.png}
+	\end{center}
+	\caption[GAN Architecture]{The architecture of a simple
+    Generative Adversarial Network. \citep{GANs}}
+	\end{figure}
+
+Several common GAN applications include generating missing data (versus deterministic
+interpolation), synthetic data, image-to-image translation, medical imaging, and art.
 
 
 \section{First Principles of Neural Image Compression}
 
-Deterministic, Probabilistic
-GANs
-JPEG/MPEG
+The explosion in popularity of Deep Learning methods as universal function approximators
+is expected to revolutionize image compression.
 
-\section{Commonly Used Metrics for Image Quality}
-Metrics for the generated output image are: a BRISQUE score (reference-less) [5], 
-Mean Squared Error (MSE) and Structural Similarity Index (SSIM). PSNR.
-GANs use FID and Inception score. 
-BRISQUE \citep{BRISQUE}
-Divisive normalization, Gaussian properties from natural scene statistics
-Process results in Gaussian unless it's distorted
-BRISQUE too simple for user-generated content (UGC)
+Presently, efficient storage and transmission of image and video is still a developing domain.
+
+A Deep Learning approach to multimedia compression would, theoretically, enable higher compression ratios 
+and an increase in visual quality. This approach would train a model to learn a compression function directly from data. 
+
+"Learned Multimedia Compression", as described in "First Principles of Deep Learning and Compression", involves
+computing a compressed representation of an input image. It uses Deep Learning models for both the encoder and decoder.
+\citep{FirstPrinciples}
+
+
+Another approach would be to train a model to learn feature map representations that are then fed 
+to an established deterministic compression algorithm. 
+
+Finally, a Deep Learning-based method could learn key steps of established deterministic compression algorithms.
+This approach would serve as an improvement to the existing framework of popular compression techniques.
+
+As such, an example could be to improve the compression fidelity (output quality, ratio, and speed) of JPEG. 
+To prevent information loss after compression, a model can be trained to predict non-linearities in the image related to blurring or noise.
+Furthermore, a Deep Learning model can learn image correction maps post-JPEG compression. 
+It can be trained to learn the latent feature space from examples of corrected JPEG compressed images and
+ground-truth original images. 
+
+
+\section{Metrics for Image Quality}
+
+Image Quality Assessment (IQA) is a methodology to evaluate distortions, aberrations, or
+degradations in perceived image quality.
+
+To evaluate the quality of a reconstructed image and benchmark the ViT-Score,
+this thesis will use the following metrics:
+
+\begin{itemize}
+	\item Structural Similarity Index (SSIM)
+	\item Mean Squared Error (MSE)
+    \item Peak Signal-to-Noise Ratio (PSNR)
+	\item Frechet Inception Distance (FID)
+	\item Blind/Referenceless Image Spatial Quality Evaluator (BRISQUE)
+\end{itemize}
+
+\vspace{3mm}
+
+\textbf{SSIM}
+
+
+SSIM is a measure of the similarity between two images, on an interval $[-1, 1]$.
+
+The higher SSIM value indicates a more similar image to the reference. 
+
+It is based on the computing and combining three components: Luminance, Contrast, and Structure.
+Luminance measures image brightness. Contrast measures how dark and bright pixels are distributed in an image. 
+Structure captures edge definition. \citep{SSIM_bovik}
+\vspace{2mm}
+
+The exact mathematical formulation is:
+
+\vspace{3mm}
+\begin{center}
+$SSIM(x,y) = \dfrac{(2\mu_x\mu_y + (k_1 L)^2) + (2 \sigma _{xy} + (k_2 L)^2)}{(\mu_x^2 + \mu_y^2+(k_1 L)^2) (\sigma_x^2 + \sigma_y^2+(k_2 L)^2)}$
+\end{center}
+\vspace{3mm}
+
+Where, given a windows x and y of size $(N,N)$:
+
+$\mu_x$ is the average of $x$'  $\mu_y$ is the average of $y$;  $\sigma _{x}^{2}$ the variance of $x$, $\sigma _{y}^{2}$ the variance of $y$;
+
+$\sigma_{xy}$ the covariance of $x$ and $y$; $L$ is the pixel value dynamic range, i.e. $2^{\#bits per pixel}-1$;
+
+and by default, given as constants are $k_{1}=0.01$ and $k_{2}=0.03$ \citep{SSIM_bovik}
+
+\vspace{6mm}
+
+\textbf{MSE}
+
+
+MSE is a measure of the average squared error between an input and reference matrix (i.e. image). 
+The lower the MSE value, the better the image quality.
+
+The mathematical formulation is:
+
+\vspace{3mm}
+
+\begin{center}
+$MSE=\dfrac{1}{mn} \sum_{i=1}^m \sum_{j=1}^n (x_{ij}-y_{ij})^2 $
+\end{center}
+
+
+Where:
+$m,n$ is the rows and columns of the input image,
+$x_{ij}$ and $y_{ij}$ are pixel values from the input and generated image respectively. \citep{Metrics}
+
+
+\vspace{6mm}
+
+\textbf{PSNR}
+
+
+PSNR is the ratio between the maximum possible signal intensity value and the corrupting noise present in the same signal. 
+The higher the PSNR value, the better the image quality. \citep{Metrics}
+
+
+The mathematical formulation becomes:
+\vspace{3mm}
+
+\begin{center}
+$PSNR(x,y)=\dfrac{10\log_{10}[\max(\max(x),\max(y))]^2}{\vert{x-y}^2\vert}$
+\end{center}
+
+\newpage
+
+\textbf{FID}
+
+
+Commonly used in analyzing GAN output quality, the Frechet Inception Distance (FID) compares two multidimensional Gaussian distributions. 
+
+Given are:
+
+
+$\mathcal{N}(\mu ,\Sigma )$, representing neural network features of the GAN generated image.
+
+and 
+
+$\mathcal{N}(\mu_w,\Sigma_w)$, representing the same features from the real images in a training dataset. 
+\citep{FID}
+
+\vspace{3mm}
+
+Thus, the mathematical formulation is:
+
+
+\begin{center}
+$FID=||\mu -\mu _{w}||_{2}^{2} + tr(\Sigma +\Sigma _{w}-2(\Sigma ^{1/2}\Sigma _{w}\Sigma ^{1/2})^{1/2})$
+\end{center}
+
+\vspace{5mm}
+
+\textbf{BRISQUE}
+
+
+BRISQUE represents a referenceless image quality methodology where 0 is the perfect score and 100 worst.
+This score could be interpreted as tendency of an image to be photorealistic. The score is derived from
+the Gaussian properties of natural scene statistics found in images.
+Image quality is evaluated for the presence of corruption caused by blurs or graininess. 
+An image with no distortions often has a score below 5. \citep{BRISQUE}
+
+\vspace{3mm}
+
+\NOTE{BRISQUE may be too simple to evaluate user-generated content, but is nonetheless useful in comparing
+it to the ViT-Score.}

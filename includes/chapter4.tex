@@ -19,6 +19,10 @@ Need a GAN trained on all images, not just ImageNet or Celeb
 Need ViT trained on all images
 Natural limit to capacity of this model comes from training sets.
 
+Unique positional encoding can also be achieved using trigonometric representation.
+For example, a full sentence from text or perhaps a row of pixels from an image could be represented by the various
+periods of a sinusoid. Thus, the exact location of each token would be unique.
+
 \section{Optimization}
 
 Experiment and change loss functions (MSE was used, can use a GAN specific loss like FID)
@@ -46,7 +50,9 @@ NeurIPS 2021
 
 Goal is to replace Generator and Discriminator in a GAN with Transformers free of 
 convolutions. 
-
+Deterministic, Probabilistic
+GANs
+JPEG/MPEG
 
 \section{Training and Cost Estimates}
 
@@ -61,3 +67,9 @@ tpu v3 is 420 teraflops * 2500 = 1M Tflops
 (like GPT-3 trained on all internet text, Vision T trained on all google images)
 
 (\$100M+), GPT-3 cost \$10M-\$20M
+r. In terms of image reconstruction on the decoder side, our image reconstructor needs more
+FLOPs than mbt-m due to the feature aggregation module. In
+terms of image classification on the decoder side, our image
+classifier directly performs inference from the compressed
+features without the image reconstruction process, and thus
+needs far less computational cost compared with the inference from reconstructed RGB images.
