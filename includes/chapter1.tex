@@ -28,13 +28,13 @@ of academic research in object detection. In 2022, Vision Transformer research p
 that of ResNets and exceeded any other major category.
 
 
-In the zeitgeist of Vision Transformer research, this thesis will explore a ViT-assisted metric related to 
+In the zeitgeist of Vision Transformer research, this thesis explores a ViT-assisted metric related to 
 image compression. This metric can provide additional insights to GAN output quality 
 and the latent space (contextual) preservation of a variety of input images.
 
 
-\NOTE{Thus, this work can be viewed as a stepping stone towards an end-to-end Transformer-based
-image compression and regeneration framework.}
+\NOTE{Thus, contributions from this thesis can be viewed as providing a stepping stone 
+towards an end-to-end Transformer-based image compression and regeneration framework.}
 
 
 \section{Brief History}
@@ -47,17 +47,17 @@ It proposes a novel architecture, which models long-range dependencies in
 sequential (text) data, by arranging a set of self-attention layers. 
 
 A self-attention layer is what the model uses to focus on different elements of the 
-input sequence simultaneously. For example, it can be ysed to compute the 
+input sequence simultaneously. For example, it can be used to compute the 
 distance (relationship) between every word in a given sentence. \citep{Attention}
 
 
 Examples of implementations of text-based Transformers are BERT by Google and GPT-3 by OpenAI.
-BERT, among other things, as of 2021 processes and autofills every single English-based 
-Google user search query. \citep{bert}
+BERT, among many other applications, processes and autofills every single English-based 
+Google user search query as of 2021 . \citep{bert}
 GPT-3, on the other hand, revolutionized text generation in 2020, demonstrating the ability 
 to generate extremely cohesive textual output.
 
-Most Transformers are used in language modeling and Natural Language Processing (NLP).
+Most Transformers are used for applications in language modeling and Natural Language Processing (NLP).
 Thus, they are often benchmarked against Recurrent Neural Networks (RNNs, and specifically 
 Long Short-Term Memory, LSTM architecture). LSTMs rely on hidden states to pass information 
 along sequentially during the encoding and decoding process for each word token. 
@@ -77,12 +77,12 @@ To resolve this, the input image is broken down into square blocks of equal size
 Then, each image patch is unrolled into a one-dimensional sequence $(n x 1)$ and indexed with a positional 
 embedding in a table for future reference and retrieval purposes. The embeddings enter the Transformer and 
 finally, a feed forward classifier, in the form of a Multilayer Perceptron (MLP) 
-makes the classification prediction, yielding a probability distribution.\citep{dosovitskiy2020vit}
+makes the classification prediction, yielding a probability distribution. \citep{dosovitskiy2020vit}
 
 
 Transformer, in a way, is a generalization of a feed forward network, but 
 instead of fixed connections weights in an MLP, each connection weight (i.e. attention) 
-is computed ad hoc. That makes the Transformer, unlike the MLP, permutation invariant. 
+is computed ad hoc. This makes the Transformer, unlike the MLP, permutation invariant. 
 That is, it would not know where certain information is coming from, unless there are additional 
 learnable sequential positional embeddings, i.e. index the image patches.
 
@@ -107,54 +107,73 @@ which are being passed on into each next iteration of the Transformer.
 The last layer, expectedly, uses a Softmax architecture to normalize and map the potential output classes 
 to a probability distribution. 
 
+\vspace{10mm}
 
 \textbf{Multi-Head Attention}
 
 
-Sets of parallel attention layers at each token are called multi-head attention 
-(to vary what to pay attention to: e.g. at verbs in the sentence or different objects 
-in an image). The multi-head attention is composed of Key-Value pairs coming from 
-the encoding part of the source sentence or image (i.e. the input embedding) and 
-Queries from the output embedding (i.e. encoding part of target sentence or image).
-Now that we explained relevant transformer components, we can see how it applies to 
-2D signals, i.e. image matrices for classification purposes in image recognition.
+Sets of parallel attention layers at each token are called multi-head attention.
+This approach varies what to pay attention to, for example,at the different objects 
+in an image (or in natural langue, different verbs in a sentence). 
+The multi-head attention is composed of Key-Value pairs coming from 
+the encoding part of the source image (i.e. the input embedding) and 
+Queries from the output embedding (i.e. encoding part of target image).
 
 
 \section{Mathematical Formulation}
 
-So in its full formulation, Attention is a function of queries, keys and values 
-vectors labeled capital $(Q,K,V)$. 
-It equals the dot product $(QK^T)$ of keys and queries respectively, softmaxed over 
-the square root of dimensions and multiplied by Values.
-So:
-Values - are what is most interesting in the source (sentence or image), 
-e.g. attributes or features (like keyword adjectives or perhaps structural 
-features in an image).
-Keys - index (or address) those values (name, type, weight). Each key has an 
-associated value. Queries - are built by the encoder of the target sentece or 
-image and prompt the network to find information. 
+\textbf{Attention}
+
+
+In its full formulation, Attention is a function of vectors representing Queries, Keys, and Values, 
+labeled as $(Q,K,V)$. 
+Attention equals the dot product $(QK^T)$ of Keys and Queries respectively, softmaxed over 
+the square root of dimensions and multiplied by the Values vector.
+
+To provide intuition:
+
+Values are what is most interesting in the source image, i.e. 
+attributes or structural features. In text, a Value could be important adjectives before each keyword, 
+which provide emphasis in a given input sentence.
+Keys, on the other hand, index (or address) those Values (e.g. name, type, weight). 
+Each Key has an associated Value. 
+Queries are built by the encoder of the target image and prompt the network to find closest 
+available information (Key and its corresponding Value). 
 
 \begin{center}
 	$ Attention(Q, K, V) = softmax(\dfrac{QK^T}{\sqrt{d_k}} V ) $
 	\end{center}
 
-The overall dynamic: a Query is pegged against a Key to locate a certain Value.	
 
-The softmax is basically a normalized exponential function: sequence of Variables is 
-mapped into exponentials and divided by the sum of all the exponentials. Thus, the 
-large numbers become almost ones and small numbers near zeros, like the maximum 
-function, but this one is differentiable. 
+\NOTE{Thus, the overall dynamic is that a Query is pegged against a Key to locate a certain Value.}
+
+\vspace{10mm}
+
+\textbf{Softmax}
+
+
+The Softmax function is defined as a normalized exponential function. 
+A sequence of variables is mapped into exponentials and divided by the sum of all exponentials. 
+Thus, the large numbers become almost ones and small numbers near zeros. Softmax is similar to the maximum 
+function, with a key difference that Softmax is differentiable. 
 
 \begin{center}
 	$ \displaystyle\sigma(Z_i) = \dfrac{e^{z_j}}{\sum_{j=1}^K e^{z_j}}$ for $i=1,...,K$ $and z=(z_1,...,z_K) \in \mathbb{R}^K $
 	\end{center}
 
-So a softmax of an inner product of each key with query vector normalizes to a 
-probability distribution over all Values (very similar to using a softmax in the last 
-layer of a NN over all the labels to yield the top classification pick). 
+Thus, a Softmax of an inner product of each Key with Query vector normalizes to a 
+probability distribution over all Values. Neural networks typically utilize a softmax in their last 
+layer over all the classification labels. This yields the top classification by probability. 
+Using the softmax function, a certain Key will stand out (in magnitude) vs the rest.
+
+\vspace{10mm}
+
+\textbf{Vector Similarity}
 
 
-To understand vector proximity between embeddings, e.g. similarity in objects for images, or words in sentences.
+Vector proximity between embeddings represents the similarity between objects in images, or 
+word connotations in sentences.
+
 
 \begin{figure}[H]
 	\begin{center}
@@ -163,54 +182,105 @@ To understand vector proximity between embeddings, e.g. similarity in objects fo
 	\caption[Vector Representation]{Vector representation on a unit circle.}
 	\end{figure}
 
+
 The dot product of Keys and Queries yields an angle between both vectors (e.g. $u_i$ and $u_j$ in Figure 1.2 above) to measure 
-how similarly aligned they are. In high dimension, most vectors would be orthonormal 
-and $cos(90)=0$. But if Key and Query align, they'd have a large dot product. 
-Each key in space has an associated value (the pair). The Query vector is computed with 
-each key and softmaxed to select one Key with the highest dot product. With softmax, 
-a certain Key will stand out (in magnitude) vs the rest.
+how similarly aligned they are. In high dimensional spaces, most vectors would be orthonormal to each other
+and $cos(90)=0$. But if Key and Query vectors are similar or align, they'd have a large dot product. 
+The larger the similarity, the larger the dot product. 
+The Query vector is computed with each Key in the surrounding vector space and softmaxed to 
+select the one Key with the highest dot product.
+The selected Key in space has an associated Value. In applications, that Value would correspond to 
+a match with a labeled object in an image, or perhaps the next word in a generated sentence. 
+
+
+A depiction of the vector space is shown in Figure 1.3 below.
+
 
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.3\textwidth]{media/dot2_real.png}
 	\end{center}
-	\caption[Key/Query Vector Proximity]{Vector proximity shows the closest Key vector to a given Query vector.}
+	\caption[Key/Query Vector Proximity]{Vector proximity shows the closest Key vector to a given Query vector in space.}
 	\end{figure}
 
-So the formulation of each proximity is the dot product of vectors K with Q: $ \displaystyle sum(\langle K_z \vert Q \rangle) $
-
-%\newpage
 
 \section{Implementations}
-\subsection{Open Source Pre-trained Models}
 
-Open Source
-On GitHub.
-Original one by Google in tensorflow.
-Hugging Face in PyTorch.
-For the purpose of this thesis, we will use a PyTorch implementation trained on ImageNet-21k
-and fine tuned on ImageNet-1k.
+
+This section reviews several notable ViT implementations of interest.
+Most developments have been made open source. Howerver, some of the 
+highest quality implementations are still closed source and operated 
+under a license or payment wall.
+
+\subsection{Open Source}
+
+The academic research aggregator PapersWithCode lists 96 open source implementations of 
+the original ViT from "An Image is Worth 16x16 Words" discussed in Chapter 2. 
+The publication was made for ICLR 2021. \citep{Papers16}
+
+The original model from the team of Google researchers, written using TensorFlow, has 72,567 stars in its GitHub repository.
+The second highest implementation by Hugging Face, written using PyTorch, has 61,820 stars. 
+
+
+\vspace{10mm}
+
+\textbf{Pre-trained Model Used}
+
+For the purpose of this thesis, a PyTorch implementation was used trained on ImageNet-21k
+and fine tuned on ImageNet-1k. The ViT has 9,696 stars on it's GitHub repository,
+ranking as the 5th highest rated implementation. It was chosen due to its reliability,
+project maturity, and interfaceability. \citep{Papers16}
+
+\vspace{5mm}
+
+A python pip package is also available on PyPI from the same "lucidrains" implementation,
+which can be installed via: 
+\begin{verbatim} "pip install pytorch_pretrained_vit" \end{verbatim}
+
+
+Other pre-trained models are also availabe on GitHub and Google Colab. 
+Some suffer from a lower GitHub star rating, are not well packaged (not object-oriented), or perhaps deviate too far
+from the original implementation of "An Image is Worth 16x16 Words". 
+
 
 \subsection{Closed Source}
 
-OpenAI (DALL.E 2) released in April 2022, trained on 250M image-text pairs 
-to be able to generate images from textual description. \citep{Dalle2}
-Not much information, not open source like google's ViT or BERT.
 
-\section{Computational Constraints}
+Several modified implementations targeting specific generative applications have been made by Hugging Face and OpenAI.
+OpenAI has expanded from its success from GPT-3, a text generation Transformer, to visual applications.
 
-Time, memory, cost
+Transformers and Vision Transformers can be used to find context in image objects from the latent space of an input image.
 
-Text transformers perform extremely well on orders of magnitude smaller size training examples.
-GPT-3 trained on 45TB of text data (Wikipedia included), has 175B parameters and 96 attention layers. \citep{GPT3}
-\$4.6M using a Nvidia advanced datacenter GPU grade cloud cluster.
+CLIP, Image GPT, DALL.E, and DALL.E2 by OpenAI bridge the gap between textual information and images.
+DALL.E 2, the highest quality image Transformer to date, was released in April 2022.
+It is trained on 250M image-text pairs to be able to generate coherent images from textual description. \citep{Dalle2}
 
-Several orders of magnitude more for image data.
+\vspace{1mm}
 
-Need a ViT on all internet, to cost \$100M in training alone. 
-To train a ViT on the whole TACC Frontera at 20k teraflops (top10) or 
-Stampede at 10k tflops (top25), it would take respectively about a minute and 2 minutes.
-tpu v3 is 420 teraflops * 2500 = 1M Tflops
+However, most of OpenAI's Transformers (e.g. GPT-3, DALL.E 2) are not open source like Google's ViT or BERT.
+
+
+\section{Computational Constraints for Training}
+
+
+The main reason for using a pre-trained ViT is that the Transformer architecture is so generalizable and 
+overparameterized, that the computational requirements for Time, Memory, and Cost are beyond the scope of this thesis.
+
+
+For example, GPT-3 was trained on 45TB of text data (all of Wikipedia included). It has 175B parameters and 96 attention layers. \citep{GPT3}
+One flavor of GPT-3 (of many) alone cost \$4.6M to train using the most advanced Nvidia datacenter GPUs in a cluster.
+
+\vspace{10mm}
+
+\textbf{Training the Next Generation of Image GPT}
+
+It would require several orders of magnitude more resources to train a Vision Transformer that matches the quality of GPT-3.
+
+The training data would need to be similar to all Google images on the internet (or at least a respectable representative subset).
+It would probably cost on the order of \$50M in training alone, since image matrices are two-dimensional sequences of data.
+Contextual complexity also rises exponentially for images compared to text.
+
+
 
 
 
