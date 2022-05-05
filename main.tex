@@ -71,19 +71,18 @@
     The ViT architecture is designed to output a classification probability distribution against
     a set of training labels. 
     Thus, it is a suitable candidate for a new method for quantitative assessment of generated 
-    images based on object-level deviations from the original pre-compression image.
+    image quality based on object-level deviations from the original pre-compression image.
     The metric is referred to as a ViT-Score.
     This approach complements other comparative measurement techniques based on per-pixel 
     discrepancies (Mean Squared Error, MSE) or structural comparison (Structural Similarity Index, SSIM). 
     This study proposes an original end-to-end deep learning framework for neural image compression, 
     latent vector representation, reconstruction, and image quality analysis using 
-    state-of-the-art model architectures. Neural image compression and generation 
+    state-of-the-art model architectures. Neural image compression and reconstruction 
     is achieved using a Generative Adversarial Network (GAN). 
-    Results from this work demonstrate that a ViT-Score from a Vision Transformer is capable of assessing 
+    Results from this work demonstrate that a ViT-Score is capable of assessing 
     the quality of a neurally compressed image. 
-    Moreover, this methodology provides valuable insights when measuring image quality.
-    It can be used in addition to established perceived quality metrics for compressed and generated 
-    images such as SSIM and Frechet Inception Distance (FID). 
+    Moreover, this methodology provides valuable insights when measuring GAN output quality and
+    can be used in addition to other relevant perceived quality metrics such as SSIM or Frechet Inception Distance (FID). 
 
     \ThinHRule
 \end{abstract}
@@ -115,8 +114,8 @@ This section summarizes the brief history of Transformer usage in deep learning.
 These generalized architectures are dominating state-of-the-art language models,
 as they are extremely efficient in packing relevant information within a one dimensional vector.
 
-This introduction then proceeds to describe the principles of operation of a ViT. 
-Then, proceed with a mathematical formulation. Finally, it covers currently 
+This introduction then proceeds to describe the principles of operation of a ViT, 
+followed by its mathematical formulation. Finally, it covers currently 
 available implementations in the form of pre-trained models and conclude with an 
 explanation on the computational and financial constraints of training such demanding 
 architectures.
@@ -150,7 +149,7 @@ takeaways offered from:
 	\item "Towards End-to-End Image Compression and Analysis with Transformers" 
 
     \citep{Bai2022AAAI}
-    \item Image Generation with GANs
+    \item Overview of Image Generation with GANs
 	\item "First Principles of Deep Learning and Compression" \citep{Principles}
 	\item Image Quality Assessment (IQA) metrics
     
@@ -166,11 +165,23 @@ takeaways offered from:
 %	CHAPTER 3: Core of Thesis
 %==
 % \cleardoublepage
+\let\cleardoublepage\clearpage
+
 \chapter{ViT-based Assessment of Neural Image Compression}
 
 
-This chapter presents the core contributions in this thesis. Several input images
-are presented and run
+This chapter presents the core contributions from this thesis. Four input images
+are used to demonstrate the modest ability of a GAN to compress and reconstruct from 
+latent space. 
+The section explains the architecture of choice and presents the output from the GAN.
+The audience is presented with visualizations of the training process, latent space vector,
+and resulting Compression Ratio (CR) values.
+The reader is free to visually inspect the output.
+The novel ViT-Score and its mathematical formulation is presented.
+The output post-compression images are also evaluated using the following image quality metrics: 
+SSIM, MSE, PSNR, FID, BRISQUE. 
+
+Finally, a summary table presents all results from this chapter for quick reference. 
 
 \ThinHRule
 
@@ -184,8 +195,12 @@ are presented and run
 % \cleardoublepage
 \chapter{Discussion}
 
-Increase in relevant recent publications (13 alone in 2022 thus far) supports the vision of tying 
-vision transformers to image compression.
+This chapter critically discusses the results from Chapter 3 in greater detail.
+The reader is presented with a thorough evaluation of the results, potential improvements, 
+challenges, and possible optimization to the architecture.
+Based on the results shown, the reader is invited to a thought-provoking discussion of the
+present and future of image-based Transformers.
+Finally, the audience is engaged in a speculation on the cost of training a successful image compressing Transformer.
 
 \ThinHRule
 

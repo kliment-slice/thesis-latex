@@ -243,7 +243,7 @@ The second highest implementation by Hugging Face, written using PyTorch, has 61
 \textbf{Pre-trained Model Used}
 
 For the purpose of this thesis, a PyTorch implementation was used trained on ImageNet-21k
-and fine tuned on ImageNet-1k. The ViT has 9,696 stars on it's GitHub repository,
+and fine tuned on ImageNet-1k. The ViT has 9,696 stars on its GitHub repository,
 ranking as the 5th highest rated implementation. It was chosen due to its reliability,
 project maturity, and interfaceability. \citep{Papers16}
 
@@ -273,24 +273,29 @@ It is trained on 250M image-text pairs to be able to generate coherent images fr
 
 \vspace{1mm}
 
-However, most of OpenAI's Transformers (e.g. GPT-3, DALL.E 2) are not open source like Google's ViT or BERT.
+Most of OpenAI's Transformer developments (e.g. GPT-3, DALL.E 2) have not been open sourced. 
+Google's ViT and BERT, however, have been.
 
 
 \section{Computational Constraints for Training}
 
 
 The main reason for using a pre-trained ViT is that the Transformer architecture is so generalizable and 
-overparameterized, that the computational requirements for Time, Memory, and Cost are beyond the scope of this thesis.
+overparameterized, that the computational requirements for Time, Memory, and Cost of training 
+are beyond the scope of this thesis. 
 
 
 For example, GPT-3 was trained on 45TB of text data (all of Wikipedia included). It has 175B parameters and 96 attention layers. \citep{GPT3}
 One flavor of GPT-3 (of many) alone cost \$4.6M to train using the most advanced Nvidia datacenter GPUs in a cluster.
 
+The original ViT implementation from "An Image is Worth 16x16 Words" took 2.5k core-days of training time. \citep{dosovitskiy2020vit} 
+
 \vspace{10mm}
 
 \textbf{Training the Next Generation of Image GPT}
 
-It would require several orders of magnitude more resources to train a Vision Transformer that matches the quality of GPT-3.
+It would require several orders of magnitude more resources to train a Vision Transformer that matches the quality of GPT-3 
+for generative text applications.
 
 The training data would need to be similar to all Google images on the internet (or at least a respectable representative subset).
 It would probably cost on the order of \$50M in training alone, since image matrices are two-dimensional sequences of data.

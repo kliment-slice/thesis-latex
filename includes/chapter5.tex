@@ -1,42 +1,50 @@
 \section{Key Contributions}
 
 (experimentation with Vision Transformers, nascent field)
-Main merit of this thesis:
-ViT-score, a ViT-Assisted metric for evaluating the performance of a neural image compression
-Generative Adversarial Network.
+The main merit of this thesis was introducing the ViT-Score.
+A Vision Transformer-Assisted metric for evaluating the performance of a neural image compression, the score
+correlated with the Generative Adversarial Network verifiably generating a comprehensible image by visual inspection.
 
-This thesis explores a Vision Transformer (ViT)-Assisted metric related to 
-image compression, which can provide 
-additional insights to GAN output quality and the input latent space (contextual) preservation.
+The ViT-Score conclusively contributed insights to image quality, relating to human perception of the generated image. 
+The metric can also provide additional insights to understanding the latent space (contextual) preservation of an input image.
 
-Furthermore, evaluating output quality from Generative Adversarial Networks (GANs) is 
-still a developing field using non-Deep Learning-adapted assessment methods. 
-For the purpose of this thesis, a GAN was used as a placeholder 
-for a future, coveted, and highly desirable Deep Learning-based image compression mechanism. 
-
-\NOTE{Thus, this work can be viewed as a stepping stone towards an end-to-end Transformer-based
+\NOTE{This work can be viewed as a stepping stone towards an end-to-end Transformer-based
 image compression and regeneration.}
 
 \section{Summary}
 
-In summary, computing vector proximity is achieved using the dot product of vectors K with Q: $ \displaystyle sum(\langle K_z \vert Q \rangle) $
+Throughout this report, the reader was presented with all relevant background knowledge necessary 
+to grasp the key contributions listed. 
+A Vision Transformer (ViT) was used to evaluate the capacity of 
+a GAN to compress and generate an image of choice based on object-level similarities with the original input image.
 
+The new metric, referred to as a ViT-Score, was able to capture and assess the quality of the output images and provide 
+valuable insights. The ViT-Score performed well, comparing in capacity to established image quality metrics such as
+SSIM, MSE, and PSNR. 
 
 
 \section{Takeaways}
 
-Now that we explained relevant transformer components, we can see how it applies to 
-2D signals, i.e. image matrices for classification purposes in image recognition.
+The future of image compression technology will be based on a Deep Learning methodology.
+Due to their generalizability, excellent performance in 1-dimensional data (text),
+and proven ability to scale to 2-dimensions, Transformers are an excellent choice of 
+architecture to use in image compression and reconstruction.
+
 
 A Vision Transformer (ViT)-Assisted metric related to image compression can provide 
 additional insights to the latent space (contextual) preservation.
 Thus, this work can be viewed as a stepping stone towards an end-to-end Transformer-based
 image compression and regeneration.
 
-It will take 100M dollars and a lot of work from a giant tech company, but
-future is near. The next major image compression methodology will be deep learning-based.
-The next image quality assessment will be deep learning-based.
-Transformers are ideal fit, highly generalizable, highly performant, hard to train.
+
+Perhaps, such a metric could be used as a Loss function, embedded within the architecture,
+along with being a useful evaluation metric.
+
+
+It may cost on the order of \$100M and several years, but such a technology will be achieved.
+
+
+Finally, this image technology can be extended to videos and video compression in further developments.
 
 
 \section{Acknowledgments}
@@ -70,9 +78,10 @@ which were used throughout the experimentation process in this thesis.
 
 \section{Closing Remarks}
 
-This thesis is written as a graduation requirement for the degree of Master of Science 
-in Computational Science, Engineering, and Mathematics awarded by the Oden Institute at 
+This thesis is written as a graduation requirement for the degree of Master of Science in
+
+Computational Science, Engineering, and Mathematics awarded by the Oden Institute at 
 The University of Texas at Austin.
 
 
-All code and knowledge is available as open source to the general public.
+\NOTE{All code has been made available as open source to the general public in the form of a GitHub repository.}

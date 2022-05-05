@@ -1,47 +1,79 @@
 \section{Results and Improvements}
-A review of the merits from this work.
 
 \subsection{Results}
 
-Features are in deep layers of the GAN network. 
-Latent space is hard to decipher
-ViT score definition: how many of the top100 labels match
-Can take into account probability of label (included in ViT).
-While label probability is stable when working with corrupted images (demo), 
-unstable when working with generated images.
+The most incomprehesible generated image "Tower", where the GAN failed to reconstruct a recognizable
+object, expectedly has the lowest ViT-Score of all four images. This is a testament for the valuable 
+insight the ViT-Score contributes.
+
+
+PSNR, FID, and BRISQUE seem rather irrelevant due to their inability to capture synthetically induced
+aberrations obvious to the human eye.
 
 \subsection{Potential Improvements to Architecture}
 
-Analyze latent space vector with transformer model (not a ViT, but a transformer adaptation)
-Steer the GAN faster into training to compress
-Slow computational times
-Need a GAN trained on all images, not just ImageNet or Celeb 
-Need ViT trained on all images
-Natural limit to capacity of this model comes from training sets.
+The ViT-Score definition could be further improved or experimented with.
+For the purpose of this project, the ViT-Score was based on how many of the top100 labels match
+between the input and generated images.
+
+The ViT-Score can take into account probability of each label found (included in script output).
+While the label probability is stable when working with corrupted images, it is rather 
+unstable when working with generated images.
+
+Features are typically found to be in the deeper layers of the GAN network. 
+The latent space is hard to decipher, but a Transformer is efficient in packing information from it 
+to a 1-dimensional vector.
+
+Evaluating output quality from Generative Adversarial Networks (GANs) is 
+still a developing field using non-Deep Learning-adapted assessment methods. 
+For the purpose of this thesis, a GAN was used as a placeholder 
+for a future, coveted, and highly desirable Deep Learning-based image compression mechanism.
+
+Need a GAN trained on all images, not just popular datasets such as ImageNet or Celeb. 
+Perhaps the next generation ViT needs to be trained on all internet images, or at least a sizable, diverse, and
+representative subset.
+
+The natural performance limit to the capacity of this model comes from its training sets.
 
 Unique positional encoding can also be achieved using trigonometric representation.
 For example, a full sentence from text or perhaps a row of pixels from an image could be represented by the various
 periods of a sinusoid. Thus, the exact location of each token would be unique.
 
-\section{Optimization}
+\section{Optimization} 
 
 Experiment and change loss functions (MSE was used, can use a GAN specific loss like FID)
+Learning rate reduction on plateau was used.
+Most valuable technique, which contributed to the GAN improving its quality of generated image was
+reducing the learning\_rate as the model trains.
 
-Most valuable technique:
-(reducing learning\_rate as the model trains)
-changing input images to cater to what the generative model is trained on.
-SGD optimizer for GAN
+Stochastic Gradient Descent (SGD) was used as an optimizer for the GAN.
 
-A lot of options still not figured out.
-regularization during training: residual dropout, label smoothing
+Perhaps trying Adam could achieve better results on certain types of images, though probably
+not on average.
+
+Furthermore, experimenting with input image types to cater to what the generative model is best trained on
+could yield much better results.
+
+Other options to endlessly experiment with include introducing regularization during training such as residual dropout and label smoothing.
+
+Analyze latent space vector with transformer model (not a ViT, but a transformer adaptation)
+Steer the GAN faster into training to compress
+Slow computational times
+
 
 %\newpage
 
 \section{Present and Future of Image Transformers}
+
+\subsection{Status Quo}
+Increase in relevant recent publications (13 alone in 2022 thus far) supports the vision of tying 
+vision transformers to image compression.
+
 Status quo of Transformers in Image Processing, Compression, Analysis, and Generation
 Coveted Deep learning based Image compression 
 In the deep learning/AI evolutionary process, still too early. Models have not been trained on enough image data.
 
+\subsection{Future Developments}
 GAN model only trained on finite set (ImageNet, CIFAR-10, Celeb-HQ faces etc) and resolution.
 Need to train GAN on all images ever.
 
@@ -54,7 +86,7 @@ Deterministic, Probabilistic
 GANs
 JPEG/MPEG
 
-\section{Training and Cost Estimates}
+\subsection{Training and Costs}
 
 Need a ViT on all internet to cost 100M
 A 512-core TPU v3 pod costs \$384/hr to use commercially on GCP. 

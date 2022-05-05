@@ -1,12 +1,61 @@
-\section{Generative Image Compression and Generation}
+\section{Architectures and Inputs}
 
-(vineeth)
+\subsection{General Project Architecture}
 
-\subsection{Architecture}
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=1\textwidth]{media/main_arch2.png}
+	\end{center}
+	\caption[Model Architecture]{The engine architecture for this project. A GAN compresses and reconstructs
+    an input image. Then, a Vision Transfomer (ViT) conducts object detection in both the input and generated images.
+    Finally, the ViT-Score is computed based on the number of matching labels.}
+	\end{figure}
 
-SGD optimizer for GAN
+A standard Generator-Discriminator architecture GAN was used. 
 
-\subsection{Sample Images Used}
+The Generator generates a synthetic image for the Discriminator to evaluate.
+Stochastic Gradient Descent (SGD) optimizer was used for the GAN to find the most optimal latent space vector
+representation of the input image.
+Mean Squared Error (MSE) was used as a Loss function.
+
+A pre-trained Vision Transformer (ViT) was used for the image labeling.
+
+
+\subsection{Image Compression Diagram}
+
+Similar to established image compression methodologies, the compression and reconstruction process 
+is divided into a Compressor and Decompressor parts.
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.6\textwidth]{media/main_compress.png}
+	\end{center}
+	\caption[Compression Architecture]{The Compressor-Decompressor uses the GAN Generator from Figure 3.1 above 
+    to generate the output image using most optimal latent vector representation.}
+	\end{figure}
+
+As showing in Figure 3.2 above, the Compressor is composed of the GAN Generator and an input image to find and return the latent vector using
+Stochastic Gradient Descent (SGD).
+
+The Decompressor then uses the GAN Generator and latent vector from the Compressor to produce the final reconstructed image.
+
+
+Following the Decompressor generating an output image, the pre-trained ViT then detects objects from a 
+dictionary of labels. The ViT outputs a probability distribution, i.e. a probability for each label summing to unity (softmax). 
+The final output of the script developed for this project is the ViT-Score, and other relevant image quality metrics (e.g. SSIM, MSE, etc)
+to evaluate the generated output image.
+
+Python and PyTorch were used for the implementation of the architectures detailed above.
+
+\subsection{Sample Input Images Used}
+
+
+Four images (512x512, PNG format) are used in this study.
+The images represent distinct types of image to be compressed, as well as 
+diverse features to challenge the deep learning model architecture.
+For example, a white background ("Logo"), a black background ("Bevo"), similar shapes, but
+distinct images ("Logo" vs "Bevo"), a face, a building, trees and clouds in the background.
+
 
 \begin{figure}[H]
 	\begin{center}
@@ -23,31 +72,6 @@ SGD optimizer for GAN
     \hspace{2cm} "Tower": The University of Texas Tower, the Main Building on campus.}
 	\end{figure}
 
-        % \begin{figure}[H]
-% \begin{algorithm}[H]
-% \KwData{A as Array to sort,}
-% \KwResult{A as sorted Array} 
-
-% int n $\leftarrow$ A.size \tcp*[l]{cache the initial size of A}
-
-
-% \Repeat{n>1}{
-% 	int newn $\leftarrow$ 1
-% 	\For{int i=0; i<n-1; i++}
-% 	{
-% 		\If{A[i] > A[i+1]}
-% 		{
-% 			A.swap(i, +1);
-% 		}
-% 	}
-% 	n  $\leftarrow$ newn
-% }
-
-% return A
-% \caption{Neural Image Compression}
-% \end{algorithm}
-% \caption[TBC]{Figure caption caption}
-% \end{figure}
 
 \subsection{Latent space vector representation during compression}
 
@@ -68,7 +92,7 @@ The GAN then rebuils to 242kb.
 	\end{figure}
 
 % \newpage
-\section{Output and Visual Inspection}
+\section{Outputs and Visual Inspection}
 The generative process from the GAN was designed to output an image at a specified epoch.
 
 \subsection{Training Process}
@@ -98,11 +122,41 @@ Figure 3.4 below shows the resulting images from the neural compression GAN.
     version of the original image from a latent space vector representation.}
 	\end{figure}
 
+\vspace{5mm}   
+
+
 The GAN was able to respectably regenerate "Kliment" and "Logo", especially if the resolution
 were to be lowered (e.g. 32x32, such as the CIFAR-10 dataset).
 
 However, the GAN was unable to perform as well for "Bevo" and "Tower".
 It learned random noise and generation performance decreased.
+
+
+\textbf{Compression Ratios (CR)}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Bevo}	& 1.32 \textit{(failed to compress)}\\
+\textbf{Kliment}	& 0.59\\
+\textbf{Logo}	& 8.28 \textit{(failed to compress)}\\
+\textbf{Tower} & 0.54\\\hline
+
+\end{tabular}
+\caption[Results: Compression Ratios]{Compression ratios of generated images.}
+\end{center}
+\end{table}
+
+The GAN failed to compress two of the images, "Bevo" and "Logo". Understandably,
+"Logo" is actually a vector graphic with a clear background, with an input file size of only 13.4 KB.
+The GAN had to create the white background, which cost extra disk space.
+
+"Kliment" and "Tower" were compressed to half the original size, with "Kliment"
+being a suitable candidate to demonstrate the capacity of this GAN.
+Much like the content of "Kliment", the most popular application and training set of most GANs, including this pre-trained model,
+is indeed faces. Hence, "Kliment" had the highest Compression Ratio (CR), while maintaining the highest ViT-Score.
+
 
 \section{ViT-Scores}
 
@@ -124,15 +178,19 @@ The following is a mathematical representation explained in further detail.
     $ViT_{score} = \displaystyle\dfrac{argmax_{A'\subset A,\lvert A' \rvert = k } \sum_{a \in A'} {a} }{k} $
 \end{center}
 
+\vspace{1mm}
 
+\begin{center}
 where $\sum_{a \in A'} {a}  = \lbrace{m \in I_{input}}\rbrace \cap \lbrace{n \in I_{generated}}\rbrace$
+\end{center}
 
+\vspace{2mm}
 
 and $m$ are the top-$K$ labels in the input image $I_{input}$
 
 and $n$ are the top-$K$ labels in the generated image $I_{generated}$.
 
-\vspace{12pt}
+\vspace{4pt}
 
 This overly elaborate mathematical notation is an attempt at describing:
 
@@ -156,9 +214,12 @@ are as follows:
 
 \begin{center}
 	\includegraphics[width=0.6\textwidth]{media/gan_compress2.png}
+
+    \textbf{Resulting generated images.}
 \end{center}
 
-\textbf{ViT-Scores:}
+\textbf{ViT-Scores}
+
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{|c|c|}
@@ -194,42 +255,52 @@ Overall, the ViT-score does a good job of measuring image quality.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{media/kimbo_metrics.png}
+	\includegraphics[width=0.8\textwidth]{media/kimbo_metrics.png}
 	\end{center}
-	\caption["Kliment" Established Metrics]{After sufficient training, the GAN outputs a regenerated
-    version of the original image from a latent space vector representation.}
+	\caption["Kliment" Established Metrics]{The image was structurally reconstructed rather well.
+    Shortcomings were only the facial features within the face.}
 	\end{figure}
+
+
+This image achieved a ViT-Score of 0.54, SSIM of 0.56, and MSE of 1,759.28 with a Compression Ratio of 0.59.
 
 \subsection{"Logo"}
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=1\textwidth]{media/logo_metrics.png}
+	\includegraphics[width=0.8\textwidth]{media/logo_metrics.png}
 	\end{center}
-	\caption["Logo" Established Metrics]{After sufficient training, the GAN outputs a regenerated
-    version of the original image from a latent space vector representation.}
+	\caption["Logo" Established Metrics]{The GAN was able to reconstruct the logo almost perfectly.}
 	\end{figure}
 
+
+    The generated logo is extremely well identifiable.
+    This image achieved a ViT-Score of 0.29, SSIM of 0.91, and MSE of 393.69. However, it failed to be compressed
+    less than its original size. The GAN had to reconstruct the white background, which came out yellowish.
 
 \subsection{"Bevo"}
 
 \begin{figure}[H]
         \begin{center}
-        \includegraphics[width=1\textwidth]{media/bevo_metrics.png}
+        \includegraphics[width=0.8\textwidth]{media/bevo_metrics.png}
         \end{center}
-        \caption["Bevo" Established Metrics]{After sufficient training, the GAN outputs a regenerated
-        version of the original image from a latent space vector representation.}
+        \caption["Bevo" Established Metrics]{The GAN was unable to reconstruct inside the longhorn, yet
+        the structure of the image is well rebuilt. One could possibly identify the animal from the generated image.}
         \end{figure}
+
+"Bevo" achieved a ViT-Score of 0.14, SSIM of 0.26, and MSE of 3,479.34, while failing to compress. 
 
 \subsection{"Tower"}
 
 \begin{figure}[H]
         \begin{center}
-        \includegraphics[width=1\textwidth]{media/tower_metrics.png}
+        \includegraphics[width=0.8\textwidth]{media/tower_metrics.png}
         \end{center}
-        \caption["Tower" Established Metrics]{After sufficient training, the GAN outputs a regenerated
-        version of the original image from a latent space vector representation.}
+        \caption["Tower" Established Metrics]{The GAN completely failed at .}
         \end{figure}
+
+This reconstruction is the lowest quality of all four images, both quantitatively and qualitatively.
+The generated image is incomprehensible. It has the lowest ViT-Score at 0.03, SSIM of 0.53, and MSE of 1,315.75.
 
 \subsection{"BRISQUE"}
 
@@ -266,36 +337,55 @@ distortions.
 Loss functions as well (MSE loss was used in GAN)
 
 
-\section{GAN-Related Quantitative Metrics}
+\subsection{GAN-Related Quantitative Metrics}
+
+There are two prominent evaluation metrics for the performance of a Generative Adversarial Network (GAN).
+Specifically, the Frechet Inception Distance (FID) and Inception Score (IS).
+
+The FID score is 0 if there is no difference between the two multidimensional Gaussian distributions compared. 
+
+Both measurements serve to evaluate the synthetic nature of the generated output. 
 
 
-(FID score, inception score (IS) )
-Can be loss functions as well (MSE was used)
-FID is Frechet Inception Distance. 0 if there is no difference between the images.
-81105.162 for logo and logo\_GAN.
-331171.556 for tower and towerGAN
-549089.491 for kimbo and kimboGAN
-1241999.901 for bevo and bevoGAN
+The \textbf{FID} score is presented in Table 3.1 below:
 
+\begin{table}[H]
+    \begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+    \textbf{Bevo}	& 1,241,999.901 \\
+    \textbf{Kliment}	& 549,089.491\\
+    \textbf{Logo}	& 81,105.162\\
+    \textbf{Tower} & 331,171.556\\\hline
+    
+    \end{tabular}
+    \caption[FID Score]{The Frechet Inception Distance (FID) score for all test images.}
+    \end{center}
+    \end{table}
+
+
+The FID score can be used as a Loss functions as well, embedded within the architecture of the GAN.
+However, it provides notoriously incosistent results, and is not as robut as MSE, which was used as 
+the Loss function of choice for this project.
 
 \section{Summary of Results}
 
 \begin{center}
-	\includegraphics[width=1\textwidth]{media/gan_compress2.png}
+	\includegraphics[width=0.8\textwidth]{media/gan_compress2.png}
 \end{center}
 
 \begin{table}[H]
     \begin{center}
-    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
     \hline
-    \textbf{Image}	& \textbf{ViT-Score} & \textbf{SSIM} & \textbf{MSE} & \textbf{PSNR} & \textbf{FID} & \textbf{BRISQUE} \\
+    \textbf{Image}	& \textbf{ViT-Score} & \textbf{SSIM} & \textbf{MSE} & \textbf{PSNR} & \textbf{FID}  & \textbf{BRISQUE} & \textbf{CR}\\
     \hline
-    \textbf{Bevo}	 & 0.14 & 0.26 & 3,479.34  &  12.68  &  1,241,999.901  &  39.5535\\
-    \textbf{Kliment} & 0.54 & 0.56 & 1,759.28 & 15.64  &  549,089.491 & 44.3570\\
-    \textbf{Logo}	 & 0.29 & 0.91 & 393.69 & 22.15 &  81,105.162 & 97.1844\\
-    \textbf{Tower}   & 0.03 & 0.53 & 1,315.75 & 16.90 &  331,171.556 & 52.8363\\\hline
+    \textbf{Bevo}	 & 0.14 & 0.26 & 3,479.34  &  12.68  &  1,241,999.901  &  39.5535 & 1.32 \\
+    \textbf{Kliment} & 0.54 & 0.56 & 1,759.28 & 15.64  &  549,089.491 & 44.3570 & 0.59\\
+    \textbf{Logo}	 & 0.29 & 0.91 & 393.69 & 22.15 &  81,105.162 & 97.1844 & 8.28 \\
+    \textbf{Tower}   & 0.03 & 0.53 & 1,315.75 & 16.90 &  331,171.556 & 52.8363 & 0.54\\\hline
     
     \end{tabular}
-    \caption[Summary of Results]{ViT-Scores demonstrate a somewhat expected quality assessment.}
+    \caption[Summary of Results]{ViT-Scores provide an insightful quality assessment compared to established methods.}
     \end{center}
     \end{table}

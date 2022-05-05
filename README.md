@@ -8,54 +8,46 @@ Report
 =============================================================
 The report includes a summary of my research, experimentation,
 and development using vision transformers (ViT).
-Transformer-based vision models (i.e. sequential, generalizable, overparameterized "language" models adapted for computer vision using the attention mechanism) are still very nascent.
+Transformer-based vision models (i.e. sequential, generalizable, overparameterized models adapted for computer vision using the attention mechanism) are still very nascent.
 The original contribution of this project lies in exploring a novel approach for quantifying image quality from neural image compression and generation using a generative adversarial network (GAN) architecture.
+The newly developed evaluation metric, called a ViT-Score, 
 
 ### Contents
+#### 1 Introduction to Vision Transformers (ViT)
+##### 1.1 Motivation
+##### 1.2 Brief History
+##### 1.3 Principles of Operation 
+##### 1.4 Mathematical Formulation
+##### 1.5 Implementations 
+##### 1.6 Computational Constraints for Training 
 
-#### 1. Introduction to Vision Transformers
-##### 1.1. Motivation (generalization, overparameterization)
-##### 1.2. Brief History (language models, emphasize, linearity)
-##### 1.3. Principles of Operation (diagrams) 
-##### 1.4. Formulation (math)
-##### 1.5. Implementations (pre-trained models, ViT)
-##### 1.6 Computational constraints (training)
+#### 2 Background Review: Transformers and Neural Image Compression 
+##### 2.1 "An Image is Worth 16x16 Words" 
+##### 2.2 "End-to-End Image Compression with Transformers" 
+##### 2.3 Image Generation with GANs 
+##### 2.4 First Principles of Neural Image Compression 
+##### 2.5 Metrics for Image Quality 
 
-#### 2. Literature Review: Transformers and Neural Image Compression, JPEG(related work)
-##### 2.1. Image is worth 16x16 and the ViT
-##### 2.2. Towards End-to-End Image Compression and Analysis with Transformers (Yuanchao Bai)
-##### 2.3. TransGANs (low quality, CIFAR-10 32x32)
-##### 2.5. First Principles of compression
-###### 2.5.1 Deterministic, Probabilistic
-##### 2.6. Metrics: SSIM, MSE, PSNR, BRISQUE
+#### 3 ViT-based Assessment of Neural Image Compression 
+##### 3.1 Neural Image Compression and Reconstruction 
+##### 3.2 Output and Visual Inspection 
+##### 3.3 ViT-Scores 
+##### 3.4 Established IQA Metrics
+##### 3.5 GAN-Related Quantitative Metrics 
+##### 3.6 Summary of Results 
 
-#### 3. ViT-based Assessment of Neural Image Compression (Theory and Practice)
-##### 3.1. Generative image compression overview (vineeth)
-###### 3.1.1 Architecture
-###### 3.1.2 Latent space vector representation after compression
-##### 3.2. Outputs from implementation, graphs, tables
-##### 3.3. Visual Inspection (natural performance asymptote)
-##### 3.4. GAN Quantitative (FID score, inception score)
-##### 3.5. Difference vs original, SSIM, MSE, PSNR, BRISQUE (and definitions of each)
-##### 3.6. Optimization Techniques (reducing learning_rate as the model trains)
+#### 4 Discussion
+##### 4.1 Results and Improvements
+##### 4.2 Optimization 
+##### 4.3 Present and Future of Image Transformers 
 
-#### 4. Discussion
-##### 4.1. Results and Shortcomings
-###### 4.1.1 Results
-###### 4.1.1 Potential Improvements to Approach
-##### 4.2. Status Quo and Future  
-##### 4.3. Training and Cost Estimates
-
-#### 5. Summary
-##### 5.1. Key contributions (experimentation with Vision Transformers, nascent field)
-##### 5.2. Takeaways
-##### 5.3. Acknowledgments (LIVE lab, TACC)
-##### 5.4. Closing Remarks
+#### 5 Summary 
+##### 5.1 Key Contributions 
+##### 5.2 Summary 
+##### 5.3 Takeaways 
+##### 5.4 Acknowledgments 
+##### 5.5 Closing Remarks
 
 #### Bibliography
 
 #### Appendix
-##### A. Technologies used:
-###### A.1 GPU, Local machine
-###### A.2 TACC, Stampede2, job submission process
-###### A.3 PyTorch/TF implementations
