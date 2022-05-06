@@ -3,25 +3,51 @@
 \textbf{Transformers for Image Recognition at Scale}
 
 
-This seminal academic work was published for the International Conference on 
+This seminal academic work was published in the International Conference on 
 Learning Representations (ICLR) 2020 by a team from Google.
 It presents the first Vision Transformer (ViT) for object detection
 trained on the ImageNet dataset, a rather large natural images dataset common to research on 
 image classification.
 
 
-Since Chapter 1 already explained and formulated the ViT, this section focuses
-on outlining the outcomes from this publication.
+Since Chapter 1 already explained and formulated the ViT in detail, this section focuses
+on outlining the outcomes from this publication. Refer to Figures 1.2 and 1.3 from Chapter 1, which
+were originally developed for this paper.
+
+
+The Self-Attention mechanism, detailed in section 1.2.2, is key to defining where the Transformer is able to 
+find a certain object on an image. Notice the self-attention map plotted on top of the original images in 
+Figure 2.1 below:
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{media/attention_map.png}
+	\end{center}
+	\caption[Attention Map Plot]{The attention map is plotted and superimposed on the 
+	original images from the paper. \citep{dosovitskiy2020vit}}
+\end{figure}
+
 
 "An Image is Worth 16x16 Words" completely discards the notion of convolutions. 
 The team used an image patch-based approach by breaking the image down to square blocks called patches.
 These patches are used as embeddings to a Transformer to classify images.
-Typically, such tasks in this field of research are dominated by Convolutional Neural Networks (CNNs).
 
-The ViT model achieves a top-1 accuracy (matching highest class probability only) of 77.3\% on ImageNet, which 
+Comparison between the position embeddings using cosine similarity points the transformer into
+forming the object detection attention map. Figure 2.2 below shows a representation.
+
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.3\textwidth]{media/embedviz.png}
+	\end{center}
+	\caption[Cosine Similarity of Image Patches]{The image patches are compared to each other using cosine similarity
+	 to yield an indexed embedding map guiding the self-attention mechanism. \citep{dosovitskiy2020vit}}
+\end{figure}
+
+Typically, such object detection tasks in this field of research are dominated by Convolutional Neural Networks (CNNs).
+
+However, the ViT model achieves a top-1 accuracy (matching highest class probability only) of 77.3\% on ImageNet, which 
 compares to the accuracy of state-of-the-art CNNs.
-
-All results from the original publication are shown in Figure 2.1 below.
 
 
 According to the paper, the pre-trained ViT on the JFT-300M dataset beats all ResNets on all
@@ -33,6 +59,8 @@ ViT uses approximately 2-4x less compute to attain the same performance
 (averaged over 5 test datasets). 
 
 The total number of parameters is on the order of 100M.
+
+Some of the results from the original publication are shown in Figure 2.3 below.
 
 \begin{figure}[H]
 	\begin{center}
@@ -86,7 +114,7 @@ These features are then passed onto a Deconvolutional Neural Network
 and the image is regenerated. As a result, long-term dependencies from the Transformer self-attention mechanism 
 are preserved.
 
-Figure 2.2 below demonstrates the exact architecture used in the experiment.
+Figure 2.4 below demonstrates the exact architecture used in the experiment.
 
 \begin{figure}[H]
 	\begin{center}
@@ -100,31 +128,35 @@ Figure 2.2 below demonstrates the exact architecture used in the experiment.
 
 Generative Adversarial Networks (GANs) have long been considered to be 
 the most exciting innovation in Deep Learning. In a typical GAN architecture, 
-2 CNNs are competing against each other. One network is called the Generator, whose purpose is to 
+two CNNs are competing against each other. One network is called the Generator, whose purpose is to 
 generate an image. The other network is called the Discriminator, whose purpose is to determine 
-how realistic the generated image from the Generator. 
+how realistic the generated output by the Generator is. 
 
-The Discriminator communicates feedback back to the Generator after each epoch through a loss function.
-The Discriminator is trained to minimize the loss, whereas the Generator's goal is to maximize the loss. 
+The Discriminator communicates feedback to the Generator after each epoch through a loss function.
+The Discriminator is trained to minimize the loss, while the Generator is maximizing it.
 The Generator iteratively learns to create new synthetic images resembling real source input image.
-Then, the Discriminator is trained to differentiate between the real input data and generated synthetic data. \citep{GANs} 
+Then, the Discriminator is trained to differentiate between the real input data and generated synthetic data. 
+The desired outcome is that a Generator would be able to fool the Discriminator that its synthetic output
+is real. \citep{GANs} 
 
 
 In essence, the Discriminator provides feedback to the Generator on its performance, while 
-simultaneously achieving incremental improvement in discernibility. 
+simultaneously achieving incremental improvements in its own discernibility. 
 
 As a result, after each epoch, the Generator is expected to produce increasingly more realistic data,
-according to a quantitative or qualitative (visual inspection) metric.
+according to a quantitative or qualitative (visual inspection) metric. In turn, the Discriminator becomes 
+better at catching synthetic output, thereby having both networks compete against each other to 
+refine the final generated image output.
 
 \vspace{5mm}
 
-Figure 2.3 below illustrates the architecture of a common GAN. Starting from random noise,
+Figure 2.4 below illustrates the architecture of a common GAN. Starting from random noise,
 the Generator is iteratively trained to produce a quality generated image.
 That image is then evaluated by the Discriminator whether it is real or synthetic.
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.9\textwidth]{media/gan_arch.png}
+	\includegraphics[width=0.8\textwidth]{media/gan_arch.png}
 	\end{center}
 	\caption[GAN Architecture]{The architecture of a simple
     Generative Adversarial Network. \citep{GANs}}
@@ -137,26 +169,41 @@ interpolation), synthetic data, image-to-image translation, medical imaging, and
 \section{First Principles of Neural Image Compression}
 
 The explosion in popularity of Deep Learning methods as universal function approximators
-is expected to revolutionize image compression.
+is expected to revolutionize image compression. The key reason is that neural networks
+could achieve orders of magnitude higher compression than lossy deterministic methodologies.
+They can extract relevant information from the latent space of the image and are extremely efficient 
+at packing it into a condensed version. The resulting compressed representations would require much less 
+disk space or bandwidth for transmission.
 
-Presently, efficient storage and transmission of image and video is still a developing domain.
-
-A Deep Learning approach to multimedia compression would, theoretically, enable higher compression ratios 
+Presently, efficient storage and transmission of image and video is still a developing and costly domain.
+Thus, a Deep Learning approach to multimedia compression would, theoretically, enable higher compression ratios 
 and an increase in visual quality. This approach would train a model to learn a compression function directly from data. 
-
-"Learned Multimedia Compression", as described in "First Principles of Deep Learning and Compression", involves
-computing a compressed representation of an input image. It uses Deep Learning models for both the encoder and decoder.
+Referred to as "Learned Multimedia Compression", this approach involves
+computing a compressed representation of an input image. It uses separate models for both the encoder and decoder.
 \citep{Principles}
-First Principles deterministic compression algorithm. 
+
 
 Finally, a Deep Learning-based method could learn key steps of established deterministic compression algorithms.
 This approach would serve as an improvement to the existing framework of popular compression techniques.
+The most popular image compression technique is the Joint Photographic Expert Group format, JPEG, created in 1992. 
+In short, it operates by using a Discrete Cosine Transform (DCT) to convert image information from the spatial to frequency domain. Then,
+the compression algorithm discards high-frequency information, as it is not relevant to human visual perception. \citep{Principles}
 
-As such, an example could be to improve the compression fidelity (output quality, ratio, and speed) of JPEG. 
-To prevent information loss after compression, a model can be trained to predict non-linearities in the image related to blurring or noise.
-Furthermore, a Deep Learning model can learn image correction maps post-JPEG compression. 
-It can be trained to learn the latent feature space from examples of corrected JPEG compressed images and
-ground-truth original images. 
+Figure 2.6 illustrates JPEG compression at various thresholds, along with the compression ratios of each 
+compressed image.
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{media/jpeg_comp.png}
+	\end{center}
+	\caption[JPEG Compression]{A neural compression model would have to 
+    outperform JPEG in compression ratio vs reconstructed image quality. \citep{GANs}}
+	\end{figure}
+An example of a Deep Learning-based compression model could be to improve the compression fidelity (output quality, compression ratio, 
+and speed) of JPEG. To prevent information loss, a model can be trained to predict non-linearities 
+in the compressed image related to blurring or noise. Furthermore, a model could learn image correction maps to correct distortions 
+caused by JPEG compression. 
+It can be trained to learn the latent feature space from example pairs of corrected JPEG compressed images and
+their ground-truth originals. 
 
 
 \section{Metrics for Image Quality}
@@ -201,7 +248,7 @@ Where, given a windows x and y of size $(N,N)$:
 
 $\mu_x$ is the average of $x$'  $\mu_y$ is the average of $y$;  $\sigma _{x}^{2}$ the variance of $x$, $\sigma _{y}^{2}$ the variance of $y$;
 
-$\sigma_{xy}$ the covariance of $x$ and $y$; $L$ is the pixel value dynamic range, i.e. $2^{\#bits per pixel}-1$;
+$\sigma_{xy}$ the covariance of $x$ and $y$; $L$ is the pixel value dynamic range, i.e. $2^{\#bits\_per\_pixel}-1$;
 
 and by default, given as constants are $k_{1}=0.01$ and $k_{2}=0.03$ \citep{SSIM_bovik}
 
