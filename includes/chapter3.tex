@@ -102,8 +102,8 @@ diverse features, in order to challenge the model architecture.
 
 For example, one image ("Logo") contains a white background, while another ("Bevo") a black background.
 The two completely dissimilar images, "Logo" and "Bevo", also happen to contain similar shapes, representing a graphic and a living
-Texas longhorn bull.
-The image "Kliment", a portait of the author, contains a face with trees and clouds in the background.
+Texas longhorn bull. "Bevo" contains an animal head and face.
+The image "Kliment", a portait of the author, contains a human head and face with trees and clouds in the background.
 
 The image "Tower" is a building, the University of Texas at Austin Main Tower, containing
 trees in the foreground, but clouds in the background.
@@ -129,45 +129,84 @@ test the robustness of the ViT-Score and capacity of the Vision Transformer itse
 
 \section{Outputs and Visual Inspection}
 The generative process from the GAN was designed to output an image at a specified epoch.
+Along with manual stopping, criteria for early stopping was set as well. 
+
+Moreover, learning rate reduction on plateau was used. This technique reduces the learning rate
+hyperparameter as the loss stops reducing.
+
+The generated images are output for the user to monitor the GAN learning process.
 
 \subsection{Training Process}
-Below is a demonstration of the GAN learning process at every 250 epochs:
+Below is a demonstration of the GAN training to compress and reconstruct "Logo". 
+
+Samples are collected at every 250 epochs:
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.8\textwidth]{media/ganLearn.png}
 	\end{center}
-	\caption[GAN Training Process]{The GAN learns to compress and generate the Texas Longhorns logo.}
+	\caption[GAN Training Process]{The GAN learns to compress and generate the Texas Longhorns logo.
+    It starts from a blob, then 3500 epochs later, it is able to produce a completely recognizable version of "Logo". }
 	\end{figure}
 
-Due to the cutting edge nature of the technologies used, a natural performance asymptote
-was observed. The GAN was able to reconstruct certain input images better than others.
+Due to the novel nature of the technologies used, a natural performance asymptote
+was observed. The "PGAN" itself is trained on diverse data, yet this data is not able 
+to capture the complexity of all potential input images. 
+Thus, the GAN was able to reconstruct certain input images better than others.
 After a certain iteration, as usual, the GAN was unable to further learn how to compress,
-represent, and regenerate some input images. Typically, once a GAN reaches this stage,
+represent, and regenerate some input images. 
+
+Typically, once a GAN reaches this stage,
 it learns from random noise and generation performance decreases.
+Losses start increasing and output image quality degrades. 
 
 \subsection{Generated Results}
 
-Figure 3.4 below shows the resulting images from the neural compression GAN.
+Figure 3.7 below shows the resulting images from neurally compressing and reconstructing
+all four sample input images.
 
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.8\textwidth]{media/gan_compress2.png}
 	\end{center}
-	\caption[Neural Compression and Generation]{After sufficient training, the GAN outputs a regenerated
-    version of the original image from a latent space vector representation.}
+	\caption[Neural Compression and Generation]{After sufficient training, the "PGAN" outputs a regenerated
+    version of the original image from its latent vector representation. All four reconstructions
+    resemble their inputs, to a varying degree of success.}
 	\end{figure}
 
-\vspace{5mm}   
+The GAN was able to respectably regenerate "Kliment" and "Logo".
+"Logo" is completely recognizable as the Texas Longhorns logo, especially if the resolution
+is to be lowered (e.g. 32x32). In "Kliment", the model was successful at reconstructing a 
+human head and the background features. 
 
-
-The GAN was able to respectably regenerate "Kliment" and "Logo", especially if the resolution
-were to be lowered (e.g. 32x32, such as the CIFAR-10 dataset).
-
-However, the GAN was unable to perform as well for "Bevo" and "Tower".
+Nevertheless, the GAN was unable to perform as well for "Bevo" and "Tower".
 It learned random noise and generation performance decreased.
+Though "Bevo" does resemble a living Longhorn bull when viewed next to its original,
+a standalone image would be confusing to a viewer, as well as a Deep Learning-based object detector. 
+"Tower" is clearly the worst output, since the generated image only loosely matches a blurry 
+version of the original shape.
 
+\subsection{Compression Ratios (CR)}
 
-\textbf{Compression Ratios (CR)}
+Compression Ratios (CR) are calculated as:
+\begin{center}
+	$ \displaystyle CR = \dfrac{original\_size}{compressed\_size}$
+	\end{center}
+
+However, it is important to note that the CR can technically be computed as the ratio of 
+the original image size to the latent vector size.
+Since the latent vector compresses to about $1.5$ kilobytes , 
+the resulting compression ratio would always be around on the order of $100:1$ to $1000:1$.
+
+This latent vector CR does not necessarily help with evaluating a transmitted image. 
+For the purpose of this section, the size of the GAN reconstructed image is used as a more
+conservative measurement of compression. 
+
+\vspace{2mm}
+
+\NOTE{This conservative measure of performance would also demonstrate 
+model superiority over established compression techniques.}
+
+\vspace{1mm}
 
 \begin{table}[H]
 \begin{center}
@@ -183,32 +222,39 @@ It learned random noise and generation performance decreased.
 \end{center}
 \end{table}
 
-The GAN failed to compress two of the images, "Bevo" and "Logo". Understandably,
-"Logo" is actually a vector graphic with a clear background, with an input file size of only 13.4 KB.
+The GAN failed to compress two of the images, "Bevo" and "Logo". 
+Understandably, "Logo" is actually a vector graphic with a clear background, with an input file size of only 13.4 KB.
 The GAN had to create the white background, which it inefficiently stores as information, costing extra 
 bandwidth and disk space.
-
-"Kliment" and "Tower" were compressed to half the original size, with "Kliment"
-being a suitable candidate to demonstrate the capacity of this GAN.
-Much like the content of "Kliment", the most popular application and training set of most GANs, including this pre-trained model,
-is indeed faces. Hence, "Kliment" had the highest Compression Ratio (CR), while maintaining the highest ViT-Score.
+"Kliment" and "Tower" were compressed to half their original sizes. 
+"Kliment" is a suitable candidate to demonstrate the capacity of this generative model.
+The image has a high Compression Ratio (CR), while also maintaining a high ViT-Score.
+After all, the most popular application and training set of most GANs, included in this pre-trained model (celebaHQ dataset),
+is indeed human faces.
 
 
 \section{ViT-Scores}
 
-The Vision Transformer-Assisted ViT Score is an original development from this thesis. 
+The Vision Transformer-Assisted, ViT-Score is an original development from this thesis. 
 
 It is an attempt to measure the quality of a generated image after neural compression.
 
 The ViT-score is in the open interval $(0,1)$ with $0$ being poor and extremely dissimilar from
 the original and $1$ being excellent and fully similar to original.
 
-Mathematically, the endpoint values of the interval are unattainable by probabilistic models
-such as the GAN.
+Mathematically, the endpoint values of this interval are unattainable by the ViT-Score. 
+Probabilistic models such as this GAN, would generate enough similarities, though never an exact match.
+
+\NOTE{The ViT-Score can be considered a contextual measure. It captures a higher abstraction of 
+pixel arrangement based on objects detected under a certain probability. Such measures can be insightful, 
+especially when evaluating generative models.}
 
 \subsection{Mathematical Formulation}
 
-The following is a mathematical representation explained in further detail.
+The following is a mathematical representation later explained in further detail.
+
+\vspace{1mm}
+
 
 \begin{center}
     $ViT_{score} = \displaystyle\dfrac{argmax_{A'\subset A,\lvert A' \rvert = k } \sum_{a \in A'} {a} }{k} $
@@ -226,15 +272,17 @@ and $m$ are the top-$K$ labels in the input image $I_{input}$
 
 and $n$ are the top-$K$ labels in the generated image $I_{generated}$.
 
-\vspace{4pt}
+\vspace{5pt}
 
 This overly elaborate mathematical notation is an attempt at describing:
 
+\vspace{1mm}
 
 \NOTE{
 "From the full set of trained ViT labels, we find the top-$K$ number of intersecting labels between the original and generated images. Then, we divide that by $K$"
 }
 
+\vspace{4mm}    
 
 For example, of the top-100 labels found in the original image, 
 identify the set of labels also found in the generated image. 
@@ -254,6 +302,8 @@ are as follows:
     \textbf{Resulting generated images.}
 \end{center}
 
+\newpage
+
 \textbf{ViT-Scores}
 
 \begin{table}[H]
@@ -272,20 +322,25 @@ are as follows:
 
 
 
-\textbf{"Kliment"} leads with a ViT-score of $0.54$, which is understandable as the GAN 
+\textbf{"Kliment"} leads with a ViT-Score of $0.54$, which is understandable as the GAN 
 generated a face (although smudgy) and was rather able to recreate the scenery structurally.
 
-\textbf{"Logo"} generation seems structurally excellent and the ViT-score is $0.29$, which
+\textbf{"Logo"} generation seems structurally excellent and the ViT-Score is $0.29$, which
 is considered a good score for this particular GAN architecture and training.
 
-\textbf{"Bevo"} barely preserves the original shape at ViT-score of $0.14$, while
+\textbf{"Bevo"} barely preserves the original shape at ViT-Score of $0.14$, while
 \textbf{"Tower"} is incomprehensible and barely resembles the original at ViT-score of $0.03$.
 
+\vspace{4mm}
 
-Overall, the ViT-score does a good job of measuring image quality.
+\NOTE{Overall, the ViT-Score does a good job of measuring image quality.}
 
 
 \section{Established IQA Metrics}
+
+Refer to Section 2.5 "Metrics for Image Quality" for detailed definitions 
+of each measurement technique.
+
 
 \subsection{"Kliment"}
 
@@ -293,12 +348,13 @@ Overall, the ViT-score does a good job of measuring image quality.
 	\begin{center}
 	\includegraphics[width=0.8\textwidth]{media/kimbo_metrics.png}
 	\end{center}
-	\caption["Kliment" Established Metrics]{The image was structurally reconstructed rather well.
-    Shortcomings were only the facial features within the face.}
+	\caption["Kliment" Established Metrics]{The image is structurally reconstructed well.
+    Shortcomings are found in the facial features within the face.}
 	\end{figure}
 
 
-This image achieved a ViT-Score of 0.54, SSIM of 0.56, and MSE of 1,759.28 with a Compression Ratio of 0.59.
+This image achieves a ViT-Score of $0.54$, SSIM of $0.56$, MSE of $1,759.28$, and a PSNR of $15.64$ with a Compression Ratio of $0.59$.
+Major shortcomings have less to do with structure, and more with details and features.
 
 \subsection{"Logo"}
 
@@ -306,13 +362,13 @@ This image achieved a ViT-Score of 0.54, SSIM of 0.56, and MSE of 1,759.28 with 
 	\begin{center}
 	\includegraphics[width=0.8\textwidth]{media/logo_metrics.png}
 	\end{center}
-	\caption["Logo" Established Metrics]{The GAN was able to reconstruct the logo almost perfectly.}
+	\caption["Logo" Established Metrics]{The GAN is able to reconstruct an almost 
+    perfectly recognizable version of the original logo.}
 	\end{figure}
 
-
-    The generated logo is extremely well identifiable.
-    This image achieved a ViT-Score of 0.29, SSIM of 0.91, and MSE of 393.69. However, it failed to be compressed
-    less than its original size. The GAN had to reconstruct the white background, which came out yellowish.
+The generated logo is extremely well identifiable.
+This image achieves a ViT-Score of $0.29$, SSIM of $0.91$, MSE of $393.69$, and PSNR of $22.15$. However, it fails to compress
+less than its original size. The GAN had to reconstruct the white background, which comes out off-white.
 
 \subsection{"Bevo"}
 
@@ -320,11 +376,11 @@ This image achieved a ViT-Score of 0.54, SSIM of 0.56, and MSE of 1,759.28 with 
         \begin{center}
         \includegraphics[width=0.8\textwidth]{media/bevo_metrics.png}
         \end{center}
-        \caption["Bevo" Established Metrics]{The GAN was unable to reconstruct inside the longhorn, yet
-        the structure of the image is well rebuilt. One could possibly identify the animal from the generated image.}
+        \caption["Bevo" Established Metrics]{The GAN was unable to reconstruct details inside the longhorn, yet
+        the structure of the image is decently rebuilt. One could possibly identify the animal from the generated image.}
         \end{figure}
 
-"Bevo" achieved a ViT-Score of 0.14, SSIM of 0.26, and MSE of 3,479.34, while failing to compress. 
+"Bevo" achieves a ViT-Score of $0.14$, SSIM of $0.26$, MSE of $3,479.34$, and PSNR of $12.68$ while failing to compress at all. 
 
 \subsection{"Tower"}
 
@@ -332,32 +388,32 @@ This image achieved a ViT-Score of 0.54, SSIM of 0.56, and MSE of 1,759.28 with 
         \begin{center}
         \includegraphics[width=0.8\textwidth]{media/tower_metrics.png}
         \end{center}
-        \caption["Tower" Established Metrics]{The GAN completely failed at .}
+        \caption["Tower" Established Metrics]{The GAN completely failed at reconstructing a comprehensible image.}
         \end{figure}
 
-This reconstruction is the lowest quality of all four images, both quantitatively and qualitatively.
-The generated image is incomprehensible. It has the lowest ViT-Score at 0.03, SSIM of 0.53, and MSE of 1,315.75.
+This reconstruction is the lowest quality of all four images and we rightfully expect to have the lowest scores on all metrics.
+Both quantitatively and qualitatively, the generated image is considered incomprehensible. 
+It has the lowest ViT-Score at $0.03$, SSIM of $0.53$, MSE of $1,315.75$, and PSNR of $16.90$. The fact that it does compress is 
+irrelevant, since the image lost structural, textural, and feature detail information.
 
 \subsection{"BRISQUE"}
 
-Blind/Referenceless Image Spatial Quality Evaluator (BRISQUE)
-where approaching 0 is a good score and approaching 100 is a bad score, the BRISQUE referenceless 
-image quality methodology
-
-This score could be interpreted as the image being more photorealistic than not. 
-In terms of quality, this compares to a camera captured image with quality corruption 
-caused by blurs or graininess. An image with no distortions often has a score below 5.
+The Blind/Referenceless Image Spatial Quality Evaluator (BRISQUE) metric is also defined in Section 2.5.
+BRISQUE measures distortions, with the score approaching 0 is a good score and approaching 100 is a bad score. 
+This methodology could help evaluate an image as being more photorealistic than not. 
+In terms of GAN output quality, this compares to a camera captured image with quality corruption 
+caused by blurs or graininess.
 
 \begin{table}[H]
     \begin{center}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|}
     \hline
-      & Original & Generated \\ [0.5ex] 
+      & Original & Generated & Delta\\ [0.5ex] 
     \hline\hline
-    \textbf{Bevo}	& 32.9214 & 39.5535\\
-    \textbf{Kliment}	& -8.3593 & 44.3570\\
-    \textbf{Logo}	& 102.9010 & 97.1844\\
-    \textbf{Tower} & 14.5973 & 52.8363\\\hline
+    \textbf{Bevo}	& 32.9214 & 39.5535 & 6.6\\
+    \textbf{Kliment}	& -8.3593 & 44.3570 & 52.7\\
+    \textbf{Logo}	& 102.9010 & 97.1844 & 5.7\\
+    \textbf{Tower} & 14.5973 & 52.8363 & 38.2\\\hline
     
     \end{tabular}
     \caption[BRISQUE]{BRISQUE Scores of original and generated images.}
@@ -365,25 +421,29 @@ caused by blurs or graininess. An image with no distortions often has a score be
     \end{table}
 
 Expectedly, the BRISQUE values for the generated images are always higher than
-their original counterparts. "Logo" is not a photorealistic image to begin with, 
+their original counterparts. That is, image quality always worsens after compression. 
+"Logo" is not a photorealistic image to begin with, 
 so it is understandable that the BRISQUE value is high at $102.9$.
 None of the generated images would pass BRISQUE as photorealistic and free of 
-distortions.  
+distortions. Largest Deltas (changes from original to generated) are also found in 
+the images with the highest Compression Ratios (CRs), "Kliment" and "Tower".
 
-Loss functions as well (MSE loss was used in GAN)
+
+A MATLAB implementation of BRISQUE was used to compute these scores.
 
 
 \subsection{GAN-Related Quantitative Metrics}
 
 There are two prominent evaluation metrics for the performance of a Generative Adversarial Network (GAN).
-Specifically, the Frechet Inception Distance (FID) and Inception Score (IS).
+Specifically, the Frechet Inception Distance (FID) and Inception Score (IS). Both measurements serve to 
+evaluate the synthetic nature of the generated output. 
 
-The FID score is 0 if there is no difference between the two multidimensional Gaussian distributions compared. 
+The FID score, defined in Section 2.5, is 0 if there is no difference between the two multidimensional 
+Gaussian distributions compared. 
 
-Both measurements serve to evaluate the synthetic nature of the generated output. 
+\vspace{5mm}
 
-
-The \textbf{FID} score is presented in Table 3.1 below:
+The \textbf{FID} scores are presented in Table 3.1 below:
 
 \begin{table}[H]
     \begin{center}
@@ -402,7 +462,9 @@ The \textbf{FID} score is presented in Table 3.1 below:
 
 The FID score can be used as a Loss functions as well, embedded within the architecture of the GAN.
 However, it provides notoriously incosistent results, and is not as robut as MSE, which was used as 
-the Loss function of choice for this project.
+the Loss function of choice for this project. None of the FID scores above provide much insight 
+into the capacity of the GAN to generate a realistic image. 
+
 
 \section{Summary of Results}
 
