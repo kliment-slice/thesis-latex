@@ -1,109 +1,164 @@
-\section{Results and Improvements}
+\section{Discussion of Results}
 
-\subsection{Results}
+The results summarized in Section 3.5 demonstrate that a ViT-Score is capable of:
 
-The most incomprehesible generated image "Tower", where the GAN failed to reconstruct a recognizable
-object, expectedly has the lowest ViT-Score of all four images. This is a testament for the valuable 
-insight the ViT-Score contributes.
+\begin{itemize}
+    \item providing higher abstraction (object-level) insights
+    \item comparing similar images for aberrations and distortions
+	\item assessing the quality of a GAN generated image 
+    \item complementing existing metrics as a useful measure of image quality
+    \item providing a novel approach to Deep Learning-based compression evaluation
+\end{itemize} 
+
+"Tower" was the most incomprehesible generated image. The GAN failed to reconstruct a recognizable
+object, which resulted in the lowest ViT-Score among all four input images. 
+This score is a testament for the valuable insights the ViT-Score contributes.
 
 
-PSNR, FID, and BRISQUE seem rather irrelevant due to their inability to capture synthetically induced
-aberrations obvious to the human eye.
+"Logo" ViT-Score could be higher, as are other metrics. The ViT object detector potentially struggled with 
+finding the exact labels that would match such a unique symbollic graphic.
+Furthermore, the original input can be a transparent (backgroundless) vector graphic. 
+If the backgrounds are to be ignored, perhaps all scores would increase.
 
-"Logo" metrics could be even higher, if the background were to be removed (like the input).
 
-\subsection{Potential Improvements to Architecture}
+Some of the metrics such as PSNR, FID, and BRISQUE seem to lack significant contributions in their assessment. They have the tendency 
+to be unable to capture synthetically induced aberrations, which are obvious to the human eye.
+BRISQUE fairly consistently ranks the images in their photorealism. "Logo" is indeed a non-realistic synthetic symbol.
+The reconstruction of "Bevo" reminds the reader of an oil painting, yet BRISQUE ranks it most realistic with a low Delta.
+BRISQUE Deltas (from Table 3.3) can be insightful as well, since the smallest changes in score determine a level of 
+consistency in evaluation.
 
-The ViT-Score definition could be further improved or experimented with.
-For the purpose of this project, the ViT-Score was based on how many of the top100 labels match
-between the input and generated images.
+Furthermore, the generated "Kliment" and "Tower" seem to have a similar PSNR, yet "Kliment" is a clearly defined object, 
+whereas "Tower" is the least recognizable one.
 
-The ViT-Score can take into account probability of each label found (included in script output).
-While the label probability is stable when working with corrupted images, it is rather 
-unstable when working with generated images.
 
-Features are typically found to be in the deeper layers of the GAN network. 
-The latent space is hard to decipher, but a Transformer is efficient in packing information from it 
-to a 1-dimensional vector.
+In fact, in the case of "Kliment" and "Tower", the \NOTE{ViT-Score proves to be more insightful than an established metric such as PSNR.}
+
+
+Since features are typically found in the deeper layers of the GAN network, it is substantiated that a lot of structural 
+information can be compressed into the 1-dimensional latent vector.
+The latent space is hard to decipher, but a Transformer is efficient in packing and unpacking information from it.
+The Compression Ratios associated with a fixed size latent vector can be useful in low bandwidth transmission scenarios.
+
+\section{Improvements}
+
+\subsection{ViT-Score}
+
+The ViT-Score (defined in Section 3.3.1) could be further improved or experimented with.
+For the purpose of this project, the ViT-Score was based on how many of the top-100 labels match
+between the input and generated images. Experiments with the top-$k$ value could yield a more
+optimal $k$, since 100 was chosen arbitrarily.
+
+The ViT-Score can also take into account probability of each label found (included in the script output, shown in Figure 3.1).
+However, while the label probability is stable when working with corrupted images, it is rather 
+unstable when working with generated images. Nonetheless, much like the SSIM (defined in Section 2.5),
+an elaborate regularized equation could include the output probabilities per detected label.
+In turn, this could improve the ViT-Score. 
+
+Intuitively, the ViT and ViT-score can also be used as a Loss function in the model architecture.
+
+
+\subsection{Compression Engine}
+
+The pre-trained "PGAN" used in the compression engine needs to be trained on more data inspired by human perception.
+An important note is that the Fashion-Gen dataset contains 293,008 high resolution images of size 1360x1360. 
+The DTD texture dataset, includes 5640 images, with 120 images in 47 categories of varied resolution between 300x300 and 640x640. 
+There is an obvious dataset imbalance, as the pre-trained model used has had more exposure to certain classes of images than other. 
+\citep{PytorchGANZoo}
+
+
+Thus, it can be concluded that the natural performance limit to the capacity of this pre-trained model comes from its training sets.
+This applies to both the pre-trained "PGAN" and the pre-trained ViT. 
+In a more capable iteration of this project, a GAN and ViT trained on all internet images, or a sizable, diverse, and 
+representative subset, is necessary. 
+
 
 Evaluating output quality from Generative Adversarial Networks (GANs) is 
-still a developing field using non-Deep Learning-adapted assessment methods. 
-For the purpose of this thesis, a GAN was used as a placeholder 
-for a future, coveted, and highly desirable Deep Learning-based image compression mechanism.
+still a developing field, which uses non-Deep Learning-adapted assessment methods. 
+It is expected that new and more capable methods of evaluating generated output will emerge.
+Furthermore, using these future GAN metrics as Loss functions inside the compression engine could 
+significantly improve the GAN generated output.
 
-Need a GAN trained on all images, not just popular datasets such as ImageNet or Celeb. 
-Perhaps the next generation ViT needs to be trained on all internet images, or at least a sizable, diverse, and
-representative subset.
 
-The natural performance limit to the capacity of this model comes from its training sets.
+Finally, unique positional encoding in the ViT can be achieved using trigonometric representation (e.g. periods of a sinusoid).
+This could be extremely useful when scaling the approach to elaborate high-resolution input images with lots of objects. 
+For example, the delta between the original and generated images could be used to find and fine tune 
+discrepancies between rows of pixels. Thus, as the exact location of each object (token) is known, deviations may 
+be used to penalize the output and steer the Generator into improving its output. \citep{dosovitskiy2020vit}
 
-Unique positional encoding can also be achieved using trigonometric representation.
-For example, a full sentence from text or perhaps a row of pixels from an image could be represented by the various
-periods of a sinusoid. Thus, the exact location of each token would be unique.
 
 \section{Optimization} 
 
-Experiment and change loss functions (MSE was used, can use a GAN specific loss like FID)
-Learning rate reduction on plateau was used.
-Most valuable technique, which contributed to the GAN improving its quality of generated image was
-reducing the learning\_rate as the model trains.
+Some of the optimization techniques used in this work include:
+\begin{itemize}
+    \item Learning rate reduction on plateau, hyperparameters for patience, threshold, and eps
+    \item SGD, hyperparameters for learning rate and momentum 
+	\item Varying input images 
+\end{itemize} 
 
-Stochastic Gradient Descent (SGD) was used as an optimizer for the GAN.
-
-Perhaps trying Adam could achieve better results on certain types of images, though probably
+One of the most valuable techniques, which aided the GAN in improving its output quality, was
+reducing the learning rate as the model trains. Stochastic Gradient Descent (SGD) was used as an optimizer for the GAN.
+Perhaps substituting SGD with Adam could yield better results on certain image types, though probably
 not on average.
 
-Furthermore, experimenting with input image types to cater to what the generative model is best trained on
-could yield much better results.
 
-Other options to endlessly experiment with include introducing regularization during training such as residual dropout and label smoothing.
+A major opportunity to optimize the compression engine would be to experiment with Loss functions.
+Mean Squared Error (MSE) was used throughout this study, however, SSIM or potentially a GAN specific evaluator such as FID
+could achieve better results (refer to Section 2.5 for definitions).
+Additionally, experimenting with input image types to cater to what the generative model is best trained on
+could yield much better results as well.
+Other options to experiment with include introducing regularization during training such as residual dropout and label smoothing.
 
-Analyze latent space vector with transformer model (not a ViT, but a transformer adaptation)
-Steer the GAN faster into training to compress
-Slow computational times
 
+When analyzing the latent space vector, it is possible to engage an adapted Transformer model. This overparameterized model
+can create maps from the latent space to the spatial representation of the image. 
+This generalizable approach can steer the GAN to train faster, compress better, and output higher quality images.
+Finally, Transfer learning or combinations of deterministic and probabilistic methods can combat slow training times 
+(as mentioned in Section 2.4).
 
 %\newpage
 
 \section{Present and Future of Image Transformers}
 
 \subsection{Status Quo}
-Increase in relevant recent publications (13 alone in 2022 thus far) supports the vision of tying 
-vision transformers to image compression.
+According to Figure 1.1 and Section 1.1, there is a clearly defined increase in interest in using Vision Transformer-based 
+models for applications in image processing and computer vision.
+Furthermore, there has been a significant increase in relevant recent publications related to the topic of this thesis.
+A staggering thirteen (13) publications in 2022 thus far support the vision of tying 
+Vision Transformers (ViT) to image compression. \citep{arxiv13}
 
-Status quo of Transformers in Image Processing, Compression, Analysis, and Generation
-Coveted Deep learning based Image compression 
-In the deep learning/AI evolutionary process, still too early. Models have not been trained on enough image data.
+
+A clear statement must be made that the present day is still an early stage in the Deep Learning and Artificial Intelligence 
+evolutionary process. Many of the models have yet to be trained on sizable amounts of image data.
+Hence, the current models are still suffering from underperformance in tasks that are easy to achieve by human perception.
+
+Finally, the existing approaches to image compression, analysis, and generation may not reflect the most efficient ones, but 
+rather the most scalable and universally accepted. \citep{Principles}
 
 \subsection{Future Developments}
-GAN model only trained on finite set (ImageNet, CIFAR-10, Celeb-HQ faces etc) and resolution.
-Need to train GAN on all images ever.
 
-"TransGAN: Two Pure Transformers Can Make One Strong GAN" \citep{jiang2021transgan}
-NeurIPS 2021
+The future of pre-trained GAN and ViT models will include extremely wide and overparameterized feature sets.
+Training will be done on sizable sets of images from the internet to mimic the development of 
+the text-based language model Transformers such as GPT-3 (see Section 1.6). 
+An extremely large dataset (on the order of petabytes of data) featuring diverse and 
+representative images will be compiled and used for training by a major technology company or AI initiative.
 
-Goal is to replace Generator and Discriminator in a GAN with Transformers free of 
-convolutions. 
-Deterministic, Probabilistic
-GANs
-JPEG/MPEG
+\NOTE{A coveted and highly desirable Deep Learning-based image compression technique will emerge, which will succeed 
+the use of JPEG and other classical compression techniques.} 
 
-\subsection{Training and Costs}
 
-Need a ViT on all internet to cost 100M
-A 512-core TPU v3 pod costs \$384/hr to use commercially on GCP. 
-2.5k core-days means training the ViT cost 24hrs * \$384 * 5 of them = \$46k. 
-That's for one of many ViT flavors.
-To train a ViT on the whole TACC Frontera at 20k teraflops (top10) or 
-Stampede at 10k tflops (top25), it would take respectively about a minute and 2 minutes.
-tpu v3 is 420 teraflops * 2500 = 1M Tflops
+For the purpose of this thesis project, a Convolutional Neural Network (CNN) based Generative Adversarial Network (GAN)
+was used as a placeholder for a more generalizable alternative. Perhaps, it could also be Transformer or Vision Transformer-based.
+In fact, a publication in Computer Vision and Pattern Recognition (CVPR) 2021 dubbed "TransGAN: Two Pure Transformers Can Make One Strong GAN"
+was proposed by a team from The University of Texas at Austin. \citep{jiang2021transgan}
 
-(like GPT-3 trained on all internet text, Vision T trained on all google images)
+It demonstrates that the Generator and Discriminator in a GAN could be replaced with Transformers free of 
+convolutions. These TransGANs were able to match or exceed the performance of similar CNN-based GANs. \citep{jiang2021transgan}
 
-(\$100M+), GPT-3 cost \$10M-\$20M
-r. In terms of image reconstruction on the decoder side, our image reconstructor needs more
-FLOPs than mbt-m due to the feature aggregation module. In
-terms of image classification on the decoder side, our image
-classifier directly performs inference from the compressed
-features without the image reconstruction process, and thus
-needs far less computational cost compared with the inference from reconstructed RGB images.
+In the future, GANs will improve immensely, as the approach proposed by Ian Goodfellow in 2014 is still only in its 
+first generation as a highly promising generative technique.
+
+
+\NOTE{To conclude the discussion on the future of neural image compression, it can be said that all developments will 
+organically extend into neural video compression.}
+
