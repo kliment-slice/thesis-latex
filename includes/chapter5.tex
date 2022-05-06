@@ -1,20 +1,23 @@
 \section{Key Contributions}
 
-(experimentation with Vision Transformers, nascent field)
-The main merit of this thesis was introducing the ViT-Score.
-A Vision Transformer-Assisted metric for evaluating the performance of a neural image compression, the score
-correlated with the Generative Adversarial Network verifiably generating a comprehensible image by visual inspection.
+The main merit of this thesis project is introducing the ViT-Score (see Section 3.3).
+It is a Vision Transformer-assisted metric for evaluating the performance of neural image compression. 
+It computes a score to compare the reconstructed output from a Generative Adversarial Network (GAN) to the original 
+input image.
 
-The ViT-Score conclusively contributed insights to image quality, relating to human perception of the generated image. 
+
+The ViT-Score conclusively contributes to evaluating image quality by quantifying human perception of recognizable objects in the generated image. 
 The metric can also provide additional insights to understanding the latent space (contextual) preservation of an input image.
+Finally, the ViT-Score can most likely verify that a GAN has generated a comprehensible image.
 
-This work can be viewed as a contribution towards:
+This work can also be viewed as contributing towards:
 
 \begin{itemize}
-    \item an end-to-end Deep Learning-based image compression and reconstruction 
+    \item an end-to-end Deep Learning-based approach to image compression and reconstruction 
     \item abstracted evaluation of GAN generated images 
-	\item promoting generalizable models in Artifical Intelligence (AI) 
-	\item expansion of human consciousness through investigation of evolving Deep Learning techniques
+	\item promoting generalizable and overparameterized models in Deep Learning
+	\item experimentation with Transformers while still a nascent technology
+	\item expansion of human consciousness through investigation of evolving techniques in Artifical Intelligence (AI) 
 \end{itemize} 
 
 
@@ -22,8 +25,11 @@ This work can be viewed as a contribution towards:
 
 Throughout this report, the reader was presented with all relevant background knowledge necessary 
 to grasp the key contributions listed. 
+
+
 A Vision Transformer (ViT) was used to evaluate the capacity of 
 a GAN to compress and generate an image of choice based on object-level similarities with the original input image.
+
 
 The new metric, referred to as a ViT-Score, was able to capture and assess the quality of the output images and provide 
 valuable insights. The ViT-Score performed well, comparing in capacity to established image quality metrics such as
@@ -39,27 +45,24 @@ architecture to use in image compression and reconstruction.
 
 
 A Vision Transformer (ViT)-Assisted metric related to image compression can provide 
-additional insights to the latent space (contextual) preservation.
-Thus, this work can be viewed as a stepping stone towards an end-to-end Transformer-based
-image compression and regeneration.
+additional insights to understanding latent feature space and its preservation through lossy compression.
 
 
-Perhaps, such a metric could be used as a Loss function, embedded within the architecture,
-along with being a useful evaluation metric.
+Such a metric could be used as a Loss function, embedded within the architecture.
+It could be useful as a standalone evaluation metric.
 
 
-It may cost on the order of \$100M and several years, but such a technology will be achieved.
+It may cost on the order of \$100M and several years to develop, but an end-to-end deep learning-based approach
+to image compression will be achieved.
 
 
-Finally, this image technology can be extended to videos and video compression in further developments.
+Finally, such image compression technology can be extended to video and video compression in further developments.
 
 
 \section{Acknowledgments}
 
 The author would like to express gratitude towards several individuals and organizations
 from The University of Texas at Austin campus.
-
-
 The major inspiration for this project was gathered from two courses taught by the
 reviewers of this thesis.
 
@@ -78,17 +81,15 @@ and completed a term project on Vision Transformers (ViT).
 Further acknowledgments are made to the Laboratory for Image and Video Engineering (LIVE) at the 
 University of Texas at Austin for providing a source for project inspiration and insights.
 
-
 Finally, The Texas Advanced Computing Center (TACC) provided free access to advanced 
 High-Performance Computing (HPC) resources, which were used throughout the experimentation process in this thesis.
 
 \section{Closing Remarks}
 
 This thesis is written as a graduation requirement for the degree of Master of Science in
-
 Computational Science, Engineering, and Mathematics awarded by the Oden Institute at 
 The University of Texas at Austin.
 
-
+\vspace{5mm}
 
 \NOTE{All code has been made available as open source to the general public in the form of a GitHub repository.}
