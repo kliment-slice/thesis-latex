@@ -190,7 +190,7 @@ In short, it operates by using a Discrete Cosine Transform (DCT) to convert imag
 the compression algorithm discards high-frequency information, as it is not relevant to human visual perception. \citep{Principles}
 
 Figure 2.6 illustrates JPEG compression at various thresholds, along with the compression ratios of each 
-compressed image.
+compressed image listed underneath.
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=0.9\textwidth]{media/jpeg_comp.png}
@@ -210,7 +210,6 @@ their ground-truth originals.
 
 Image Quality Assessment (IQA) is a methodology to evaluate distortions, aberrations, or
 degradations in perceived image quality.
-
 To evaluate the quality of a reconstructed image and benchmark the ViT-Score,
 this thesis will use the following metrics:
 
@@ -222,7 +221,7 @@ this thesis will use the following metrics:
 	\item Blind/Referenceless Image Spatial Quality Evaluator (BRISQUE)
 \end{itemize}
 
-\vspace{3mm}
+\vspace{2mm}
 
 \textbf{SSIM}
 
@@ -252,7 +251,7 @@ $\sigma_{xy}$ the covariance of $x$ and $y$; $L$ is the pixel value dynamic rang
 
 and by default, given as constants are $k_{1}=0.01$ and $k_{2}=0.03$ \citep{SSIM_bovik}
 
-\vspace{6mm}
+\vspace{4mm}
 
 \textbf{MSE}
 
@@ -274,7 +273,7 @@ $m,n$ is the rows and columns of the input image,
 $x_{ij}$ and $y_{ij}$ are pixel values from the input and generated image respectively. \citep{Metrics}
 
 
-\vspace{6mm}
+\vspace{4mm}
 
 \textbf{PSNR}
 
@@ -290,7 +289,7 @@ The mathematical formulation becomes:
 $PSNR(x,y)=\dfrac{10\log_{10}[\max(\max(x),\max(y))]^2}{\vert{x-y}^2\vert}$
 \end{center}
 
-\newpage
+% \newpage
 
 \textbf{FID}
 
@@ -322,7 +321,7 @@ $FID=||\mu -\mu _{w}||_{2}^{2} + tr(\Sigma +\Sigma _{w}-2(\Sigma ^{1/2}\Sigma _{
 
 
 BRISQUE represents a referenceless image quality methodology where 0 is the perfect score and 100 worst.
-This score could be interpreted as tendency of an image to be photorealistic. The score is derived from
+This score could be interpreted as the tendency of an image to be photorealistic. The score is derived from
 the Gaussian properties of natural scene statistics found in images.
 Image quality is evaluated for the presence of corruption caused by blurs or graininess. 
 An image with no distortions often has a score below 5. \citep{BRISQUE}

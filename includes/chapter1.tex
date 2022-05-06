@@ -139,15 +139,15 @@ Queries from the output embedding (i.e. encoding part of target image).
 
 \section{Mathematical Formulation}
 
-\textbf{Attention}
-
+%\textbf{Attention}
+\subsection{Attention}
 
 In its full formulation, Attention is a function of vectors representing Queries, Keys, and Values, 
 labeled as $(Q,K,V)$. 
 Attention equals the dot product $(QK^T)$ of Keys and Queries respectively, softmaxed over 
 the square root of dimensions and multiplied by the Values vector.
 
-To provide intuition:
+To provide further intuition:
 
 Values are what is most interesting in the source image, i.e. 
 attributes or structural features. In text, a Value could be important adjectives before each keyword, 
@@ -164,10 +164,10 @@ available information (Key and its corresponding Value).
 
 \NOTE{Thus, the overall dynamic is that a Query is pegged against a Key to locate a certain Value.}
 
-\vspace{10mm}
+%\vspace{10mm}
 
-\textbf{Softmax}
-
+%\textbf{Softmax}
+\subsection{Softmax}
 
 The Softmax function is defined as a normalized exponential function. 
 A sequence of variables is mapped into exponentials and divided by the sum of all exponentials. 
@@ -183,10 +183,10 @@ probability distribution over all Values. Neural networks typically utilize a so
 layer over all the classification labels. This yields the top classification by probability. 
 Using the softmax function, a certain Key will stand out (in magnitude) vs the rest.
 
-\vspace{10mm}
+%\vspace{10mm}
 
-\textbf{Vector Similarity}
-
+%\textbf{Vector Similarity}
+\subsection{Vector Similarity}
 
 Vector proximity between embeddings represents the similarity between objects in images, or 
 word connotations in sentences.
@@ -264,17 +264,13 @@ from the original implementation of "An Image is Worth 16x16 Words".
 
 Several modified implementations targeting specific generative applications have been made by Hugging Face and OpenAI.
 OpenAI has expanded from its success from GPT-3, a text generation Transformer, to visual applications.
-
 Transformers and Vision Transformers can be used to find context in image objects from the latent space of an input image.
-
 CLIP, Image GPT, DALL.E, and DALL.E2 by OpenAI bridge the gap between textual information and images.
 DALL.E 2, the highest quality image Transformer to date, was released in April 2022.
 It is trained on 250M image-text pairs to be able to generate coherent images from textual description. \citep{Dalle2}
 
-\vspace{1mm}
-
-Most of OpenAI's Transformer developments (e.g. GPT-3, DALL.E 2) have not been open sourced. 
-Google's ViT and BERT, however, have been.
+\NOTE{Most of OpenAI's Transformer developments (e.g. GPT-3, DALL.E 2) have not been open sourced. 
+Google's ViT and BERT, however, have been.}
 
 
 \section{Computational Constraints for Training}

@@ -1,27 +1,29 @@
-\section{Architecture and Inputs}
+\section{Architecture}
 
-\subsection{General Project Architecture}
+\subsection{Main Components}
+
+The main architectural components of this project are a Generative Adversarial Network (GAN) and a Vision Transformer (ViT).
+An input image is compressed into a latent vector form, which is then used to generate a synthetic version of the original image.
+The GAN iteratively improves its ability to generate a realistic image, which resembles the input (refer to Section 2.3 for an overview of GANs).
+A pre-trained "PGAN" was used, further described in Section 3.1.3.
+
+A pre-trained Vision Transformer (ViT) was used for object detection in both the input and reconstructed images. 
+A custom method then identifies the number of matching labels between the images. Finally, a ViT-Score is computed. 
 
 \begin{figure}[H]
 	\begin{center}
 	\includegraphics[width=1\textwidth]{media/main_arch2.png}
 	\end{center}
-	\caption[Model Architecture]{The engine architecture for this project. A GAN compresses and reconstructs
-    an input image. Then, a Vision Transfomer (ViT) conducts object detection in both the input and generated images.
-    Finally, the ViT-Score is computed based on the number of matching labels.}
+	\caption[Model Architecture]{The full ViT-Scoring engine. A GAN compresses, then reconstructs
+    an input image from its latent vector. Then, a Vision Transfomer (ViT) detects objects in the input and generated images.
+    Finally, the ViT-Score is computed from the number of matching labels.}
 	\end{figure}
 
-A standard Generator-Discriminator architecture GAN was used. 
-
-The Generator generates a synthetic image for the Discriminator to evaluate.
-Stochastic Gradient Descent (SGD) optimizer was used for the GAN to find the most optimal latent space vector
-representation of the input image.
-Mean Squared Error (MSE) was used as a Loss function.
-
-A pre-trained Vision Transformer (ViT) was used for the image labeling.
-
-
 \subsection{Image Compression Diagram}
+
+
+Stochastic Gradient Descent (SGD) optimizer was used for the GAN to find the most optimal latent vector representation of the input image.
+Mean Squared Error (MSE) was used as a Loss function to improve the GAN performance.
 
 Similar to established image compression methodologies, the compression and reconstruction process 
 is divided into a Compressor and Decompressor parts.
@@ -41,25 +43,77 @@ The Decompressor then uses the GAN Generator and latent vector from the Compress
 
 
 Following the Decompressor generating an output image, the pre-trained ViT then detects objects from a 
-dictionary of labels. The ViT outputs a probability distribution, i.e. a probability for each label summing to unity (softmax). 
+dictionary of labels it has been trained on. The ViT outputs a probability distribution, i.e. a probability for each label summing to unity (Softmax, refer to Section 1.4.2). 
 The final output of the script developed for this project is the ViT-Score, and other relevant image quality metrics (e.g. SSIM, MSE, etc)
 to evaluate the generated output image.
 
-Python and PyTorch were used for the implementation of the architectures detailed above.
+A PyTorch implementation of the ViT was used, trained on ImageNet-21k and fine tuned on ImageNet-1k (refer to Section 1.5.1).
 
-\subsection{Sample Input Images Used}
+Python and Python libraries were used throughout the implementation of the architectures described above (see Appendix A for details).
 
+\subsection{The GAN}
 
-Four images (512x512, PNG format) are used in this study.
-The images represent distinct types of image to be compressed, as well as 
-diverse features to challenge the deep learning model architecture.
-For example, a white background ("Logo"), a black background ("Bevo"), similar shapes, but
-distinct images ("Logo" vs "Bevo"), a face, a building, trees and clouds in the background.
-
+A standard Generator-Discriminator GAN architecture, called a "PGAN" (Progressive Growing of GAN), was used from a pre-trained model.
+The model was trained on three major datasets: "celebaHQ", "fashionGen", and "DTD". 
+"CelebaHQ" is a dataset of celebrity faces. "FashionGen" is a set of fashion objects such as clothing and accessory items.
+"DTD" (Describable Textures Dataset) is a collection of textures such as checkered patterns, foods, and animal fur.
+\citep{PytorchGANZoo}
 
 \begin{figure}[H]
 	\begin{center}
-	\includegraphics[width=0.7\textwidth]{media/input_images_labeled.png}
+	\includegraphics[width=0.7\textwidth]{media/pgan.png}
+	\end{center}
+	\caption[The pre-trained "PGAN"]{The pre-trained "PGAN" by Facebook-Research, implemented in PyTorch. 
+    It is trained on three diverse datasets of objects.\citep{PytorchGANZoo}}
+	\end{figure}
+
+\NOTE{The presumption is that since a "PGAN" is trained on these three diverse datasets, it should, in principle, be able to compress 
+and reconstruct any input image. Its output however, may vary significantly, depending on the complexity of the input.}
+
+\subsection{Latent space vector representation}
+
+A square input image entering the compression engine is compressed to a $nx1$ vector, where $n$ corresponds to the height or width (in pixels)
+of the image. In the case of all input images used in this project, the latent vector
+is of size $512x1$, since the input images are of size $512x512$.
+
+The exact meaning of the vector is hard to decipher. Figure 3.4 below shows a sample of the compressed image vector representation:
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.4\textwidth]{media/latent.png}
+	\end{center}
+	\caption[Latent Space Representation]{Visual representation of the first 10 pixels of the most compressed form of the original image.}
+	\end{figure}
+
+The figure above demonstrates what the GAN architecture compresses the full image to. In this case, an original image 
+of size $409$ kilobytes was compressed to a $1.54$ kilobyte image vector. 
+
+The resulting Compression Ratio (CR) is $266:1$.
+Such a Compression Ratio is an order of magnitude higher than deterministic compression algorithms would ever be able to achieve. 
+\citep{Principles}
+
+The GAN then proceeds to rebuild the image to 242kb. The final Compression Ratio is $1.69$.
+% \newpage
+\subsection{Sample Input Images Used}
+
+Four images of size 512x512, in PNG format are used in this study.
+These images represent distinct types of image to be compressed, containing 
+diverse features, in order to challenge the model architecture.
+
+For example, one image ("Logo") contains a white background, while another ("Bevo") a black background.
+The two completely dissimilar images, "Logo" and "Bevo", also happen to contain similar shapes, representing a graphic and a living
+Texas longhorn bull.
+The image "Kliment", a portait of the author, contains a face with trees and clouds in the background.
+
+The image "Tower" is a building, the University of Texas at Austin Main Tower, containing
+trees in the foreground, but clouds in the background.
+
+\NOTE{This set of four images was carefully chosen to represent similarities and dissimilarities in order to 
+test the robustness of the ViT-Score and capacity of the Vision Transformer itself.}
+
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[width=0.5\textwidth]{media/input_images_labeled.png}
 	\end{center}
 	\caption[Input Images]{Input Images used in this project (512x512):
 
@@ -73,25 +127,6 @@ distinct images ("Logo" vs "Bevo"), a face, a building, trees and clouds in the 
 	\end{figure}
 
 
-\subsection{Latent space vector representation during compression}
-
-$nx1$ vector, where $n$ corresponds to the height or width (in pixels)
-of a square input image. In the case of all input images used, the latent vector
-is of size $512x1$, since the input images are of size $512x512$.
-
-hard to decipher but here is a zoomed in visual of the first
-This is what the GAN architecture compresses the full image to (1.54kb vs original size 409kb).
-The GAN then rebuils to 242kb.
-
-
-\begin{figure}[H]
-	\begin{center}
-	\includegraphics[width=0.5\textwidth]{media/latent.png}
-	\end{center}
-	\caption[Latent Space Representation]{Visual representation of the first 10 pixels in the most compressed version of the original image.}
-	\end{figure}
-
-% \newpage
 \section{Outputs and Visual Inspection}
 The generative process from the GAN was designed to output an image at a specified epoch.
 
@@ -138,10 +173,10 @@ It learned random noise and generation performance decreased.
 \begin{center}
 \begin{tabular}{|c|c|}
 \hline
-\textbf{Bevo}	& 1.32 \textit{(failed to compress)}\\
-\textbf{Kliment}	& 0.59\\
-\textbf{Logo}	& 8.28 \textit{(failed to compress)}\\
-\textbf{Tower} & 0.54\\\hline
+\textbf{Bevo}	& 0.75 \textit{(failed to compress)}\\
+\textbf{Kliment}	& 1.69\\
+\textbf{Logo}	& 0.12 \textit{(failed to compress)}\\
+\textbf{Tower} & 1.85\\\hline
 
 \end{tabular}
 \caption[Results: Compression Ratios]{Compression ratios of generated images.}
@@ -150,7 +185,8 @@ It learned random noise and generation performance decreased.
 
 The GAN failed to compress two of the images, "Bevo" and "Logo". Understandably,
 "Logo" is actually a vector graphic with a clear background, with an input file size of only 13.4 KB.
-The GAN had to create the white background, which cost extra disk space.
+The GAN had to create the white background, which it inefficiently stores as information, costing extra 
+bandwidth and disk space.
 
 "Kliment" and "Tower" were compressed to half the original size, with "Kliment"
 being a suitable candidate to demonstrate the capacity of this GAN.
@@ -380,10 +416,10 @@ the Loss function of choice for this project.
     \hline
     \textbf{Image}	& \textbf{ViT-Score} & \textbf{SSIM} & \textbf{MSE} & \textbf{PSNR} & \textbf{FID}  & \textbf{BRISQUE} & \textbf{CR}\\
     \hline
-    \textbf{Bevo}	 & 0.14 & 0.26 & 3,479.34  &  12.68  &  1,241,999.901  &  39.5535 & 1.32 \\
-    \textbf{Kliment} & 0.54 & 0.56 & 1,759.28 & 15.64  &  549,089.491 & 44.3570 & 0.59\\
-    \textbf{Logo}	 & 0.29 & 0.91 & 393.69 & 22.15 &  81,105.162 & 97.1844 & 8.28 \\
-    \textbf{Tower}   & 0.03 & 0.53 & 1,315.75 & 16.90 &  331,171.556 & 52.8363 & 0.54\\\hline
+    \textbf{Bevo}	 & 0.14 & 0.26 & 3,479.34  &  12.68  &  1,241,999.901  &  39.5535 & 0.75 \\
+    \textbf{Kliment} & 0.54 & 0.56 & 1,759.28 & 15.64  &  549,089.491 & 44.3570 & 1.69\\
+    \textbf{Logo}	 & 0.29 & 0.91 & 393.69 & 22.15 &  81,105.162 & 97.1844 & 0.12 \\
+    \textbf{Tower}   & 0.03 & 0.53 & 1,315.75 & 16.90 &  331,171.556 & 52.8363 & 1.85\\\hline
     
     \end{tabular}
     \caption[Summary of Results]{ViT-Scores provide an insightful quality assessment compared to established methods.}
